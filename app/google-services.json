@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "248534790481",
+    "firebase_url": "https://ycce-yearbook.firebaseio.com",
+    "project_id": "ycce-yearbook",
+    "storage_bucket": "ycce-yearbook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248534790481:android:1c2e67069e6ce78f05a370",
+        "android_client_info": {
+          "package_name": "com.syrous.ycceyearbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248534790481-jgq3bb0un1fi9nm2repgjvf4ms410aj1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.syrous.ycceyearbook",
+            "certificate_hash": "b7ca6115cad87cb5660c4a6a69b84fda0ef8b1a5"
+          }
+        },
+        {
+          "client_id": "248534790481-im4678hpqeppsh900cud7sq6a5tjmf57.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxmj5bdhWdia3usTc-wTYC7cpUNO2U2YQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248534790481-im4678hpqeppsh900cud7sq6a5tjmf57.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
