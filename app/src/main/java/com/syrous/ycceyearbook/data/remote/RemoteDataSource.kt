@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.syrous.ycceyearbook.data.LibraryDataSource
 import com.syrous.ycceyearbook.data.model.Paper
-import com.syrous.ycceyearbook.data.model.Result
 import com.syrous.ycceyearbook.data.model.Resource
-import com.syrous.ycceyearbook.data.model.Result.*
+import com.syrous.ycceyearbook.data.model.Result
+import com.syrous.ycceyearbook.data.model.Result.Error
+import com.syrous.ycceyearbook.data.model.Result.Success
 import com.syrous.ycceyearbook.data.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -87,6 +88,19 @@ class RemoteDataSource internal constructor(
 
     override suspend fun refreshResources(department: String, sem: Int, courseCode: String) {
         observableResources.value = getResources(department, sem, courseCode)
+    }
+
+    override suspend fun saveSubject(subject: Subject) {
+
+
+    }
+
+    override suspend fun savePaper(paper: Paper) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun saveResource(resource: Resource) {
+        TODO("Not yet implemented")
     }
 
 }

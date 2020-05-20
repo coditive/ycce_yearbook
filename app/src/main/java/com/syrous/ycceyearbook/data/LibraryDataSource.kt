@@ -3,8 +3,8 @@ package com.syrous.ycceyearbook.data
 import androidx.lifecycle.LiveData
 import com.syrous.ycceyearbook.data.model.Paper
 import com.syrous.ycceyearbook.data.model.Resource
-import com.syrous.ycceyearbook.data.model.Subject
 import com.syrous.ycceyearbook.data.model.Result
+import com.syrous.ycceyearbook.data.model.Subject
 
 interface LibraryDataSource {
 
@@ -25,4 +25,10 @@ interface LibraryDataSource {
     suspend fun getResources(department: String, sem: Int, courseCode: String): Result<List<Resource>>
 
     suspend fun refreshResources(department: String, sem: Int, courseCode: String)
+
+    suspend fun saveSubject(subject: Subject)
+
+    suspend fun savePaper(paper: Paper)
+
+    suspend fun saveResource(resource: Resource)
 }

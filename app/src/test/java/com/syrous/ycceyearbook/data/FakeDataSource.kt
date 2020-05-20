@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.syrous.ycceyearbook.data.model.Paper
 import com.syrous.ycceyearbook.data.model.Resource
 import com.syrous.ycceyearbook.data.model.Result
+import com.syrous.ycceyearbook.data.model.Result.Success
 import com.syrous.ycceyearbook.data.model.Subject
 
 class FakeDataSource (
@@ -16,7 +17,7 @@ class FakeDataSource (
     }
 
     override suspend fun getSubjects(department: String, sem: Int): Result<List<Subject>> {
-        TODO("Not yet implemented")
+       return Success(subjects!!.toList())
     }
 
     override suspend fun refreshSubjects(department: String, sem: Int) {
@@ -38,7 +39,7 @@ class FakeDataSource (
         courseCode: String,
         exam: String
     ): Result<List<Paper>> {
-        TODO("Not yet implemented")
+        return Success(papers!!.toList())
     }
 
     override suspend fun refreshPapers(
@@ -63,11 +64,23 @@ class FakeDataSource (
         sem: Int,
         courseCode: String
     ): Result<List<Resource>> {
-        TODO("Not yet implemented")
+        return Success(resources!!.toList())
     }
 
     override suspend fun refreshResources(department: String, sem: Int, courseCode: String) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun saveSubject(subject: Subject) {
+        subjects?.add(subject)
+    }
+
+    override suspend fun savePaper(paper: Paper) {
+        papers?.add(paper)
+    }
+
+    override suspend fun saveResource(resource: Resource) {
+        resources?.add(resource)
     }
 
 }

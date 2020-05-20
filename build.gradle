@@ -18,13 +18,15 @@ buildscript {
         expresso_version = '3.2.0'
         truth_version = '1.0.1'
         arch_lifecycle_version = '2.3.0-alpha02'
+        mockito_version = '2.8.9'
+        arch_testing_version = '2.0.0'
     }
 
     repositories {
         google()
         jcenter()
-        
     }
+
     dependencies {
         classpath "com.android.tools.build:gradle:${gradle_version}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

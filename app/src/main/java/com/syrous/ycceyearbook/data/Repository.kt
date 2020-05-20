@@ -1,23 +1,18 @@
 package com.syrous.ycceyearbook.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.syrous.ycceyearbook.data.local.AllDao
-import com.syrous.ycceyearbook.data.local.LocalDataSource
 import com.syrous.ycceyearbook.data.model.Paper
 import com.syrous.ycceyearbook.data.model.Resource
 import com.syrous.ycceyearbook.data.model.Result
 import com.syrous.ycceyearbook.data.model.Result.Error
 import com.syrous.ycceyearbook.data.model.Result.Success
 import com.syrous.ycceyearbook.data.model.Subject
-import com.syrous.ycceyearbook.data.remote.RemoteApi
-import com.syrous.ycceyearbook.data.remote.RemoteDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.coroutineScope
 
 class Repository constructor(
-    private val localDataSource: LocalDataSource,
+    private val localDataSource: LibraryDataSource,
     private val remoteDataSource: LibraryDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
@@ -59,15 +54,17 @@ class Repository constructor(
     }
 
     private suspend fun updatePapersFromRemoteDataSource(department: String, sem: Int, courseCode: String, exam: String){
-        val papers = remoteDataSource.getPapers(department, sem, courseCode, exam)
+       coroutineScope {
+           val papers = remoteDataSource.getPapers(department, sem, courseCode, exam)
 
-        if (papers is Success){
-            papers.data.forEach {paper ->
-                localDataSource.savePaper(paper)
-            }
-        } else if (papers is Error) {
-            throw papers.exception
-        }
+           if (papers is Success){
+               papers.data.forEach {paper ->
+                   localDataSource.savePaper(paper)
+               }
+           } else if (papers is Error) {
+               throw papers.exception
+           }
+       }
     }
 
     private suspend fun updateResourcesFromRemoteDataSource(department: String, sem: Int, courseCode: String){
@@ -80,5 +77,17 @@ class Repository constructor(
         } else if (resources is Error) {
             throw resources.exception
         }
+    }
+
+    suspend fun getSubjectsFromLocalStorage(department: String, sem: Int): Result<List<Subject>> {
+        return localDataSource.getSubjects(department, sem)
+    }
+
+    suspend fun getPapersFromLocalStorage(department: String, sem:Int, courseCode: String, exam: String): Result<List<Paper>> {
+        return localDataSource.getPapers(department, sem, courseCode, exam)
+    }
+
+    suspend fun getResourcesFromLocalStorage(department: String, sem: Int, courseCode: String): Result<List<Resource>> {
+        return localDataSource.getResources(department, sem, courseCode)
     }
 }

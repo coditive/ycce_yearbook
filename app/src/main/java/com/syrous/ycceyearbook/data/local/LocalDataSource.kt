@@ -6,7 +6,8 @@ import com.syrous.ycceyearbook.data.LibraryDataSource
 import com.syrous.ycceyearbook.data.model.Paper
 import com.syrous.ycceyearbook.data.model.Resource
 import com.syrous.ycceyearbook.data.model.Result
-import com.syrous.ycceyearbook.data.model.Result.*
+import com.syrous.ycceyearbook.data.model.Result.Error
+import com.syrous.ycceyearbook.data.model.Result.Success
 import com.syrous.ycceyearbook.data.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -85,15 +86,15 @@ class LocalDataSource internal constructor(
         //No - Operation
     }
 
-    suspend fun saveSubject(subject: Subject) = withContext (ioDispatcher) {
+    override suspend fun saveSubject(subject: Subject) = withContext (ioDispatcher) {
         allDao.insertSubject(subject)
     }
 
-    suspend fun savePaper(paper: Paper) = withContext (ioDispatcher) {
+    override suspend fun savePaper(paper: Paper) = withContext (ioDispatcher) {
         allDao.insertPaper(paper)
     }
 
-    suspend fun saveResource(resource: Resource) = withContext (ioDispatcher) {
+    override suspend fun saveResource(resource: Resource) = withContext (ioDispatcher) {
         allDao.insertResource(resource)
     }
 }
