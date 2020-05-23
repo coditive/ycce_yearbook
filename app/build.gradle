@@ -3,20 +3,23 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
-
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     buildToolsVersion "29.0.3"
-
     defaultConfig {
         applicationId "com.syrous.ycceyearbook"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    viewBinding {
+        enabled = true
     }
 
     buildTypes {
@@ -24,7 +27,6 @@ android {
         debug {
             minifyEnabled false
             testCoverageEnabled true
-            useProguard false
         }
 
         release {
@@ -37,14 +39,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    dataBinding {
-        enabled = true
-        enabledForTests = true
+    testOptions.unitTests {
+        includeAndroidResources = true
+        // ...
     }
 
     kotlinOptions{
         jvmTarget = "1.8"
     }
+
 
 }
 
@@ -57,6 +60,16 @@ dependencies {
 
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    //Google sign in
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
+
+    //Navigation Component
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
 
     //Material Components
     implementation 'com.google.android.material:material:1.2.0-alpha06'
@@ -93,14 +106,19 @@ dependencies {
         testImplementation "org.mockito:mockito-core:$mockito_version"
         testImplementation "androidx.arch.core:core-testing:$arch_testing_version"
         testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
+        testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlin_coroutines"
+        testImplementation "org.robolectric:robolectric:$robolectric_version"
+        testImplementation "com.squareup.okhttp3:mockwebserver:$mock_web_server"
+        testImplementation "androidx.test.ext:junit-ktx:$androidx_test_ext_kotlin_runner_version"
 
         //Assertion Framework -> truth
         testImplementation "com.google.truth:truth:$truth_version"
-        testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlin_coroutines"
 
         //Androidx testing -> Instrumented testing
          androidTestImplementation "androidx.test.ext:junit:$androidx_junit_runner_version"
          androidTestImplementation "androidx.test.espresso:espresso-core:$expresso_version"
+         androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
 
     //moshi for Json
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
@@ -109,7 +127,7 @@ dependencies {
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
 
 
     //Firebase

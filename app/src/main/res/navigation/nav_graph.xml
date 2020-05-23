@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentSplash">
+
+    <fragment
+        android:id="@+id/fragmentLogin"
+        android:name="com.syrous.ycceyearbook.ui.login.FragmentLogin"
+        android:label="FragmentLogin"
+        tools:layout="@layout/fragment_login"/>
+
+
+    <fragment
+        android:id="@+id/fragmentSplash"
+        android:name="com.syrous.ycceyearbook.ui.splash.FragmentSplash"
+        android:label="FragmentSplash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_fragmentSplash_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+
+    </fragment>
+
+</navigation>

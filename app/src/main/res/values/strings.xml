@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">YCCE YearBook</string>
+
+
+<!-- Image Content Description-->
+    <string name="splash_icon">Splash Icon</string>
+    <string name="login_icon">Login Icon</string>
+
+<!-- Splash Screen Resources-->
+    <string name="crafted_by">Crafted By</string>
+
+<!-- Login Screen Resources-->
+    <string name="login_title">YCCE YEARBOOK</string>
+    <string name="login_subtitle"> \tCollege \n Resources \n App</string>
+    <string name="sign_in_button">Sign In With Google</string>
 </resources>
