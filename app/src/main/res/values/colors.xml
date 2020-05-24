@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_primary">#1947E5</color>
-    <color name="color_primary_variant">#FFBD12</color>
+    <color name="color_primary_variant">#18191F</color>
     <color name="color_on_primary">#FFFFFF</color>
     <color name="color_secondary">#FFFFFF</color>
     <color name="color_secondary_variant">#969BAB</color>
-    <color name="color_on_secondary">#000000</color>
+    <color name="color_on_secondary">#18191F</color>
     <color name="color_error">#F44336</color>
     <color name="color_on_error">#FFFFFF</color>
     <color name="color_surface">#FFFFFF</color>

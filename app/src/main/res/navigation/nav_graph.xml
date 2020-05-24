@@ -9,7 +9,8 @@
         android:id="@+id/fragmentLogin"
         android:name="com.syrous.ycceyearbook.ui.login.FragmentLogin"
         android:label="FragmentLogin"
-        tools:layout="@layout/fragment_login"/>
+        tools:layout="@layout/fragment_login">
+    </fragment>
 
 
     <fragment
@@ -22,5 +23,6 @@
             app:destination="@id/fragmentLogin" />
 
     </fragment>
+
 
 </navigation>

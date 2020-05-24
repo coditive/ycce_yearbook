@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:title="@string/menu_home"
+        android:icon="@drawable/ic_home_24dp"/>
+
+    <item
+        android:id="@+id/recent"
+        android:title="@string/menu_recent"
+        android:icon="@drawable/ic_recent_24dp"/>
+
+    <item
+        android:id="@+id/notices"
+        android:title="@string/menu_notices"
+        android:icon="@drawable/ic_trending_notice_24dp"/>
+
+    <item
+        android:id="@+id/more"
+        android:title="@string/menu_more"
+        android:icon="@drawable/ic_more_24dp"/>
+</menu>

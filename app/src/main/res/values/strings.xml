@@ -13,4 +13,13 @@
     <string name="login_title">YCCE YEARBOOK</string>
     <string name="login_subtitle"> \tCollege \n Resources \n App</string>
     <string name="sign_in_button">Sign In With Google</string>
+
+<!--  Home Screen Resources-->
+
+    <!-- Bottom Nav Resources   -->
+        <string name="menu_home">Home</string>
+        <string name="menu_recent">Recent</string>
+        <string name="menu_notices">Notices</string>
+        <string name="menu_more">More</string>
+
 </resources>

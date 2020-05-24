@@ -14,7 +14,6 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,7 +40,7 @@ android {
 
     testOptions.unitTests {
         includeAndroidResources = true
-        // ...
+        
     }
 
     kotlinOptions{
@@ -73,6 +72,11 @@ dependencies {
 
     //Material Components
     implementation 'com.google.android.material:material:1.2.0-alpha06'
+
+
+    //Bottom Nav Bar
+    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.5'
+
 
     //Lifecycle components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$arch_lifecycle_version"
