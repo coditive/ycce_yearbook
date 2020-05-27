@@ -6,28 +6,40 @@
     app:startDestination="@id/fragmentHome">
 
     <fragment
-        android:id="@+id/fragmentMore"
-        android:name="com.syrous.ycceyearbook.ui.more.FragmentMore"
-        android:label="FragmentMore"
-        tools:layout="@layout/fragment_more"/>
-
-    <fragment
-        android:id="@+id/fragmentNotices"
-        android:name="com.syrous.ycceyearbook.ui.notices.FragmentNotices"
-        android:label="FragmentNotices"
-        tools:layout="@layout/fragment_notice"/>
+        android:id="@+id/fragmentHome"
+        android:name="com.syrous.ycceyearbook.ui.home.FragmentHome"
+        android:label="FragmentHome"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentRecent2"
+            app:destination="@id/fragmentRecent" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentRecent"
         android:name="com.syrous.ycceyearbook.ui.recent.FragmentRecent"
         android:label="FragmentRecent"
-        tools:layout="@layout/fragment_recent"/>
+        tools:layout="@layout/fragment_recent">
 
-    <fragment
-        android:id="@+id/fragmentHome"
-        android:name="com.syrous.ycceyearbook.ui.home.FragmentHome"
-        android:label="FragmentHome"
-        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_fragmentRecent_to_fragmentNotices"
+            app:destination="@id/fragmentNotices" />
     </fragment>
 
+    <fragment
+        android:id="@+id/fragmentNotices"
+        android:name="com.syrous.ycceyearbook.ui.notices.FragmentNotices"
+        android:label="FragmentNotices"
+        tools:layout="@layout/fragment_notice">
+        <action
+            android:id="@+id/action_fragmentNotices_to_fragmentMore"
+            app:destination="@id/fragmentMore" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentMore"
+        android:name="com.syrous.ycceyearbook.ui.more.FragmentMore"
+        android:label="FragmentMore"
+        tools:layout="@layout/fragment_more">
+    </fragment>
 </navigation>

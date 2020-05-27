@@ -9,30 +9,31 @@
     <fragment
         android:id="@+id/home_nav_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
-        app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph2"
         tools:layout="@layout/fragment_home"/>
 
-    <me.ibrahimsn.lib.SmoothBottomBar
+    <com.syrous.ycceyearbook.ui.home.bottom_nav.BottomNavView
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         app:backgroundColor="@color/color_primary"
-        app:textColor="@color/color_on_primary"
+        app:textColor="@color/color_primary"
         app:textSize="10sp"
         app:iconSize="20dp"
-        app:indicatorColor="#2DFFFFFF"
-        app:indicatorRadius="10dp"
+        app:indicatorColor="#FFFFFF"
+        app:indicatorRadius="20dp"
         app:sideMargins="10dp"
         app:itemPadding="10dp"
         app:iconTint="#C8FFFFFF"
-        app:iconTintActive="#FFFFFF"
+        app:duration="1000"
+        app:iconTintActive="@color/color_primary"
         app:menu="@menu/bottom_nav_menu"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="SmallSp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

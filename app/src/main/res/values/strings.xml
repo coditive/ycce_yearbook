@@ -21,5 +21,6 @@
         <string name="menu_recent">Recent</string>
         <string name="menu_notices">Notices</string>
         <string name="menu_more">More</string>
+        <string name="ellipsis">&#8230;</string>
 
 </resources>

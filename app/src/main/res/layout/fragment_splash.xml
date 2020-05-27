@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/crafted_by"
         android:fontFamily="@font/montserrat"
+        app:layout_constraintVertical_bias="0.8"
         app:layout_constraintTop_toBottomOf="@id/splash_logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

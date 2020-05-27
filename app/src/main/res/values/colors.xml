@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary">#1947E5</color>
+    <color name="color_primary">#2047E5</color>
     <color name="color_primary_variant">#18191F</color>
     <color name="color_on_primary">#FFFFFF</color>
     <color name="color_secondary">#FFFFFF</color>
