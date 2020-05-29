@@ -11,7 +11,7 @@
 
 <!-- Login Screen Resources-->
     <string name="login_title">YCCE YEARBOOK</string>
-    <string name="login_subtitle"> \tCollege \n Resources \n App</string>
+    <string name="login_subtitle">\tCollege\n\tResources\n\tApp</string>
     <string name="sign_in_button">Sign In With Google</string>
 
 <!--  Home Screen Resources-->

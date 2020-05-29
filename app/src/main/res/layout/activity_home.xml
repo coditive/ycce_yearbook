@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:navGraph="@navigation/nav_graph2"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home_back"/>
 
     <com.syrous.ycceyearbook.ui.home.bottom_nav.BottomNavView
         android:id="@+id/bottomBar"

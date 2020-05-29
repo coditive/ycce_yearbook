@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.syrous.ycceyearbook.databinding.FragmentHomeBinding
+import com.syrous.ycceyearbook.databinding.FragmentHomeBackBinding
 
 class FragmentHome : Fragment() {
 
@@ -14,7 +14,8 @@ class FragmentHome : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        val binding = FragmentHomeBackBinding.inflate(layoutInflater, container, false)
+
 
 
 

@@ -93,6 +93,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="home_back" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/color_on_secondary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="login_title_textView" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/color_secondary_variant</item>
         <item name="android:textSize">20sp</item>
