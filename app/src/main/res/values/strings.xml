@@ -23,4 +23,31 @@
         <string name="menu_more">More</string>
         <string name="ellipsis">&#8230;</string>
 
+    <!--  Department Resources  -->
+    <string name="department_title">Departments</string>
+        <string name="ct">CT</string>
+        <string name="fy">FY</string>
+        <string name="it">IT</string>
+        <string name="cv">CV</string>
+        <string name="etc">ETC</string>
+        <string name="el">EL</string>
+        <string name="ee">EE</string>
+        <string name="me">ME</string>
+
+    <!--  Other Features Resources -->
+    <string name="other_features_title">Other Features</string>
+        <string name="ycce_website">Y.C.C.E</string>
+        <string name="moodle">Moodle</string>
+        <string name="upload_paper">Upload Paper</string>
+        <string name="fees_payment">Fees Payment</string>
+
+    <!--  front screen bottom  -->
+
+
+
+<!--  Recent Screen -->
+    <string name="recent_title">Recent</string>
+    <string name="course_name">Course Name \n \ncourse_code \t \t \t \t upload_date</string>
+
+
 </resources>

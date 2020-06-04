@@ -12,4 +12,24 @@
     <color name="color_on_surface">#000000</color>
     <color name="color_background">#FFFFFF</color>
     <color name="color_on_background">#000000</color>
+    
+<!-- Department's Card Background Colors   -->
+    <color name="fy_back">#F1BFFF</color>
+    <color name="it_back">#E2F9FF</color>
+    <color name="cv_back">#FFEAE1</color>
+    <color name="etc_back">#B9FFF3</color>
+    <color name="el_back">#D5FFAF</color>
+    <color name="ee_back">#BBFFC2</color>
+    <color name="ct_back">#A8E4FA</color>
+    <color name="me_back">#FCF0A4</color>
+
+<!-- Department's home_front_border colors   -->
+    <color name="fy_border">#6900A5</color>
+    <color name="it_border">#006681</color>
+    <color name="cv_border">#FF0000</color>
+    <color name="etc_border">#079490</color>
+    <color name="el_border">#07F826</color>
+    <color name="ee_border">#006700</color>
+    <color name="ct_border">#004BFC</color>
+    <color name="me_border">#FF9507</color>
 </resources>

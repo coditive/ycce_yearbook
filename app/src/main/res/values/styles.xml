@@ -112,6 +112,42 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- Home Screen Styles   -->   
+                
+        <!-- Home Screen title texts  -->
+            <style name="title_textView" parent="Widget.AppCompat.TextView">
+                <item name="android:textColor">@color/color_on_secondary</item>
+                <item name="android:textStyle">bold</item>
+                <item name="android:textSize">30sp</item>
+                <item name="android:layout_margin">8dp</item>
+                <item name="android:letterSpacing">0.01</item>
+                <item name="fontWeight">1000</item>
+            </style>
 
+            <!--   Department's  CardView  Background   -->
+                    <style name="ct_cardView" parent="Widget.MaterialComponents.CardView">
+                        <item name="android:background">@drawable/home_front_border</item>
+                        <item name="cardElevation">400dp</item>
+                        <item name="cardBackgroundColor">@color/ct_back</item>
+                    </style>
 
+    <!--  Recent Screen Styles -->
+
+        <style name="recent_textview" parent="Widget.AppCompat.TextView">
+            <item name="textColor">@color/color_on_background</item>
+            <item name="android:textStyle">bold</item>
+            <item name="android:textSize">40sp</item>
+            <item name="fontFamily">@font/montserrat</item>
+            <item name="fontWeight">1000</item>
+        </style>
+
+        <style name="recent_card_textview" parent="Widget.AppCompat.TextView">
+            <item name="textColor">@color/color_on_secondary</item>
+            <item name="fontFamily">@font/montserrat</item>
+        </style>
+
+        <style name="recent_card_background" parent="Widget.MaterialComponents.CardView">
+            <item name="android:background">@drawable/recent_card_border</item>
+            <item name="cardBackgroundColor">@color/color_secondary</item>
+        </style>
 </resources>
