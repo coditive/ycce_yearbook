@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Global color attributes -->
@@ -33,6 +33,12 @@
         <item name="materialCardViewStyle">@style/AppCard</item>
         <!-- Bottom Navigation widget style attribute -->
         <item name="bottomNavigationStyle">@style/AppBottomNavigation</item>
+        
+        <!-- Transparent Status and Toolbar  -->
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
+<!--        <item name="windowActionModeOverlay">true</item>-->
+
+        <item name="navigationIcon">@drawable/up_button_icon</item>
     </style>
 
     <style name="AppTextAppearance.Chip" parent="TextAppearance.MaterialComponents.Chip" />
@@ -87,6 +93,7 @@
     </style>
 
 
+    
     <style name="splash_textView" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/color_on_primary</item>
         <item name="android:textSize">20sp</item>
@@ -150,4 +157,22 @@
             <item name="android:background">@drawable/recent_card_border</item>
             <item name="cardBackgroundColor">@color/color_secondary</item>
         </style>
+
+
+<!--  Semester Screen Styles  -->
+
+        <style name="transparent_app_bar" parent="Widget.MaterialComponents.AppBarLayout.Surface">
+            <item name="colorPrimary">@android:color/transparent</item>
+            <item name="android:homeAsUpIndicator">@drawable/up_button_icon</item>
+        </style>
+
+    <style name="semester_textview" parent="Widget.AppCompat.TextView">
+        <item name="textColor">@color/color_on_background</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="fontWeight">100</item>
+    </style>
+
+
 </resources>

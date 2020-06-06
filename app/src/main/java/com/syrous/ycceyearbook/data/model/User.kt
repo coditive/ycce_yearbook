@@ -1,7 +1,13 @@
 package com.syrous.ycceyearbook.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+
+@Entity(tableName = "user")
 data class User (
-    val id: String,
+    @PrimaryKey val id: String,
     val name: String,
-    val email: String
+    val email: String,
+    val profilePhotoUrl: String
 )

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.syrous.ycceyearbook.databinding.FragmentRecentBinding
+import com.syrous.ycceyearbook.databinding.FragmentSemsterBinding
 
 class FragmentRecent : Fragment() {
 
@@ -14,9 +14,8 @@ class FragmentRecent : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentRecentBinding.inflate(layoutInflater, container, false)
 
-
+        val binding = FragmentSemsterBinding.inflate(layoutInflater, container, false)
 
 
 

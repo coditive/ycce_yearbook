@@ -50,4 +50,9 @@
     <string name="course_name">Course Name \n \ncourse_code \t \t \t \t upload_date</string>
 
 
+
+
+<!--  Semester Screen -->
+    <string name="department_art">department art</string>
+    <string name="sem3">Semester - 3</string>
 </resources>
