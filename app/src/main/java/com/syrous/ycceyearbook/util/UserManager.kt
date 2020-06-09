@@ -6,72 +6,109 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.syrous.ycceyearbook.data.local.UserDao
 import com.syrous.ycceyearbook.data.model.Result
-import kotlinx.coroutines.CoroutineDispatcher
+import com.syrous.ycceyearbook.data.model.Result.Error
+import com.syrous.ycceyearbook.data.model.Result.Success
+import com.syrous.ycceyearbook.data.model.User
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
 
 /**
  * Handles User lifecycle. Manages registrations, logs in and logs out.
  * Knows when the user is logged in.
  */
+@Singleton
 class UserManager @Inject constructor (
     private val storage: UserDao,
-    private val account: GoogleSignInAccount,
-    private val googleSignInClient: GoogleSignInClient,
-    private val auth: FirebaseAuth,
-    private val userComponentFactory: UserComponent.Factory,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val userComponentFactory: UserComponent.Factory
     ) {
-
-    var userDataRepository: UserDataRepository? = null
 
     var userComponent: UserComponent? = null
         private set
 
     fun isUserLoggedIn() = userComponent != null
 
-    fun isUserRegistered() {
-        TODO()
+    suspend fun isUserRegistered(): Result<User> {
+       return getCurrentUser()
     }
 
-    fun getCurrentUser() {
-        TODO()
-    }
-
-    suspend fun loginUser(): Result<String> {
-
-        account.id?.let {
-            firebaseAuthWithGoogle(it)
+    private suspend fun getCurrentUser(): Result<User> {
+        return withContext(Dispatchers.IO){
+            try {
+                val user = storage.getUser()
+                return@withContext Success(user)
+            }catch (e: Exception) {
+                return@withContext Error(e)
+            }
         }
-
-        TODO("Implement login through firebase and google sign in")
     }
 
-    fun logout() {
+    suspend fun loginUser(auth: FirebaseAuth, account: GoogleSignInAccount): Result<User> {
+        firebaseAuthWithGoogle(auth, account.idToken!!)
+
+        return if (auth.currentUser != null) {
+
+                if (account.id != null) {
+
+                    val user = User(
+                        account.id!!,
+                        account.displayName,
+                        account.email,
+                        account.photoUrl.toString()
+                    )
+
+                    withContext(Dispatchers.IO) {
+                        storage.insertUser(user)
+                    }
+
+                    Success(user)
+
+                } else {
+
+                    Timber.e(Exception("Invalid Id Params"))
+
+                    Error(Exception("Invalid Id Params"))
+
+                }
+            } else {
+                Timber.e(Exception("Firebase Error, Account was unable to Login in!!"))
+                Error(Exception("Firebase Error, Account was unable to Login in!!"))
+            }
+    }
+
+    fun logout(auth: FirebaseAuth, googleSignInClient: GoogleSignInClient): Result<Boolean> {
         //Firebase signOut
         auth.signOut()
 
+        var result: Result<Boolean> = Error(Exception("Function not Executed!!"))
+
         //Google SignOut
         googleSignInClient.signOut().addOnCompleteListener {
-            TODO("Inform UI About logout")
+            if (it.isSuccessful) {
+                result = Success(true)
+            }
         }
+
+        return result
     }
 
-    private fun firebaseAuthWithGoogle (id: String) {
+    private fun firebaseAuthWithGoogle (auth: FirebaseAuth, id: String) {
         //Getting Sign In Credential from google sign in api
         val credential = GoogleAuthProvider.getCredential(id, null)
-
-        // Sign User into firebase
-        auth.signInWithCredential(credential)
+//         Sign User into firebase
+         auth.signInWithCredential(credential)
             .addOnCompleteListener {
                 if(it.isSuccessful) {
                     val user = auth.currentUser
-                    TODO("Return User Details to UI")
+                    Timber.d("User name : ${user?.displayName}")
                 } else {
-                    TODO("Return Error details to UI")
+                    Timber.e(it.exception)
                 }
             }
+
     }
 
     private fun userJustLoggedIn() {

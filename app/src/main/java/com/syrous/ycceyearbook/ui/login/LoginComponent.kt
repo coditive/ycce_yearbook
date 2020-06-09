@@ -1,8 +1,6 @@
 package com.syrous.ycceyearbook.ui.login
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.FirebaseAuth
-import dagger.BindsInstance
+import com.syrous.ycceyearbook.util.UserManager
 import dagger.Subcomponent
 
 
@@ -11,8 +9,10 @@ interface LoginComponent {
 
     @Subcomponent.Factory
     interface Factory {
-        fun create(@BindsInstance account: GoogleSignInAccount, @BindsInstance auth: FirebaseAuth): LoginComponent
+        fun create(): LoginComponent
     }
+
+    fun userManager(): UserManager
 
     fun inject(fragmentLogin: FragmentLogin)
 }

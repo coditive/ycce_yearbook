@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "248534790481-6np18feukf07t0h02ik11qhk7pod6sjh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.syrous.ycceyearbook",
+            "certificate_hash": "9e7abd72bc924ef3ebf1c9bc352558b1c94552c2"
+          }
+        },
+        {
           "client_id": "248534790481-jgq3bb0un1fi9nm2repgjvf4ms410aj1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -36,7 +44,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "248534790481-im4678hpqeppsh900cud7sq6a5tjmf57.apps.googleusercontent.com",
+              "client_id": "248534790481-h3sjgnfr4akcunqvm1f1ameat5mpj7io.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

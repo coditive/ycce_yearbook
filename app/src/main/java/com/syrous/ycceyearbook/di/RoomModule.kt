@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 class RoomModule {
-    lateinit var yearBookDatabase: YearBookDatabase
+    private lateinit var yearBookDatabase: YearBookDatabase
 
     @Singleton
     @Provides

@@ -2,13 +2,14 @@ package com.syrous.ycceyearbook.di
 
 import android.content.Context
 import com.syrous.ycceyearbook.ui.login.LoginComponent
+import com.syrous.ycceyearbook.util.UserManager
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 
-@Component(modules = [RoomModule::class, NetworkModule::class, AppSubcomponents::class])
 @Singleton
+@Component(modules = [RoomModule::class, NetworkModule::class, AppSubcomponents::class])
 interface AppComponent {
 
     // Factory to create instances of the AppComponent
@@ -18,6 +19,7 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
-    fun loginComponent(): LoginComponent.Factory
+    fun userManager() : UserManager
 
+    fun loginComponent(): LoginComponent.Factory
 }

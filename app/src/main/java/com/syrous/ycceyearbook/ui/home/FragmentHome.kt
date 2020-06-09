@@ -16,6 +16,8 @@ class FragmentHome : Fragment() {
     ): View? {
         val binding = FragmentHomeBackBinding.inflate(layoutInflater, container, false)
 
+      
+
 
 
 
