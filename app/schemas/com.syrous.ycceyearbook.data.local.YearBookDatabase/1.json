@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1c1d009592a45a664151503931b5ff8d",
+    "identityHash": "7627768b1b1e71e6b4d04c843b16efa7",
     "entities": [
       {
         "tableName": "subjects",
@@ -227,12 +227,67 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "recents",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rowid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT NOT NULL, `type` TEXT NOT NULL, FOREIGN KEY(`id`) REFERENCES `papers`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`id`) REFERENCES `resources`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "rowid",
+            "columnName": "rowid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "rowid"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "papers",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "resources",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1c1d009592a45a664151503931b5ff8d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7627768b1b1e71e6b4d04c843b16efa7')"
     ]
   }
 }

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<androidx.cardview.widget.CardView
+    android:id="@+id/department_card"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:layout_margin="10dp"
-    android:background="@drawable/home_front_border"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:style="@style/ct_cardView">
+    android:layout_width="150dp"
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <TextView
         android:id="@+id/department_name"
@@ -18,9 +16,9 @@
         android:fontFamily="@font/montserrat"
         android:gravity="center_vertical"
         android:letterSpacing="0.2"
-        android:text="@string/ct"
-        android:textColor="@color/ct_border"
+        tools:text="@string/ct"
+        tools:textColor="@color/ct_border"
         android:textStyle="bold" />
 
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

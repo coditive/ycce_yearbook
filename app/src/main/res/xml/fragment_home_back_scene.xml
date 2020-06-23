@@ -15,7 +15,7 @@
             app:layout_constraintHorizontal_bias="1.0" />
     </ConstraintSet>
 
-    <ConstraintSet android:id="@+id/end">
+    <ConstraintSet android:id="@+id/folded_state">
         <Constraint android:id="@id/profile_view"
             app:layout_constraintVertical_bias="0.2"
             android:layout_height="40dp"
@@ -33,8 +33,26 @@
     </ConstraintSet>
 
     <Transition
-        app:constraintSetEnd="@id/end"
+        app:constraintSetEnd="@id/folded_state"
         app:constraintSetStart="@+id/start">
-        <OnSwipe app:touchAnchorId="@id/fragment_home_front_page"/>
+        <OnSwipe app:touchAnchorId="@id/fragment_home_front_page"
+            app:dragDirection="dragDown"/>
     </Transition>
+
+
+    <ConstraintSet android:id="@+id/expanded_state">
+        <Constraint android:id="@id/fragment_home_front_page"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </ConstraintSet>
+
+    <Transition
+        app:constraintSetEnd="@id/expanded_state"
+        app:constraintSetStart="@id/start">
+        <OnSwipe app:touchAnchorId="@id/fragment_home_front_page"
+            app:dragDirection="dragUp"/>
+    </Transition>
+
 </MotionScene>

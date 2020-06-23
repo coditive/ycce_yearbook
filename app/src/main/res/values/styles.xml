@@ -132,11 +132,6 @@
             </style>
 
             <!--   Department's  CardView  Background   -->
-                    <style name="ct_cardView" parent="Widget.MaterialComponents.CardView">
-                        <item name="android:background">@drawable/home_front_border</item>
-                        <item name="cardElevation">400dp</item>
-                        <item name="cardBackgroundColor">@color/ct_back</item>
-                    </style>
 
     <!--  Recent Screen Styles -->
 

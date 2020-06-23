@@ -48,4 +48,5 @@ interface AllDao {
 
     @Query("DELETE FROM resources WHERE department = :department AND sem = :sem AND courseCode = :courseCode")
     suspend fun deleteResources(department: String, sem: Int, courseCode: String)
+
 }

@@ -1,5 +1,6 @@
 package com.syrous.ycceyearbook.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -53,13 +54,6 @@ class FragmentLogin: Fragment() {
 
         auth = FirebaseAuth.getInstance()
 
-
-        // Creates an instance of Registration component by grabbing the factory from the app graph
-        loginComponent = (requireActivity().application as YearBookApplication).appComponent.loginComponent()
-                            .create()
-
-        loginComponent.inject(this)
-
         viewModel.status.observe(viewLifecycleOwner) {
             when (it) {
 
@@ -102,6 +96,17 @@ class FragmentLogin: Fragment() {
         return binding.root
     }
 
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        // Creates an instance of Registration component by grabbing the factory from the app graph
+        loginComponent = (requireActivity().application as YearBookApplication).appComponent.loginComponent()
+            .create()
+
+        loginComponent.inject(this@FragmentLogin)
+
+    }
 
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
