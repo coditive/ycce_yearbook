@@ -54,5 +54,5 @@
         <OnSwipe app:touchAnchorId="@id/fragment_home_front_page"
             app:dragDirection="dragUp"/>
     </Transition>
-
+z
 </MotionScene>

@@ -9,7 +9,7 @@
     <item
         android:id="@+id/recent"
         android:title="@string/menu_recent"
-        android:icon="@drawable/ic_recent_24dp"/>
+        android:icon="@drawable/recent_icon"/>
 
     <item
         android:id="@+id/notices"

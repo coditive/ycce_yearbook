@@ -2,18 +2,19 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_margin="6dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/other_feature_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:text="@string/ycce_website"
-        android:padding="10dp"
+        android:padding="12dp"
         android:textColor="@color/color_on_secondary"
         android:textStyle="bold"
-        android:drawableTop="@drawable/home_icon"
-        android:drawablePadding="10dp"/>
+        android:drawableTop="@drawable/moodle_icon"
+        android:drawablePadding="12dp"/>
 
 </androidx.cardview.widget.CardView>

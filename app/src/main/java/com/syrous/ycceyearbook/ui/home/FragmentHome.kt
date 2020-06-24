@@ -13,12 +13,6 @@ class FragmentHome : Fragment() {
 
     private lateinit var _binding: FragmentHomeBackBinding
 
-    private lateinit var departmentList: List<Department>
-
-    private lateinit var otherFeatureList: List<OtherFeature>
-
-    private val spaceInPixels = 0
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,18 +23,30 @@ class FragmentHome : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-       departmentList = setupDepartmentList()
-        otherFeatureList = setupOtherFeatureList()
-        setupRecyclerViewForDepartment()
+      val departmentList = getDepartmentList()
+        setupRecyclerViewForDepartment(departmentList)
+       val otherFeatureList = getOtherFeatureList()
+        setupRecyclerViewForOtherFeatures(otherFeatureList)
     }
 
-    private fun setupOtherFeatureList(): List<OtherFeature> {
+    private fun setupRecyclerViewForOtherFeatures(otherFeatureList: List<OtherFeature>) {
+        _binding.fragmentHomeFrontPage.otherFeaturesRecycler.apply {
+            adapter = OtherFeaturesAdapter(otherFeatureList)
+            layoutManager = GridLayoutManager(requireContext(), 1, GridLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    private fun getOtherFeatureList(): List<OtherFeature> {
         val otherFeature = mutableListOf<OtherFeature>()
 
-        return otherFeatureList
+        otherFeature.add(OtherFeature("YCCE", R.drawable.home, "www.ycce.edu"))
+        otherFeature.add(OtherFeature("Moodle", R.drawable.moodle_icon, "https://ycce.in/"))
+        otherFeature.add(OtherFeature("Upload Paper", R.drawable.upload_icon, "1231"))
+        otherFeature.add(OtherFeature("Fees Payment", R.drawable.pay_icon, "www.ycce.edu"))
+        return otherFeature
     }
 
-    private fun setupDepartmentList(): List<Department> {
+    private fun getDepartmentList(): List<Department> {
         val department = mutableListOf<Department>()
 
         department.add(Department("CT", R.drawable.ct_art, R.color.ct_back, R.color.ct_border,0))
@@ -55,28 +61,10 @@ class FragmentHome : Fragment() {
         return department
     }
 
-    private fun setupRecyclerViewForDepartment() {
+    private fun setupRecyclerViewForDepartment(departmentList: List<Department>) {
         _binding.fragmentHomeFrontPage.departmentRecycler.apply {
             adapter = DepartmentAdapter(departmentList)
             layoutManager = GridLayoutManager(requireContext(), 2)
-//            addItemDecoration(object : RecyclerView.ItemDecoration() {
-//                override fun getItemOffsets(
-//                    outRect: Rect,
-//                    view: View,
-//                    parent: RecyclerView,
-//                    state: RecyclerView.State
-//                ) {
-//                    outRect.left = spaceInPixels
-//                    outRect.right = spaceInPixels
-//                    outRect.bottom = spaceInPixels
-//                    // Add top margin only for the first item to avoid double space between items
-//                    if (parent.getChildLayoutPosition(view) == 0) {
-//                        outRect.top = spaceInPixels;
-//                    } else {
-//                        outRect.top = 0;
-//                    }
-//                }
-//            })
         }
     }
 }

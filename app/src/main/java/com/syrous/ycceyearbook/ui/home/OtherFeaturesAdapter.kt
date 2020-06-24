@@ -1,26 +1,36 @@
 package com.syrous.ycceyearbook.ui.home
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.syrous.ycceyearbook.databinding.OtherFeaturesCardLayoutBinding
 
-class OtherFeaturesAdapter() :
+class OtherFeaturesAdapter(
+    private val otherFeatures: List<OtherFeature>
+) :
     RecyclerView.Adapter<OtherFeaturesAdapter.OtherFeaturesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OtherFeaturesViewHolder {
-        TODO("Not yet implemented")
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = OtherFeaturesCardLayoutBinding.inflate(inflater, parent, false)
+        return OtherFeaturesViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+       return otherFeatures.size
     }
 
     override fun onBindViewHolder(holder: OtherFeaturesViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.onBind(otherFeatures[position])
     }
 
-    inner class OtherFeaturesViewHolder(itemView: View):
-        RecyclerView.ViewHolder(itemView) {
+    class OtherFeaturesViewHolder(private val binding: OtherFeaturesCardLayoutBinding):
+                RecyclerView.ViewHolder(binding.root) {
 
+        fun onBind(feature: OtherFeature) {
+            binding.otherFeatureItem.text = feature.name
+            binding.otherFeatureItem.setCompoundDrawablesWithIntrinsicBounds(0, feature.drawableId,0,0)
+        }
     }
+
 }
