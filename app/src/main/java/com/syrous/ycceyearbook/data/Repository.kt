@@ -1,20 +1,20 @@
 package com.syrous.ycceyearbook.data
 
 import androidx.lifecycle.LiveData
+import com.syrous.ycceyearbook.data.local.LocalDataSource
 import com.syrous.ycceyearbook.data.model.Paper
 import com.syrous.ycceyearbook.data.model.Resource
 import com.syrous.ycceyearbook.data.model.Result
 import com.syrous.ycceyearbook.data.model.Result.Error
 import com.syrous.ycceyearbook.data.model.Result.Success
 import com.syrous.ycceyearbook.data.model.Subject
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import com.syrous.ycceyearbook.data.remote.RemoteDataSource
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
-class Repository constructor(
-    private val localDataSource: LibraryDataSource,
-    private val remoteDataSource: LibraryDataSource,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class Repository @Inject constructor(
+    private val localDataSource: LocalDataSource,
+    private val remoteDataSource: RemoteDataSource
 ) {
 
     fun observeSubjects (department: String, sem: Int): LiveData<Result<List<Subject>>>{

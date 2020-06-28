@@ -2,7 +2,8 @@ package com.syrous.ycceyearbook.di
 
 import android.content.Context
 import com.syrous.ycceyearbook.ui.login.LoginComponent
-import com.syrous.ycceyearbook.util.UserManager
+import com.syrous.ycceyearbook.ui.semester.FragmentSem
+import com.syrous.ycceyearbook.util.user.UserManager
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -22,4 +23,6 @@ interface AppComponent {
     fun userManager() : UserManager
 
     fun loginComponent(): LoginComponent.Factory
+
+    fun inject(fragmentSem: FragmentSem)
 }

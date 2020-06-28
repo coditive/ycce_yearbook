@@ -12,11 +12,13 @@ import com.syrous.ycceyearbook.data.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class LocalDataSource internal constructor(
-    private val allDao: AllDao,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class LocalDataSource @Inject constructor(
+    private val allDao: AllDao
 ): LibraryDataSource {
+
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
     override fun observeSubjects(department: String, sem: Int): LiveData<Result<List<Subject>>> {
         return allDao.observeSubjects(department, sem).map {

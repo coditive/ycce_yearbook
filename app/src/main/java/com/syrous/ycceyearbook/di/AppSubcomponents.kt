@@ -1,7 +1,7 @@
 package com.syrous.ycceyearbook.di
 
 import com.syrous.ycceyearbook.ui.login.LoginComponent
-import com.syrous.ycceyearbook.util.UserComponent
+import com.syrous.ycceyearbook.util.user.UserComponent
 import dagger.Module
 
 

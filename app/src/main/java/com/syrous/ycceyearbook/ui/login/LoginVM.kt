@@ -8,7 +8,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.syrous.ycceyearbook.data.model.Result.Error
 import com.syrous.ycceyearbook.data.model.Result.Success
-import com.syrous.ycceyearbook.util.UserDataRepository
+import com.syrous.ycceyearbook.util.user.UserDataRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject

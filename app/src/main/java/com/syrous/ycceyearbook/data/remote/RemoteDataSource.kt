@@ -12,11 +12,12 @@ import com.syrous.ycceyearbook.data.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class RemoteDataSource internal constructor(
-    private val remoteApi: RemoteApi,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class RemoteDataSource @Inject constructor(
+    private val remoteApi: RemoteApi
 ): LibraryDataSource {
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
     private val observableSubjects = MutableLiveData<Result<List<Subject>>>()
     private val observablePapers = MutableLiveData<Result<List<Paper>>>()
@@ -39,7 +40,7 @@ class RemoteDataSource internal constructor(
     }
 
     override suspend fun refreshSubjects(department: String, sem: Int) {
-        observableSubjects.value = getSubjects(department, sem)
+        observableSubjects.value = getSubjects(department, sem)!!
     }
 
     override fun observePapers(department: String, sem: Int, courseCode: String, exam: String): LiveData<Result<List<Paper>>> {
@@ -68,7 +69,7 @@ class RemoteDataSource internal constructor(
         courseCode: String,
         exam: String
     ) {
-        observablePapers.value = getPapers(department, sem, courseCode, exam)
+        observablePapers.value = getPapers(department, sem, courseCode, exam)!!
     }
 
     override fun observeResources(department: String, sem: Int, courseCode: String): LiveData<Result<List<Resource>>> {
@@ -87,7 +88,7 @@ class RemoteDataSource internal constructor(
     }
 
     override suspend fun refreshResources(department: String, sem: Int, courseCode: String) {
-        observableResources.value = getResources(department, sem, courseCode)
+        observableResources.value = getResources(department, sem, courseCode)!!
     }
 
     override suspend fun saveSubject(subject: Subject) {

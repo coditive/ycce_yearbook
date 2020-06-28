@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sem_card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:layout_gravity="center_horizontal">
-
     <TextView
         android:id="@+id/sem_card_textview"
         style="@style/semester_textview"
@@ -15,4 +15,4 @@
         tools:text="@string/sem3"
         android:layout_gravity="center"
         android:padding="20dp"/>
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

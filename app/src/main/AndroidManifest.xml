@@ -13,6 +13,9 @@
         <activity android:name=".ui.home.ActivityHome">
         </activity>
 
+        <activity android:name=".ui.semester.ActivitySem"/>
+
+
         <activity android:name=".ui.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

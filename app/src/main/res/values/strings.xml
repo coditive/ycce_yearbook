@@ -26,7 +26,7 @@
     <!--  Department Resources  -->
     <string name="department_title">Departments</string>
         <string name="ct">CT</string>
-
+        <string name="demo_subject">Design Analysis of Algorithms</string>
     <!--  Other Features Resources -->
     <string name="other_features_title">Other Features</string>
         <string name="ycce_website">YCCE</string>

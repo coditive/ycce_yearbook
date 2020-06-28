@@ -9,7 +9,7 @@
         android:id="@+id/fragmentHome"
         android:name="com.syrous.ycceyearbook.ui.home.FragmentHome"
         android:label="FragmentHome"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_home_back">
         <action
             android:id="@+id/action_fragmentHome_to_fragmentRecent2"
             app:destination="@id/fragmentRecent" />

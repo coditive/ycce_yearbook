@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.syrous.ycceyearbook.databinding.OtherFeaturesCardLayoutBinding
 
 class OtherFeaturesAdapter(
-    private val otherFeatures: List<OtherFeature>
+    private val otherFeatures: List<OtherFeature>,
+    private val clickHandler: FragmentHome.OtherFeatureClickHandler
 ) :
     RecyclerView.Adapter<OtherFeaturesAdapter.OtherFeaturesViewHolder>() {
 
@@ -22,6 +23,9 @@ class OtherFeaturesAdapter(
 
     override fun onBindViewHolder(holder: OtherFeaturesViewHolder, position: Int) {
         holder.onBind(otherFeatures[position])
+        holder.itemView.setOnClickListener {
+            clickHandler.clickListener(position)
+        }
     }
 
     class OtherFeaturesViewHolder(private val binding: OtherFeaturesCardLayoutBinding):

@@ -2,11 +2,13 @@ package com.syrous.ycceyearbook.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.syrous.ycceyearbook.databinding.DepartmentCardLayoutBinding
 
 class DepartmentAdapter(
-    private val departmentList: List<Department>
+    private val departmentList: List<Department>,
+    private val clickHandler: FragmentHome.DepartmentClickHandler
 ): RecyclerView.Adapter<DepartmentAdapter.DptViewHolder>() {
 
 
@@ -22,20 +24,21 @@ class DepartmentAdapter(
 
     override fun onBindViewHolder(holder: DptViewHolder, position: Int) {
         holder.bind(departmentList[position])
+        holder.itemView.setOnClickListener {
+            clickHandler.clickListener(position)
+        }
     }
 
     class DptViewHolder ( private val binding: DepartmentCardLayoutBinding):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(department: Department) {
-
             binding.departmentCard.apply {
-                setCardBackgroundColor(resources.getColor(department.backgroundColor))
+                setCardBackgroundColor(ContextCompat.getColor(context, department.backgroundColor))
             }
-
             binding.departmentName.apply {
                 text = department.name
-                setTextColor(resources.getColor(department.textColor))
-                setCompoundDrawablesWithIntrinsicBounds(department.drawableId,0,0,0)
+                setTextColor(ContextCompat.getColor(context, department.textColor))
+                setCompoundDrawablesWithIntrinsicBounds(department.smallDrawableId,0,0,0)
             }
 
         }
