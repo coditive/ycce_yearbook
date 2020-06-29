@@ -1,9 +1,9 @@
 package com.syrous.ycceyearbook.di
 
-import android.content.Context
+import android.app.Application
 import com.syrous.ycceyearbook.ui.login.LoginComponent
+import com.syrous.ycceyearbook.ui.pdf_screen.PdfComponent
 import com.syrous.ycceyearbook.ui.semester.FragmentSem
-import com.syrous.ycceyearbook.util.user.UserManager
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -17,12 +17,13 @@ interface AppComponent {
     @Component.Factory
     interface Factory {
         // With @BindsInstance, the Context passed in will be available in the graph
-        fun create(@BindsInstance context: Context): AppComponent
+        fun create(@BindsInstance context: Application): AppComponent
     }
-
-    fun userManager() : UserManager
 
     fun loginComponent(): LoginComponent.Factory
 
+    fun pdfComponent(): PdfComponent.Factory
+
     fun inject(fragmentSem: FragmentSem)
+
 }

@@ -46,4 +46,11 @@
 <!--  Semester Screen -->
     <string name="department_art">department art</string>
     <string name="sem3">Semester - 3</string>
+
+<!--  Pdf Renderer Screen  -->
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+
+
+
 </resources>

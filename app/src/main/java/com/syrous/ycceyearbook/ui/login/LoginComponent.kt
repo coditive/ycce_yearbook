@@ -1,6 +1,5 @@
 package com.syrous.ycceyearbook.ui.login
 
-import com.syrous.ycceyearbook.util.user.UserManager
 import dagger.Subcomponent
 
 
@@ -11,8 +10,6 @@ interface LoginComponent {
     interface Factory {
         fun create(): LoginComponent
     }
-
-    fun userManager(): UserManager
 
     fun inject(fragmentLogin: FragmentLogin)
 }

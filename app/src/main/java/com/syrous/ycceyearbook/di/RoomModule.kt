@@ -1,6 +1,6 @@
 package com.syrous.ycceyearbook.di
 
-import android.content.Context
+import android.app.Application
 import androidx.room.Room
 import com.syrous.ycceyearbook.data.local.AllDao
 import com.syrous.ycceyearbook.data.local.UserDao
@@ -17,7 +17,7 @@ class RoomModule {
 
     @Singleton
     @Provides
-    fun provideYearBookDb(context: Context): YearBookDatabase{
+    fun provideYearBookDb(context: Application): YearBookDatabase{
         yearBookDatabase = Room.databaseBuilder(
                             context,
                             YearBookDatabase::class.java,
