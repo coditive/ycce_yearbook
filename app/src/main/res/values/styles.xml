@@ -33,7 +33,8 @@
         <item name="materialCardViewStyle">@style/AppCard</item>
         <!-- Bottom Navigation widget style attribute -->
         <item name="bottomNavigationStyle">@style/AppBottomNavigation</item>
-        
+        <!-- Activity Transition -->
+        <item name="android:windowActivityTransitions">true</item>
         <!-- Transparent Status and Toolbar  -->
 <!--        <item name="android:windowTranslucentStatus">true</item>-->
 <!--        <item name="windowActionModeOverlay">true</item>-->

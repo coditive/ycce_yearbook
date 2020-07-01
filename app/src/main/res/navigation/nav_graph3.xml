@@ -15,15 +15,6 @@
             app:argType=".ui.home.Department"
             android:defaultValue="@null"
             app:nullable="true"/>
-        <action
-            android:id="@+id/action_fragmentSem_to_fragmentPdfRenderer"
-            app:destination="@id/fragmentPdfRenderer" />
     </fragment>
-
-    <fragment
-        android:id="@+id/fragmentPdfRenderer"
-        android:name="com.syrous.ycceyearbook.ui.pdf_screen.FragmentPdfRenderer"
-        android:label="FragmentPdfRenderer"
-        tools:layout="@layout/pdf_renderer_basic_fragment"/>
 
 </navigation>

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.syrous.ycceyearbook.data.model.Subject
 import com.syrous.ycceyearbook.databinding.SemesterCardLayoutBinding
+import com.syrous.ycceyearbook.databinding.SubjectCardLayoutBinding
 import timber.log.Timber
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
@@ -13,7 +14,6 @@ import kotlin.reflect.KProperty
 class SemAdapter(private val semester: Semester,
 private val clickHandler: FragmentSem.ClickHandler):
     RecyclerView.Adapter<SemAdapter.SubjectHolder>() {
-
 
     private var isExpanded: Boolean by Delegates.observable(false) {_: KProperty<*>, _:Boolean, newExpandedValue: Boolean ->
         if(newExpandedValue) {
@@ -40,7 +40,7 @@ private val clickHandler: FragmentSem.ClickHandler):
         val inflater = LayoutInflater.from(parent.context)
         return when(viewType) {
            0 -> SubjectHolder.SemesterHeaderVH(SemesterCardLayoutBinding.inflate(inflater, parent, false))
-           else -> SubjectHolder.SubjectInsideVH(SemesterCardLayoutBinding.inflate(inflater, parent, false))
+           else -> SubjectHolder.SubjectInsideVH(SubjectCardLayoutBinding.inflate(inflater, parent, false))
        }
     }
 
@@ -71,12 +71,15 @@ private val clickHandler: FragmentSem.ClickHandler):
             }
 
         }
-        class SubjectInsideVH(private val binding: SemesterCardLayoutBinding)
+        class SubjectInsideVH(private val binding: SubjectCardLayoutBinding)
             : SubjectHolder(binding.root) {
 
             fun bind (subject: Subject, clickHandler: FragmentSem.ClickHandler) {
                 binding.apply {
                     semCardTextview.text = subject.course
+                }
+                binding.subjectCardView.setOnClickListener {
+                    clickHandler.clickListener(subject)
                 }
             }
 

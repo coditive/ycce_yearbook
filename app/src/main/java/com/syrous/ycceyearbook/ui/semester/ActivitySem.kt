@@ -15,6 +15,8 @@ class ActivitySem : AppCompatActivity(R.layout.activity_sem) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        postponeEnterTransition()
+
         navController = findNavController(R.id.sem_nav_host)
 
         val department = intent.getSerializableExtra(DEPARTMENT_OBJECT)
@@ -22,5 +24,7 @@ class ActivitySem : AppCompatActivity(R.layout.activity_sem) {
         val args = bundleOf(DEPARTMENT_OBJECT to department)
 
         navController.setGraph(R.navigation.nav_graph3, args)
+
+
     }
 }

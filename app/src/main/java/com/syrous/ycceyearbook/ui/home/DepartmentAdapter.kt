@@ -25,7 +25,7 @@ class DepartmentAdapter(
     override fun onBindViewHolder(holder: DptViewHolder, position: Int) {
         holder.bind(departmentList[position])
         holder.itemView.setOnClickListener {
-            clickHandler.clickListener(position)
+            clickHandler.clickListener(position, it)
         }
     }
 

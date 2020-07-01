@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.MergeAdapter
+import com.google.android.material.transition.MaterialContainerTransform
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.data.model.Subject
 import com.syrous.ycceyearbook.databinding.FragmentSemesterBinding
@@ -27,12 +28,24 @@ class FragmentSem : Fragment() {
 
     private val semesterList = mutableListOf<Semester>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSemesterBinding.inflate(layoutInflater, container, false)
+
+        val sharedView = _binding.departmentNameText
+
+        sharedView.viewTreeObserver.addOnPreDrawListener{
+            requireActivity().startPostponedEnterTransition()
+            return@addOnPreDrawListener true
+        }
 
         viewModel.apply {
 //            loadAllSubjects(true, "ct")
@@ -43,7 +56,7 @@ class FragmentSem : Fragment() {
         return _binding.root
     }
 
-    fun getSemesterList() {
+    private fun getSemesterList() {
         viewModel.apply {
             for(i in 3..8) {
                 val subjectList = getSubjectList("ct", i)
@@ -93,9 +106,8 @@ class FragmentSem : Fragment() {
     private fun setupThemeOfScreen() {
         val department = arguments?.get(DEPARTMENT_OBJECT) as Department
         _binding.semToolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), department.backgroundColor))
-        _binding.appBar.setBackgroundColor(ContextCompat.getColor(requireContext(), department.backgroundColor))
         _binding.departmentNameText.setBackgroundColor(ContextCompat.getColor(requireContext(), department.backgroundColor))
-        _binding.semImageview.setImageDrawable(ContextCompat.getDrawable(requireContext(), department.largeDrawableId))
+        _binding.departmentNameText.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(requireContext(), department.largeDrawableId),null,null)
     }
 
     inner class ClickHandler {

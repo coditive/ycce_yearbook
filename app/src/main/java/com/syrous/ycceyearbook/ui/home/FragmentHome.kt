@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
+import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.syrous.ycceyearbook.R
@@ -77,7 +79,7 @@ class FragmentHome : Fragment() {
     }
 
     inner class DepartmentClickHandler {
-        fun clickListener(index: Int) {
+        fun clickListener(index: Int, view: View) {
 
             val intent = Intent(requireActivity(), ActivitySem::class.java)
 
@@ -85,7 +87,9 @@ class FragmentHome : Fragment() {
                 0 -> {
                     Toast.makeText(requireContext(), "CT Selected", Toast.LENGTH_SHORT).show()
                     intent.putExtra(DEPARTMENT_OBJECT, departmentList[index])
-                    startActivity(intent)
+                    val viewPair = Pair.create(view, "shared_element")
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), viewPair)
+                    startActivity(intent, options.toBundle())
                 }
             }
         }

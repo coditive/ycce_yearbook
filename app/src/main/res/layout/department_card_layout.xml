@@ -10,6 +10,7 @@
         android:id="@+id/department_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:transitionName="shared_element"
         android:layout_margin="16dp"
         android:drawableStart="@drawable/ct_art"
         android:drawablePadding="16dp"
