@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.MergeAdapter
 import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialFadeThrough
+import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.data.model.Subject
 import com.syrous.ycceyearbook.databinding.FragmentSemesterBinding
@@ -38,6 +40,7 @@ class FragmentSem : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        enteringTransitionForFragment()
         _binding = FragmentSemesterBinding.inflate(layoutInflater, container, false)
 
         val sharedView = _binding.departmentNameText
@@ -54,6 +57,14 @@ class FragmentSem : Fragment() {
         }
 
         return _binding.root
+    }
+
+    private fun enteringTransitionForFragment() {
+
+        enterTransition = MaterialFadeThrough().apply {
+            addTarget(R.id.sem_recycler)
+    }
+
     }
 
     private fun getSemesterList() {

@@ -87,8 +87,9 @@ class FragmentHome : Fragment() {
                 0 -> {
                     Toast.makeText(requireContext(), "CT Selected", Toast.LENGTH_SHORT).show()
                     intent.putExtra(DEPARTMENT_OBJECT, departmentList[index])
-                    val viewPair = Pair.create(view, "shared_element")
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), viewPair)
+                    val cardViewPair = Pair.create(view, "shared_element")
+                    val textViewPair = Pair.create(view.findViewById(R.id.department_name) as View, "shared_textview")
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), cardViewPair, textViewPair)
                     startActivity(intent, options.toBundle())
                 }
             }

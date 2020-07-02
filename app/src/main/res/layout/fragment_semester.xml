@@ -18,18 +18,25 @@
                 android:elevation="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"/>
-        <TextView
-            android:id="@+id/department_name_text"
-            android:elevation="0dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/department_card"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textSize="20sp"
-            android:transitionName="shared_element"
-            tools:drawableTop="@drawable/ct_art_large"
-            tools:text="@string/department_title"
-            android:textAlignment="center"
-            android:textStyle="bold"/>
+            android:transitionName="shared_element">
+            <TextView
+                android:id="@+id/department_name_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:transitionName="shared_textview"
+                android:drawableTop="@drawable/ct_art_large"
+                android:drawablePadding="16dp"
+                android:textSize="20sp"
+                android:fontFamily="@font/montserrat"
+                tools:text="@string/department_title"
+                tools:textColor="@color/ct_border"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -37,6 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layoutAnimation="@anim/recycler_layout_anim"
         tools:listitem="@layout/semester_card_layout"
         tools:itemCount="6"/>
 

@@ -4,13 +4,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:transitionName="shared_element"
     xmlns:tools="http://schemas.android.com/tools" >
 
     <TextView
         android:id="@+id/department_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:transitionName="shared_element"
+        android:transitionName="shared_textview"
         android:layout_margin="16dp"
         android:drawableStart="@drawable/ct_art"
         android:drawablePadding="16dp"
