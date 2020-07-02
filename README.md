@@ -37,7 +37,7 @@ This project is under Development
 - [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
 
 ## Architecture
-Pokedex is based on MVVM architecture and a repository pattern.
+YearBook is based on MVVM architecture and a repository pattern.
 
 ![architecture](https://user-images.githubusercontent.com/24237865/77502018-f7d36000-6e9c-11ea-92b0-1097240c8689.png)
 
@@ -47,6 +47,14 @@ Backend of this project is build using Firebase (Firestore, Firebase Cloud Messa
 
 YearBook using the for constructing RESTful API.<br>
 Custom Function provides a RESTful API interface to highly detailed objects built from thousands of lines of data related to Papers and Resources.
+
+
+## TeamDADA
+
+Designers: [Anupam Surkar](https://github.com/anupamsurkar), [Dipesh Bhagat](https://github.com/dipeshb1), [Anshil Bhongade](https://github.com/Anshil-code)
+
+Developer: [Devanshu Vaidya](https://github.com/coditive)
+
 
 # License
 ```xml
