@@ -1,10 +1,12 @@
 package com.syrous.ycceyearbook.di
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.syrous.ycceyearbook.data.local.AllDao
-import com.syrous.ycceyearbook.data.local.UserDao
 import com.syrous.ycceyearbook.data.local.YearBookDatabase
+import com.syrous.ycceyearbook.util.USER_SP_KEY
 import com.syrous.ycceyearbook.util.YEARBOOK_DB_NAME
 import dagger.Module
 import dagger.Provides
@@ -30,7 +32,10 @@ class RoomModule {
     @Provides
     fun provideAllDao(db: YearBookDatabase): AllDao = db.allDao()
 
+
     @Provides
-    fun provideUserDao(db: YearBookDatabase): UserDao = db.userDao()
+    fun provideSharedPreferences(context: Application): SharedPreferences {
+        return context.getSharedPreferences(USER_SP_KEY, Context.MODE_PRIVATE)
+    }
 
 }

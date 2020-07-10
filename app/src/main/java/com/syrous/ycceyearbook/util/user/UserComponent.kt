@@ -5,7 +5,7 @@ import com.syrous.ycceyearbook.ui.notices.FragmentNotices
 import com.syrous.ycceyearbook.ui.recent.FragmentRecent
 import dagger.Subcomponent
 
-
+@LoggedUserScope
 @Subcomponent
 interface UserComponent {
 

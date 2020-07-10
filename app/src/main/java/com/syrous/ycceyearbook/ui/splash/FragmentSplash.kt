@@ -1,5 +1,6 @@
 package com.syrous.ycceyearbook.ui.splash
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,11 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentSplashBinding
 import com.syrous.ycceyearbook.ui.home.ActivityHome
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
 class FragmentSplash: Fragment() {
+
+    @Inject
+    lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,12 +28,14 @@ class FragmentSplash: Fragment() {
     ): View? = FragmentSplashBinding.inflate(layoutInflater, container, false).root
 
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as YearBookApplication).appComponent.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenCreated {
             delay(2500)
-
-            val auth = FirebaseAuth.getInstance()
-
             if(auth.currentUser == null) {
                 findNavController().navigate(FragmentSplashDirections.actionFragmentSplashToFragmentLogin())
             } else {

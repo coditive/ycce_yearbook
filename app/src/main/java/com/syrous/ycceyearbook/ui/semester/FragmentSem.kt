@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.MergeAdapter
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
 import com.syrous.ycceyearbook.R
@@ -91,27 +91,20 @@ class FragmentSem : Fragment() {
         Timber.d("Semester List : $semesterList")
     }
 
-    private fun setupSemRecyclerView(mergeAdapter: MergeAdapter) {
+    private fun setupSemRecyclerView(mergeAdapter: ConcatAdapter) {
         _binding.semRecycler.apply {
             adapter = mergeAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
-    private fun setupAdapter(): MergeAdapter {
+    private fun setupAdapter(): ConcatAdapter {
         val adapterList = mutableListOf<SemAdapter>()
-
         semesterList.forEach {
             adapterList.add(SemAdapter(it, ClickHandler()))
         }
-
         Timber.d("Semester List : ${semesterList.size} and Adapter List : ${adapterList.size}")
-
-        val mergeAdapterConfig = MergeAdapter.Config.Builder()
-            .setIsolateViewTypes(false)
-            .build()
-
-        return MergeAdapter(adapterList.toList())
+        return ConcatAdapter(adapterList.toList())
     }
 
     private fun setupThemeOfScreen() {

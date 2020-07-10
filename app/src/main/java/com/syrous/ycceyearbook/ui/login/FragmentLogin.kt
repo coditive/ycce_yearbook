@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.syrous.ycceyearbook.R
@@ -42,17 +41,6 @@ class FragmentLogin: Fragment() {
     ): View? {
 
         val binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestId()
-            .requestIdToken(resources.getString(R.string.web_server_id))
-            .requestEmail()
-            .requestProfile()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-
-        auth = FirebaseAuth.getInstance()
 
         viewModel.status.observe(viewLifecycleOwner) {
             when (it) {
@@ -85,6 +73,9 @@ class FragmentLogin: Fragment() {
             }
         }
 
+        viewModel.loading.observe(viewLifecycleOwner) {
+         TODO("added loading indicator")
+        }
 
         binding.buttonSignIn.apply {
             (this.getChildAt(0) as TextView).text = resources.getText(R.string.sign_in_button)
@@ -124,10 +115,11 @@ class FragmentLogin: Fragment() {
                 val account = task.getResult(ApiException::class.java)
                 Timber.d("account details : ${account?.displayName}")
                 account?.let {
-                    viewModel.loginInUser(auth, it)
+                    viewModel.loginUser(account)
                 }
 
             } catch (e: ApiException) {
+                TODO("Display error that account not found!!")
             }
         }
 

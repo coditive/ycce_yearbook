@@ -10,6 +10,5 @@ import com.syrous.ycceyearbook.data.model.*
     exportSchema = true)
 abstract class YearBookDatabase: RoomDatabase(){
     abstract fun allDao(): AllDao
-    abstract fun userDao(): UserDao
     abstract fun recentDao(): RecentDao
 }

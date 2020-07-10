@@ -4,13 +4,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.syrous.ycceyearbook.data.local.UserDao
 import com.syrous.ycceyearbook.data.model.Result
 import com.syrous.ycceyearbook.data.model.Result.Error
 import com.syrous.ycceyearbook.data.model.Result.Success
 import com.syrous.ycceyearbook.data.model.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,9 +19,10 @@ import javax.inject.Singleton
  */
 @Singleton
 class UserManager @Inject constructor (
-    private val storage: UserDao,
-    private val userComponentFactory: UserComponent.Factory
-    ) {
+     private val googleSignInClient: GoogleSignInClient,
+     private val auth: FirebaseAuth,
+     private val userComponentFactory: UserComponent.Factory
+) {
 
     var userComponent: UserComponent? = null
         private set
@@ -36,19 +34,11 @@ class UserManager @Inject constructor (
     }
 
     private suspend fun getCurrentUser(): Result<User> {
-        return withContext(Dispatchers.IO){
-            try {
-                val user = storage.getUser()
-                return@withContext Success(user)
-            }catch (e: Exception) {
-                return@withContext Error(e)
-            }
-        }
+        TODO()
     }
 
-    suspend fun loginUser(auth: FirebaseAuth, account: GoogleSignInAccount): Result<User> {
-        firebaseAuthWithGoogle(auth, account.idToken!!)
-
+    suspend fun loginUser(account: GoogleSignInAccount): Result<User> {
+        firebaseAuthWithGoogle(account.idToken!!)
         return if (auth.currentUser != null) {
 
                 if (account.id != null) {
@@ -60,12 +50,9 @@ class UserManager @Inject constructor (
                         account.photoUrl.toString()
                     )
 
-                    withContext(Dispatchers.IO) {
-                        storage.insertUser(user)
-                    }
-
+                    userJustLoggedIn()
+              TODO("Save User Profile")
                     Success(user)
-
                 } else {
 
                     Timber.e(Exception("Invalid Id Params"))
@@ -79,7 +66,7 @@ class UserManager @Inject constructor (
             }
     }
 
-    fun logout(auth: FirebaseAuth, googleSignInClient: GoogleSignInClient): Result<Boolean> {
+    fun logout(): Result<Boolean> {
         //Firebase signOut
         auth.signOut()
 
@@ -95,7 +82,7 @@ class UserManager @Inject constructor (
         return result
     }
 
-    private fun firebaseAuthWithGoogle (auth: FirebaseAuth, id: String) {
+    private fun firebaseAuthWithGoogle (id: String) {
         //Getting Sign In Credential from google sign in api
         val credential = GoogleAuthProvider.getCredential(id, null)
 //         Sign User into firebase
