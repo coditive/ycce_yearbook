@@ -3,6 +3,9 @@ package com.syrous.ycceyearbook.di
 import android.app.Application
 import com.syrous.ycceyearbook.data.local.UserProfile
 import com.syrous.ycceyearbook.ui.login.LoginComponent
+import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentEse
+import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentMse
+import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentResource
 import com.syrous.ycceyearbook.ui.pdf_screen.PdfComponent
 import com.syrous.ycceyearbook.ui.semester.FragmentSem
 import com.syrous.ycceyearbook.ui.splash.FragmentSplash
@@ -34,5 +37,11 @@ interface AppComponent {
     fun inject(fragmentSplash: FragmentSplash)
 
     fun inject(fragmentSem: FragmentSem)
+
+    fun inject(fragmentEse: FragmentEse)
+
+    fun inject(fragmentMse: FragmentMse)
+
+    fun inject(fragmentResource: FragmentResource)
 
 }
