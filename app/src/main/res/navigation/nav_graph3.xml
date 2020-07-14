@@ -15,6 +15,14 @@
             app:argType=".ui.home.Department"
             android:defaultValue="@null"
             app:nullable="true"/>
+        <action
+            android:id="@+id/action_fragmentSem_to_fragmentPaperAndResource"
+            app:destination="@id/fragmentPaperAndResource" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentPaperAndResource"
+        android:name="com.syrous.ycceyearbook.ui.papers_and_resources.FragmentPaperAndResource"
+        android:label="FragmentPaperAndResource"
+        tools:layout="@layout/fragment_paper_and_resources"/>
 
 </navigation>

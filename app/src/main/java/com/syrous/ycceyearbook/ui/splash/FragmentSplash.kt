@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
 import com.syrous.ycceyearbook.YearBookApplication
+import com.syrous.ycceyearbook.data.UserSharedPrefStorage
 import com.syrous.ycceyearbook.databinding.FragmentSplashBinding
 import com.syrous.ycceyearbook.ui.home.ActivityHome
 import kotlinx.coroutines.delay
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class FragmentSplash: Fragment() {
 
     @Inject
-    lateinit var auth: FirebaseAuth
+    lateinit var storage: UserSharedPrefStorage
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,10 +36,10 @@ class FragmentSplash: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenCreated {
             delay(2500)
-            if(auth.currentUser == null) {
-                findNavController().navigate(FragmentSplashDirections.actionFragmentSplashToFragmentLogin())
+            if(storage.isUserLoggedIn()) {
+                startActivity(Intent(requireActivity(), ActivityHome::class.java))
             } else {
-             startActivity(Intent(requireActivity(), ActivityHome::class.java))
+                findNavController().navigate(FragmentSplashDirections.actionFragmentSplashToFragmentLogin())
             }
         }
     }

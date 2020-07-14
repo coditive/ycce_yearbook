@@ -4,6 +4,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.syrous.ycceyearbook.data.UserSharedPrefStorage
 import com.syrous.ycceyearbook.data.model.Result
 import com.syrous.ycceyearbook.data.model.Result.Error
 import com.syrous.ycceyearbook.data.model.Result.Success
@@ -21,44 +22,38 @@ import javax.inject.Singleton
 class UserManager @Inject constructor (
      private val googleSignInClient: GoogleSignInClient,
      private val auth: FirebaseAuth,
-     private val userComponentFactory: UserComponent.Factory
+     private val userComponentFactory: UserComponent.Factory,
+     private val storage: UserSharedPrefStorage
 ) {
-
     var userComponent: UserComponent? = null
         private set
 
     fun isUserLoggedIn() = userComponent != null
 
-    suspend fun isUserRegistered(): Result<User> {
+    fun isUserRegistered(): Result<User> {
        return getCurrentUser()
     }
 
-    private suspend fun getCurrentUser(): Result<User> {
-        TODO()
+    private fun getCurrentUser(): Result<User> {
+        return Success(storage.getLoggedInUser())
     }
 
-    suspend fun loginUser(account: GoogleSignInAccount): Result<User> {
+    fun loginUser(account: GoogleSignInAccount): Result<User> {
         firebaseAuthWithGoogle(account.idToken!!)
         return if (auth.currentUser != null) {
-
                 if (account.id != null) {
-
                     val user = User(
                         account.id!!,
                         account.displayName,
                         account.email,
                         account.photoUrl.toString()
                     )
-
                     userJustLoggedIn()
-              TODO("Save User Profile")
+                    storage.saveAccount(user)
                     Success(user)
                 } else {
-
                     Timber.e(Exception("Invalid Id Params"))
-
                     Error(Exception("Invalid Id Params"))
-
                 }
             } else {
                 Timber.e(Exception("Firebase Error, Account was unable to Login in!!"))

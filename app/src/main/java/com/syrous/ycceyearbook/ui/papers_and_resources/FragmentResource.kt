@@ -34,7 +34,7 @@ class FragmentResource : Fragment() {
 
         viewModel.observeResource("ct", 3, "CT1234").observe(viewLifecycleOwner) {
             if(it.isEmpty()) {
-                viewModel.loadResource(true)
+                viewModel.loadResource( true)
             }
         }
     }

@@ -57,7 +57,6 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
         }
 
 
-
     fun observeEsePaper(department: String, sem: Int, courseCode: String)
             : LiveData<List<Paper>> = _forceUpdateEse.switchMap { forceUpdate ->
         if(forceUpdate) {

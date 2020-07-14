@@ -28,9 +28,11 @@ class FragmentLogin: Fragment() {
 
     private lateinit var loginComponent: LoginComponent
 
-    private lateinit var googleSignInClient: GoogleSignInClient
+    @Inject
+    lateinit var googleSignInClient: GoogleSignInClient
 
-    private lateinit var auth: FirebaseAuth
+    @Inject
+    lateinit var auth: FirebaseAuth
 
     private val RC_SIGN_IN = 9001
 
@@ -44,7 +46,6 @@ class FragmentLogin: Fragment() {
 
         viewModel.status.observe(viewLifecycleOwner) {
             when (it) {
-
                 LoginState.NOT_LOGGED_IN -> {
                     Toast.makeText(
                         requireContext(),
@@ -52,7 +53,6 @@ class FragmentLogin: Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
                 LoginState.LOGGED_IN -> {
                     Toast.makeText(
                         requireContext(),
@@ -62,11 +62,10 @@ class FragmentLogin: Fragment() {
 
                     startActivity(Intent(requireActivity(), ActivityHome::class.java))
                 }
-
                 LoginState.LOGIN_ERROR -> {
                     Toast.makeText(
                         requireContext(),
-                        "Log In Error",
+                        "Please Login ",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -74,7 +73,10 @@ class FragmentLogin: Fragment() {
         }
 
         viewModel.loading.observe(viewLifecycleOwner) {
-         TODO("added loading indicator")
+            when(it) {
+                true -> binding.loginProgress.visibility = View.VISIBLE
+                false -> binding.loginProgress.visibility = View.GONE
+            }
         }
 
         binding.buttonSignIn.apply {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.MaterialContainerTransform
@@ -60,7 +61,6 @@ class FragmentSem : Fragment() {
     }
 
     private fun enteringTransitionForFragment() {
-
         enterTransition = MaterialFadeThrough().apply {
             addTarget(R.id.sem_recycler)
     }
@@ -71,6 +71,7 @@ class FragmentSem : Fragment() {
         viewModel.apply {
             for(i in 3..8) {
                 val subjectList = getSubjectList("ct", i)
+                Timber.d("Subject Lists : $subjectList")
                 val semester = Semester("Semester $i", subjectList)
                 semesterList.add(semester)
             }
@@ -117,6 +118,7 @@ class FragmentSem : Fragment() {
     inner class ClickHandler {
         fun clickListener (subject: Subject) {
             Toast.makeText(requireContext(), "${subject.course} is selected !!!!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(FragmentSemDirections.actionFragmentSemToFragmentPaperAndResource())
         }
     }
 
