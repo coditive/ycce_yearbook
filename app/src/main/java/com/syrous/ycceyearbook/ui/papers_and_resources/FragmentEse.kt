@@ -36,7 +36,7 @@ class FragmentEse : Fragment() {
 
         viewModel.observeEsePaper("ct", 3, "CT1234").observe(viewLifecycleOwner) {
             if(it.isEmpty()) {
-                viewModel.loadEsePaper(true)
+                viewModel.reloadEsePaperFromRemote(true)
             }
         }
     }

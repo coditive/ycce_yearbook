@@ -30,15 +30,15 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
     val errorMessage : LiveData<String> = _errorMessage
 
 
-    fun loadEsePaper(forceUpdate: Boolean) {
+    fun reloadEsePaperFromRemote(forceUpdate: Boolean) {
         _forceUpdateEse.value = forceUpdate
     }
 
-    fun loadMsePaper(forceUpdate: Boolean) {
+    fun reloadMsePaperFromRemote(forceUpdate: Boolean) {
         _forceUpdateMse.value = forceUpdate
     }
 
-    fun loadResource(forceUpdate: Boolean) {
+    fun reloadResourceFromRemote(forceUpdate: Boolean) {
         _forceUpdateResource.value = forceUpdate
     }
 
@@ -93,7 +93,7 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
             result = paperResult.data
         } else if(paperResult is Error) {
             _isDataLoadingError.value = true
-            _errorMessage.value = "Failed to Retrieve Papers"
+            _errorMessage.value = "Failed to Retrieve Papers -> ${paperResult.exception}"
         }
         return result
     }
@@ -105,7 +105,7 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
             result = resourceResult.data
         } else if(resourceResult is Error) {
             _isDataLoadingError.value = true
-            _errorMessage.value = "Failed to Retrieve Resources"
+            _errorMessage.value = "Failed to Retrieve Resources ->  ${resourceResult.exception}"
         }
         return result
     }

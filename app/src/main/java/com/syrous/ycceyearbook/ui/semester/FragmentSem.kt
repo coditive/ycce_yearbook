@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,7 +30,7 @@ class FragmentSem : Fragment() {
 
     private lateinit var _binding: FragmentSemesterBinding
 
-    private val semesterList = mutableListOf<Semester>()
+    private val semesterList = mutableListOf<List<Semester>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,11 +52,36 @@ class FragmentSem : Fragment() {
             return@addOnPreDrawListener true
         }
 
-        viewModel.apply {
-//            loadAllSubjects(true, "ct")
+        viewModel.reloadSubjectFromRemote(true)
 
-            getSemesterList()
+        viewModel.apply {
+
+            observeSubjectFromLocalStorage("ct", 3).observe(viewLifecycleOwner) {
+                Timber.d("Semester 3 : $it")
+            }
+
+            observeSubjectFromLocalStorage("ct", 4).observe(viewLifecycleOwner) {
+                Timber.d("Semester 4 : $it")
+            }
+
+            observeSubjectFromLocalStorage("ct", 5).observe(viewLifecycleOwner) {
+                Timber.d("Semester 5 : $it")
+            }
+
+            observeSubjectFromLocalStorage("ct", 6).observe(viewLifecycleOwner) {
+                Timber.d("Semester 6 : $it")
+            }
+
+            observeSubjectFromLocalStorage("ct", 7).observe(viewLifecycleOwner) {
+                Timber.d("Semester 7 : $it")
+            }
+
+            observeSubjectFromLocalStorage("ct", 8).observe(viewLifecycleOwner) {
+                Timber.d("Semester 8 : $it")
+            }
+
         }
+
 
         return _binding.root
     }
@@ -63,25 +89,15 @@ class FragmentSem : Fragment() {
     private fun enteringTransitionForFragment() {
         enterTransition = MaterialFadeThrough().apply {
             addTarget(R.id.sem_recycler)
-    }
-
-    }
-
-    private fun getSemesterList() {
-        viewModel.apply {
-            for(i in 3..8) {
-                val subjectList = getSubjectList("ct", i)
-                Timber.d("Subject Lists : $subjectList")
-                val semester = Semester("Semester $i", subjectList)
-                semesterList.add(semester)
-            }
         }
     }
+
 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as YearBookApplication).appComponent.inject(this@FragmentSem)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -101,9 +117,6 @@ class FragmentSem : Fragment() {
 
     private fun setupAdapter(): ConcatAdapter {
         val adapterList = mutableListOf<SemAdapter>()
-        semesterList.forEach {
-            adapterList.add(SemAdapter(it, ClickHandler()))
-        }
         Timber.d("Semester List : ${semesterList.size} and Adapter List : ${adapterList.size}")
         return ConcatAdapter(adapterList.toList())
     }

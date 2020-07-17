@@ -34,7 +34,7 @@ class FragmentMse : Fragment() {
         (requireActivity().application as YearBookApplication).appComponent.inject(this)
         viewModel.observeMsePaper("ct", 3, "CT1234").observe(viewLifecycleOwner) {
             if(it.isEmpty()) {
-                viewModel.loadMsePaper(true)
+                viewModel.reloadMsePaperFromRemote(true)
             }
         }
     }
