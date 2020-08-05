@@ -121,7 +121,7 @@ class FragmentLogin: Fragment() {
                 }
 
             } catch (e: ApiException) {
-                TODO("Display error that account not found!!")
+                Timber.e("google sign in error : ${e.message}")
             }
         }
 

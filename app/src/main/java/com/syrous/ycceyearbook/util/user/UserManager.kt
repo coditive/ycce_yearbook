@@ -30,11 +30,7 @@ class UserManager @Inject constructor (
 
     fun isUserLoggedIn() = userComponent != null
 
-    fun isUserRegistered(): Result<User> {
-       return getCurrentUser()
-    }
-
-    private fun getCurrentUser(): Result<User> {
+    fun getCurrentUser(): Result<User> {
         return Success(storage.getLoggedInUser())
     }
 

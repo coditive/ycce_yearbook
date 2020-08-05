@@ -20,8 +20,6 @@ class UserSharedPrefStorage @Inject constructor(context: Application) {
         }
     }
 
-    fun isUserLoggedIn(): Boolean = !sharedPreferences.getString(USER_ID, null).isNullOrBlank()
-
     fun getLoggedInUser(): User =
         with(sharedPreferences) {
             User(

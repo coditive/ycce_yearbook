@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/YCCE YearBook-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/YCCE YearBook-app.iml" group="YCCE YearBook/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/YCCE_YearBook.iml" filepath="$PROJECT_DIR$/.idea/modules/YCCE_YearBook.iml" group="YCCE_YearBook" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="YCCE YearBook/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ycce_yearbook-YCCE_YearBook.iml" filepath="$PROJECT_DIR$/.idea/modules/ycce_yearbook-YCCE_YearBook.iml" group="YCCE_YearBook" />
     </modules>
   </component>
 </project>

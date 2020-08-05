@@ -13,13 +13,14 @@ import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.data.UserSharedPrefStorage
 import com.syrous.ycceyearbook.databinding.FragmentSplashBinding
 import com.syrous.ycceyearbook.ui.home.ActivityHome
+import com.syrous.ycceyearbook.util.user.UserManager
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class FragmentSplash: Fragment() {
 
     @Inject
-    lateinit var storage: UserSharedPrefStorage
+    lateinit var userManager: UserManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +37,7 @@ class FragmentSplash: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenCreated {
             delay(2500)
-            if(storage.isUserLoggedIn()) {
+            if(userManager.isUserLoggedIn()) {
                 startActivity(Intent(requireActivity(), ActivityHome::class.java))
             } else {
                 findNavController().navigate(FragmentSplashDirections.actionFragmentSplashToFragmentLogin())

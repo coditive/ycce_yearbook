@@ -10,13 +10,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.ActivityHome">
+        <activity android:name=".ui.home.ActivityHome"
+            android:screenOrientation="locked">
         </activity>
 
-        <activity android:name=".ui.semester.ActivitySem"/>
+        <activity android:name=".ui.semester.ActivitySem"
+            android:screenOrientation="locked"/>
 
 
-        <activity android:name=".ui.ActivityMain">
+        <activity android:name=".ui.ActivityMain"
+            android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

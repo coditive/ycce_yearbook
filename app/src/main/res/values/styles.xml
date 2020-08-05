@@ -86,7 +86,7 @@
     </style>
 
     <style name="AppCard" parent="Widget.MaterialComponents.CardView">
-        <item name="cardElevation">8dp</item>
+        <item name="cardElevation">24dp</item>
     </style>
 
     <style name="AppBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
@@ -131,6 +131,19 @@
                 <item name="android:letterSpacing">0.01</item>
                 <item name="fontWeight">1000</item>
             </style>
+
+        <style name="RoundedFrontBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+        </style>
+
+        <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
+            <item name="cornerFamily">rounded</item>
+            <item name="cornerSizeTopRight">32dp</item>
+            <item name="cornerSizeTopLeft">32dp</item>
+            <item name="cornerSizeBottomRight">0dp</item>
+            <item name="cornerSizeBottomLeft">0dp</item>
+        </style>
+
 
             <!--   Department's  CardView  Background   -->
 
