@@ -1,58 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
 
+    <Transition
+        motion:constraintSetEnd="@id/folded_state"
+        motion:constraintSetStart="@+id/start">
+        <OnSwipe motion:touchAnchorId="@id/fragment_home_front_page"
+            motion:dragDirection="dragDown"/>
+    </Transition>
+
+    <Transition
+        motion:constraintSetEnd="@id/expanded_state"
+        motion:constraintSetStart="@id/start">
+        <OnSwipe motion:touchAnchorId="@id/fragment_home_front_page"
+            motion:dragDirection="dragUp"/>
+    </Transition>
+
+   <!--////////////////////////////////////// Base State ////////////////////////////-->
     <ConstraintSet android:id="@+id/start">
-        <Constraint android:id="@+id/profile_view" />
+        <Constraint android:id="@+id/profile_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintVertical_bias="0.02"
+            motion:layout_constraintHorizontal_bias="0.95"/>
+
         <Constraint android:id="@+id/fragment_home_front_page"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintHorizontal_bias="1.0" />
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/guideline"
+            motion:layout_constraintVertical_bias="0.0"
+            motion:layout_constraintHorizontal_bias="1.0" />
+
+        <Constraint
+            android:id="@+id/welcome_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintHorizontal_bias="0"/>
+
+        <Constraint
+            android:id="@+id/home_back_art"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintHorizontal_bias="1"
+            motion:layout_constraintVertical_bias="0.15"/>
+
+        <Constraint
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            motion:layout_constraintGuide_percent=".20"/>
+
+        <Constraint
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            motion:layout_constraintGuide_percent=".95"/>
     </ConstraintSet>
 
+    <!-- /////////////////////////////////// Folded State ///////////////////////////  -->
     <ConstraintSet android:id="@+id/folded_state">
         <Constraint android:id="@id/profile_view"
-            app:layout_constraintVertical_bias="0.2"
-            android:layout_height="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="40dp" />
+            android:layout_height="80dp"
+            android:layout_width="80dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintVertical_bias="0.2"
+            motion:layout_constraintHorizontal_bias="0.1"/>
+
+        <Constraint
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            motion:layout_constraintGuide_percent=".95"/>
+
         <Constraint android:id="@id/fragment_home_front_page"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="1"/>
+            motion:layout_constraintTop_toBottomOf="@id/guideline2"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintVertical_bias="1"/>
     </ConstraintSet>
 
-    <Transition
-        app:constraintSetEnd="@id/folded_state"
-        app:constraintSetStart="@+id/start">
-        <OnSwipe app:touchAnchorId="@id/fragment_home_front_page"
-            app:dragDirection="dragDown"/>
-    </Transition>
 
-
+    <!-- /////////////////////////////////// Expanded State ///////////////////////////  -->
     <ConstraintSet android:id="@+id/expanded_state">
         <Constraint android:id="@id/fragment_home_front_page"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintVertical_bias="1.0"
+            motion:layout_constraintHorizontal_bias="0.0" />
     </ConstraintSet>
 
-    <Transition
-        app:constraintSetEnd="@id/expanded_state"
-        app:constraintSetStart="@id/start">
-        <OnSwipe app:touchAnchorId="@id/fragment_home_front_page"
-            app:dragDirection="dragUp"/>
-    </Transition>
-z
+
 </MotionScene>

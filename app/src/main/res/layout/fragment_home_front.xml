@@ -15,6 +15,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/horizontal_dash"
+            android:background="@android:color/transparent"/>
+
         <TextView
             style="@style/title_textView"
             android:layout_width="wrap_content"

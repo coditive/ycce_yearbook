@@ -41,7 +41,7 @@ class RepositoryTest {
        remoteDataSource = FakeDataSource(remoteSubjects.toMutableList(), remotePapers.toMutableList(),
             remoteResources.toMutableList())
 
-        repository = Repository(localDataSource, remoteDataSource, Dispatchers.Unconfined)
+//        repository = Repository(localDataSource, remoteDataSource, Dispatchers.Unconfined)
     }
 
 

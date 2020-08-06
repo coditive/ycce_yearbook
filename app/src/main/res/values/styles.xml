@@ -144,7 +144,11 @@
             <item name="cornerSizeBottomLeft">0dp</item>
         </style>
 
-
+    <style name="RoundedImageview" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    
             <!--   Department's  CardView  Background   -->
 
     <!--  Recent Screen Styles -->
