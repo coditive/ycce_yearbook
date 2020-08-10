@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,25 +29,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:transitionName="shared_textview"
-                android:drawableTop="@drawable/ct_art_large"
                 android:drawablePadding="16dp"
                 android:textSize="20sp"
                 android:fontFamily="@font/montserrat"
                 tools:text="@string/department_title"
                 tools:textColor="@color/ct_border"
                 android:textAlignment="center"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:drawableTopCompat="@drawable/ct_art_large" />
         </androidx.cardview.widget.CardView>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sem_recycler"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_gravity="center_horizontal"
         android:layoutAnimation="@anim/recycler_layout_anim"
-        tools:listitem="@layout/semester_card_layout"
-        tools:itemCount="6"/>
+        tools:listitem="@layout/department_card_layout"
+        tools:itemCount="2"/>
 
 
 </LinearLayout>

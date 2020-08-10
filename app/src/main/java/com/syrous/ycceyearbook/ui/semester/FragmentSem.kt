@@ -30,7 +30,7 @@ class FragmentSem : Fragment() {
 
     private lateinit var _binding: FragmentSemesterBinding
 
-    private val semesterList = mutableListOf<List<Semester>>()
+    private lateinit var adapterList: MutableList<SemAdapter>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,37 +52,8 @@ class FragmentSem : Fragment() {
             return@addOnPreDrawListener true
         }
 
-        viewModel.reloadSubjectFromRemote(true)
-
-        viewModel.apply {
-
-            observeSubjectFromLocalStorage("ct", 3).observe(viewLifecycleOwner) {
-                Timber.d("Semester 3 : $it")
-            }
-
-            observeSubjectFromLocalStorage("ct", 4).observe(viewLifecycleOwner) {
-                Timber.d("Semester 4 : $it")
-            }
-
-            observeSubjectFromLocalStorage("ct", 5).observe(viewLifecycleOwner) {
-                Timber.d("Semester 5 : $it")
-            }
-
-            observeSubjectFromLocalStorage("ct", 6).observe(viewLifecycleOwner) {
-                Timber.d("Semester 6 : $it")
-            }
-
-            observeSubjectFromLocalStorage("ct", 7).observe(viewLifecycleOwner) {
-                Timber.d("Semester 7 : $it")
-            }
-
-            observeSubjectFromLocalStorage("ct", 8).observe(viewLifecycleOwner) {
-                Timber.d("Semester 8 : $it")
-            }
-
-        }
-
-
+        viewModel.reloadSubjectFromRemote("ct", 3)
+        viewModel.getSubjectFromLocalStorageInVM("ct", 3, 8)
         return _binding.root
     }
 
@@ -105,19 +76,23 @@ class FragmentSem : Fragment() {
         setupThemeOfScreen()
         val adapter = setupAdapter()
         setupSemRecyclerView(adapter)
-        Timber.d("Semester List : $semesterList")
     }
 
     private fun setupSemRecyclerView(mergeAdapter: ConcatAdapter) {
         _binding.semRecycler.apply {
             adapter = mergeAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
     }
 
     private fun setupAdapter(): ConcatAdapter {
-        val adapterList = mutableListOf<SemAdapter>()
-        Timber.d("Semester List : ${semesterList.size} and Adapter List : ${adapterList.size}")
+        adapterList = mutableListOf()
+        for(i in 3..8) {
+            val adapter = SemAdapter("Semester $i", i, RedirectClickHandler(), ToggleStateClickHandler())
+            adapter.submitList(viewModel.getSubjectsForSemester(i))
+            adapterList.add(adapter)
+            Timber.d("adapter list : $adapterList")
+        }
         return ConcatAdapter(adapterList.toList())
     }
 
@@ -128,11 +103,20 @@ class FragmentSem : Fragment() {
         _binding.departmentNameText.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(requireContext(), department.largeDrawableId),null,null)
     }
 
-    inner class ClickHandler {
+    inner class RedirectClickHandler {
         fun clickListener (subject: Subject) {
             Toast.makeText(requireContext(), "${subject.course} is selected !!!!", Toast.LENGTH_SHORT).show()
             findNavController().navigate(FragmentSemDirections.actionFragmentSemToFragmentPaperAndResource())
         }
     }
+
+    inner class ToggleStateClickHandler {
+        fun clickListener (sem : Int) {
+          val subject = viewModel.getSubjectsForSemester(sem)
+            adapterList[sem - 3].submitList(subject)
+        }
+    }
+
+
 
 }

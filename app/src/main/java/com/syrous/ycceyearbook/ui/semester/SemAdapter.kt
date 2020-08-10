@@ -3,87 +3,87 @@ package com.syrous.ycceyearbook.ui.semester
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.syrous.ycceyearbook.data.model.Subject
 import com.syrous.ycceyearbook.databinding.SemesterCardLayoutBinding
 import com.syrous.ycceyearbook.databinding.SubjectCardLayoutBinding
 import timber.log.Timber
-import kotlin.properties.Delegates
-import kotlin.reflect.KProperty
 
-class SemAdapter(private val semester: Semester,
-private val clickHandler: FragmentSem.ClickHandler):
-    RecyclerView.Adapter<SemAdapter.SubjectHolder>() {
+class SemAdapter(private val semName: String,
+                 private val sem: Int,
+                 private val redirectClickHandler: FragmentSem.RedirectClickHandler,
+                 private val toggleClickHandler: FragmentSem.ToggleStateClickHandler):
+    ListAdapter<Subject, SemAdapter.SubjectHolder>(CALLBACK){
 
-    private var isExpanded: Boolean by Delegates.observable(false) {_: KProperty<*>, _:Boolean, newExpandedValue: Boolean ->
-        if(newExpandedValue) {
-            notifyItemRangeInserted(1, semester.subjectList.size)
-            //To update the header expand icon
-            notifyItemChanged(0)
-        } else {
-            notifyItemRangeRemoved(1, semester.subjectList.size)
-            //To update the header expand icon
-            notifyItemChanged(0)
-        }
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectHolder {
+       return when(viewType) {
+           SEMESTER -> {
+               Timber.d("CreateView For SemesterHeader Called!!!")
+               SubjectHolder.SemesterHeaderVH(SemesterCardLayoutBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false))
+           }
 
-    private val onHeaderClickListener = View.OnClickListener {
-        isExpanded = !isExpanded
-        Timber.d("Click Listener Called!!!")
+           SUBJECT -> SubjectHolder.SubjectInsideVH(SubjectCardLayoutBinding.inflate(
+               LayoutInflater.from(parent.context), parent, false))
+
+           else -> throw IllegalArgumentException("invalid view holder request : $viewType")
+       }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(position == 0) 0 else 1
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return when(viewType) {
-           0 -> SubjectHolder.SemesterHeaderVH(SemesterCardLayoutBinding.inflate(inflater, parent, false))
-           else -> SubjectHolder.SubjectInsideVH(SubjectCardLayoutBinding.inflate(inflater, parent, false))
-       }
-    }
-
-    override fun getItemCount(): Int {
-       return if(isExpanded) {
-           (semester.subjectList.size + 1)
-       } else {
-           1
-       }
+       return if(position == 0) SEMESTER
+        else SUBJECT
     }
 
     override fun onBindViewHolder(holder: SubjectHolder, position: Int) {
-        when(holder) {
-            is SubjectHolder.SemesterHeaderVH -> { holder.bind(semester, onHeaderClickListener)}
-            is SubjectHolder.SubjectInsideVH -> { holder.bind(semester.subjectList[position - 1], clickHandler)}
-         }
+        when (holder) {
+            is SubjectHolder.SemesterHeaderVH -> holder.bind(semName, sem, toggleClickHandler)
+            is SubjectHolder.SubjectInsideVH -> holder.bind(getItem(position), redirectClickHandler)
+        }
     }
 
 
     sealed class SubjectHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
         class SemesterHeaderVH(private val binding: SemesterCardLayoutBinding)
             : SubjectHolder(binding.root) {
+            fun bind (semName: String, sem: Int, toggleClickHandler: FragmentSem.ToggleStateClickHandler) {
+                binding.semCardTextview.apply {
+                    text = semName
+                    setOnClickListener {
+                        toggleClickHandler.clickListener(sem)
+                    }
+                }
 
-            fun bind (semester: Semester, onClickListener: View.OnClickListener) {
-                binding.semCardTextview.text = semester.name
-                binding.semCardTextview.setOnClickListener(onClickListener)
+                Timber.d("Semester Header Binding Called!!")
             }
-
         }
         class SubjectInsideVH(private val binding: SubjectCardLayoutBinding)
             : SubjectHolder(binding.root) {
-
-            fun bind (subject: Subject, clickHandler: FragmentSem.ClickHandler) {
+            fun bind (subject: Subject, redirectClickHandler: FragmentSem.RedirectClickHandler) {
                 binding.apply {
                     semCardTextview.text = subject.course
                 }
                 binding.subjectCardView.setOnClickListener {
-                    clickHandler.clickListener(subject)
+                    redirectClickHandler.clickListener(subject)
                 }
             }
+        }
+    }
 
+    private companion object {
+        val CALLBACK = object : DiffUtil.ItemCallback<Subject> () {
+            override fun areItemsTheSame(oldItem: Subject, newItem: Subject): Boolean {
+                return oldItem.course_code == newItem.course_code
+            }
+
+            override fun areContentsTheSame(oldItem: Subject, newItem: Subject): Boolean {
+                return  oldItem.course_code == oldItem.course_code
+            }
         }
 
+        const val SEMESTER = 0
+        const val SUBJECT = 1
     }
 }
