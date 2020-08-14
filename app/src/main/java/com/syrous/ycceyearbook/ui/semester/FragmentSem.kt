@@ -14,12 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
 import com.syrous.ycceyearbook.R
-import com.syrous.ycceyearbook.YearBookApplication
-import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.databinding.FragmentSemesterBinding
+import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.ui.home.Department
 import com.syrous.ycceyearbook.util.DEPARTMENT_OBJECT
-import timber.log.Timber
 import javax.inject.Inject
 
 class FragmentSem : Fragment() {
@@ -66,7 +64,6 @@ class FragmentSem : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity().application as YearBookApplication).appComponent.inject(this@FragmentSem)
 
     }
 
@@ -86,12 +83,12 @@ class FragmentSem : Fragment() {
 
     private fun setupAdapter(): ConcatAdapter {
         adapterList = mutableListOf()
-        for(i in 3..8) {
-            val adapter = SemAdapter("Semester $i", i, RedirectClickHandler(), ToggleStateClickHandler())
-            adapter.submitList(viewModel.getSubjectsForSemester(i))
-            adapterList.add(adapter)
-            Timber.d("adapter list : $adapterList")
-        }
+//        for(i in 3..8) {
+//            val adapter = SemAdapter("Semester $i", i, RedirectClickHandler(), ToggleStateClickHandler())
+//            adapter.submitList(viewModel.getSubjectsForSemester(i))
+//            adapterList.add(adapter)
+//            Timber.d("adapter list : $adapterList")
+//        }
         return ConcatAdapter(adapterList.toList())
     }
 

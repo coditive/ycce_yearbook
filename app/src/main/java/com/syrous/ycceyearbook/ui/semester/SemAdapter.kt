@@ -6,41 +6,41 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.databinding.SemesterCardLayoutBinding
 import com.syrous.ycceyearbook.databinding.SubjectCardLayoutBinding
+import com.syrous.ycceyearbook.model.SemSubModel
+import com.syrous.ycceyearbook.model.Semester
+import com.syrous.ycceyearbook.model.Subject
 import timber.log.Timber
 
-class SemAdapter(private val semName: String,
-                 private val sem: Int,
-                 private val redirectClickHandler: FragmentSem.RedirectClickHandler,
-                 private val toggleClickHandler: FragmentSem.ToggleStateClickHandler):
-    ListAdapter<Subject, SemAdapter.SubjectHolder>(CALLBACK){
+class SemAdapter(private val redirectClickHandler: FragmentSem.RedirectClickHandler,
+                 private val toggleSubjectList: (index: Int) -> Unit):
+    ListAdapter<SemSubModel, SemAdapter.SubjectHolder>(CALLBACK){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectHolder {
-       return when(viewType) {
-           SEMESTER -> {
-               Timber.d("CreateView For SemesterHeader Called!!!")
-               SubjectHolder.SemesterHeaderVH(SemesterCardLayoutBinding.inflate(
+        return when(viewType) {
+            SEMESTER -> {
+                Timber.d("CreateView For SemesterHeader Called!!!")
+                SubjectHolder.SemesterHeaderVH(SemesterCardLayoutBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false))
+            }
+
+            SUBJECT -> SubjectHolder.SubjectInsideVH(SubjectCardLayoutBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false))
-           }
 
-           SUBJECT -> SubjectHolder.SubjectInsideVH(SubjectCardLayoutBinding.inflate(
-               LayoutInflater.from(parent.context), parent, false))
-
-           else -> throw IllegalArgumentException("invalid view holder request : $viewType")
-       }
+            else -> throw IllegalArgumentException("invalid view holder request : $viewType")
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-       return if(position == 0) SEMESTER
+        return if(position == 0) SEMESTER
         else SUBJECT
     }
 
     override fun onBindViewHolder(holder: SubjectHolder, position: Int) {
         when (holder) {
-            is SubjectHolder.SemesterHeaderVH -> holder.bind(semName, sem, toggleClickHandler)
-            is SubjectHolder.SubjectInsideVH -> holder.bind(getItem(position), redirectClickHandler)
+            is SubjectHolder.SemesterHeaderVH -> holder.bind(getItem(position) as Semester, toggleSubjectList)
+            is SubjectHolder.SubjectInsideVH -> holder.bind(getItem(position) as Subject, redirectClickHandler)
         }
     }
 
@@ -48,11 +48,11 @@ class SemAdapter(private val semName: String,
     sealed class SubjectHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         class SemesterHeaderVH(private val binding: SemesterCardLayoutBinding)
             : SubjectHolder(binding.root) {
-            fun bind (semName: String, sem: Int, toggleClickHandler: FragmentSem.ToggleStateClickHandler) {
+            fun bind (semester: Semester, toggleSubjectList: (index: Int) -> Unit) {
                 binding.semCardTextview.apply {
-                    text = semName
+                    text = semester.name
                     setOnClickListener {
-                        toggleClickHandler.clickListener(sem)
+                        toggleSubjectList(semester.sem)
                     }
                 }
 
@@ -73,14 +73,21 @@ class SemAdapter(private val semName: String,
     }
 
     private companion object {
-        val CALLBACK = object : DiffUtil.ItemCallback<Subject> () {
-            override fun areItemsTheSame(oldItem: Subject, newItem: Subject): Boolean {
-                return oldItem.course_code == newItem.course_code
-            }
+        val CALLBACK = object : DiffUtil.ItemCallback<SemSubModel> () {
+            override fun areItemsTheSame(oldItem: SemSubModel, newItem: SemSubModel): Boolean =
+                if(oldItem is Semester && newItem is Semester)
+                    oldItem.sem == newItem.sem
+                else if(oldItem is Subject && newItem is Subject)
+                    oldItem.course_code == newItem.course_code
+                else false
 
-            override fun areContentsTheSame(oldItem: Subject, newItem: Subject): Boolean {
-                return  oldItem.course_code == oldItem.course_code
-            }
+
+            override fun areContentsTheSame(oldItem: SemSubModel, newItem: SemSubModel): Boolean =
+                if(oldItem is Semester && newItem is Semester)
+                    oldItem.name == newItem.name
+                else if(oldItem is Subject && newItem is Subject)
+                    oldItem.course == newItem.course
+                else true
         }
 
         const val SEMESTER = 0

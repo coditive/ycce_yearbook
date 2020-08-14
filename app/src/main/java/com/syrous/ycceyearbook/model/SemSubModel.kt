@@ -6,6 +6,6 @@ import com.squareup.moshi.JsonClass
 open class SemSubModel
 
 data class Semester (
-    val department: String,
+    val name: String,
     val sem: Int
 ): SemSubModel()

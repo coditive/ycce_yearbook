@@ -26,6 +26,12 @@ class LocalDataSource @Inject constructor(
         }
     }
 
+    fun observeSemester(department: String): LiveData<Result<List<Int>>> {
+        return allDao.observeSemester(department).map {
+            Success(it)
+        }
+    }
+
     override fun observePapers(department: String, sem: Int, courseCode: String, exam: String): LiveData<Result<List<Paper>>> {
         return allDao.observePapers(department, sem, courseCode, exam).map {
             Success(it)
