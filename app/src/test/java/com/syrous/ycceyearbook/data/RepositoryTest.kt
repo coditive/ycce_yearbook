@@ -2,8 +2,7 @@ package com.syrous.ycceyearbook.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import com.syrous.ycceyearbook.data.model.Resource
-import kotlinx.coroutines.Dispatchers
+import com.syrous.ycceyearbook.model.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before

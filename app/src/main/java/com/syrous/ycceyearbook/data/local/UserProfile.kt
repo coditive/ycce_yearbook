@@ -1,7 +1,7 @@
 package com.syrous.ycceyearbook.data.local
 
 import android.content.SharedPreferences
-import com.syrous.ycceyearbook.data.model.User
+import com.syrous.ycceyearbook.model.User
 import com.syrous.ycceyearbook.util.USER_EMAIL
 import com.syrous.ycceyearbook.util.USER_ID
 import com.syrous.ycceyearbook.util.USER_NAME

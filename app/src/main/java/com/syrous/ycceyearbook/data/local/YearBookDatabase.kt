@@ -2,7 +2,7 @@ package com.syrous.ycceyearbook.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.syrous.ycceyearbook.data.model.*
+import com.syrous.ycceyearbook.model.*
 
 @Database(
     entities = [Subject::class, Paper::class, Resource::class, User::class, Recent::class],

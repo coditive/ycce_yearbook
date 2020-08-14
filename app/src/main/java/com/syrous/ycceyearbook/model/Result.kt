@@ -1,4 +1,4 @@
-package com.syrous.ycceyearbook.data.model
+package com.syrous.ycceyearbook.model
 
 /**
  * A generic class that holds a value with its loading status.

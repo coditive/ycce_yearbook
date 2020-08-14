@@ -1,10 +1,9 @@
 package com.syrous.ycceyearbook.util.user
 
 import com.syrous.ycceyearbook.data.UserSharedPrefStorage
-import com.syrous.ycceyearbook.data.model.Result
-import com.syrous.ycceyearbook.data.local.UserProfile
-import com.syrous.ycceyearbook.data.model.Result.Success
-import com.syrous.ycceyearbook.data.model.User
+import com.syrous.ycceyearbook.model.Result
+import com.syrous.ycceyearbook.model.Result.Success
+import com.syrous.ycceyearbook.model.User
 import javax.inject.Inject
 
 

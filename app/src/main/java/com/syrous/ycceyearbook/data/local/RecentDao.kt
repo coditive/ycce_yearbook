@@ -2,8 +2,8 @@ package com.syrous.ycceyearbook.data.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.syrous.ycceyearbook.data.model.Paper
-import com.syrous.ycceyearbook.data.model.Resource
+import com.syrous.ycceyearbook.model.Paper
+import com.syrous.ycceyearbook.model.Resource
 
 
 @Dao

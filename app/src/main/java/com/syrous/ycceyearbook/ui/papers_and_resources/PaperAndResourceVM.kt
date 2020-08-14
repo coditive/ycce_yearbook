@@ -2,11 +2,11 @@ package com.syrous.ycceyearbook.ui.papers_and_resources
 
 import androidx.lifecycle.*
 import com.syrous.ycceyearbook.data.Repository
-import com.syrous.ycceyearbook.data.model.Paper
-import com.syrous.ycceyearbook.data.model.Resource
-import com.syrous.ycceyearbook.data.model.Result
-import com.syrous.ycceyearbook.data.model.Result.Error
-import com.syrous.ycceyearbook.data.model.Result.Success
+import com.syrous.ycceyearbook.model.Paper
+import com.syrous.ycceyearbook.model.Resource
+import com.syrous.ycceyearbook.model.Result
+import com.syrous.ycceyearbook.model.Result.Error
+import com.syrous.ycceyearbook.model.Result.Success
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -73,7 +73,7 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
     }
 
     fun observeMsePaper(department: String, sem: Int, courseCode: String)
-            : LiveData<List<Paper>> = _forceUpdateMse.switchMap {forceUpdate ->
+            : LiveData<List<Paper>> = _forceUpdateMse.switchMap { forceUpdate ->
         if(forceUpdate) {
             _loading.value = true
             viewModelScope.launch {

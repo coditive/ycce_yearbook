@@ -1,7 +1,7 @@
 package com.syrous.ycceyearbook.data
 
-import com.syrous.ycceyearbook.data.model.Paper
-import com.syrous.ycceyearbook.data.model.Subject
+import com.syrous.ycceyearbook.model.Paper
+import com.syrous.ycceyearbook.model.Subject
 
 val paper1 = Paper("asdaGeqf", "ct", 3, "EVEN", "GE1001",
     "mse", "admin", "2019-20", "https://example.com", 10020030100)

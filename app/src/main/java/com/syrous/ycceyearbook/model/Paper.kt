@@ -1,20 +1,20 @@
-package com.syrous.ycceyearbook.data.model
+package com.syrous.ycceyearbook.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-@Entity(tableName = "resources")
-data class Resource(
+@Entity(tableName = "papers")
+data class Paper(
     @PrimaryKey val id: String,
-    val title: String,
-    val description: String,
-    val contentType: String,
     val department: String,
     val sem: Int,
+    val term: String,
     val courseCode: String,
-    val uploadedBy: String,
+    val exam: String,
+    val uploaded_by: String,
+    val year: String,
     val url: String,
     val timestamp: Long
 )

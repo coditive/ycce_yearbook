@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.syrous.ycceyearbook.data.model.Subject
+import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.databinding.SemesterCardLayoutBinding
 import com.syrous.ycceyearbook.databinding.SubjectCardLayoutBinding
 import timber.log.Timber

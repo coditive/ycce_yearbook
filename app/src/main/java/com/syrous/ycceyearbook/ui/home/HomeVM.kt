@@ -3,11 +3,10 @@ package com.syrous.ycceyearbook.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.syrous.ycceyearbook.data.model.Result
-import com.syrous.ycceyearbook.data.model.Result.Success
-import com.syrous.ycceyearbook.data.model.User
+import com.syrous.ycceyearbook.model.Result
+import com.syrous.ycceyearbook.model.Result.Success
+import com.syrous.ycceyearbook.model.User
 import com.syrous.ycceyearbook.util.user.UserDataRepository
-import java.lang.Error
 import javax.inject.Inject
 
 class HomeVM @Inject constructor(

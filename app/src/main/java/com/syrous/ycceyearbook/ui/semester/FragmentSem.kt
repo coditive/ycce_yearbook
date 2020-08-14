@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +15,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
 import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.YearBookApplication
-import com.syrous.ycceyearbook.data.model.Subject
+import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.databinding.FragmentSemesterBinding
 import com.syrous.ycceyearbook.ui.home.Department
 import com.syrous.ycceyearbook.util.DEPARTMENT_OBJECT

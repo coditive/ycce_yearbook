@@ -1,10 +1,10 @@
 package com.syrous.ycceyearbook.data
 
 import androidx.lifecycle.LiveData
-import com.syrous.ycceyearbook.data.model.Paper
-import com.syrous.ycceyearbook.data.model.Resource
-import com.syrous.ycceyearbook.data.model.Result
-import com.syrous.ycceyearbook.data.model.Subject
+import com.syrous.ycceyearbook.model.Paper
+import com.syrous.ycceyearbook.model.Resource
+import com.syrous.ycceyearbook.model.Result
+import com.syrous.ycceyearbook.model.Subject
 
 interface LibraryDataSource {
 

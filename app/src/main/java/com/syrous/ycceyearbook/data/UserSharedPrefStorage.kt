@@ -2,7 +2,7 @@ package com.syrous.ycceyearbook.data
 
 import android.app.Application
 import android.content.Context
-import com.syrous.ycceyearbook.data.model.User
+import com.syrous.ycceyearbook.model.User
 import com.syrous.ycceyearbook.util.*
 import javax.inject.Inject
 

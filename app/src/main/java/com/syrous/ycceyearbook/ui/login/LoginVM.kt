@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.syrous.ycceyearbook.data.model.Result.Error
-import com.syrous.ycceyearbook.data.model.Result.Success
+import com.syrous.ycceyearbook.model.Result.Error
+import com.syrous.ycceyearbook.model.Result.Success
 import com.syrous.ycceyearbook.util.user.UserManager
 import timber.log.Timber
 import javax.inject.Inject

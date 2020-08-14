@@ -1,8 +1,8 @@
 package com.syrous.ycceyearbook.data.remote
 
-import com.syrous.ycceyearbook.data.model.Paper
-import com.syrous.ycceyearbook.data.model.Resource
-import com.syrous.ycceyearbook.data.model.Subject
+import com.syrous.ycceyearbook.model.Paper
+import com.syrous.ycceyearbook.model.Resource
+import com.syrous.ycceyearbook.model.Subject
 import retrofit2.http.GET
 import retrofit2.http.Query
 

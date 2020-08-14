@@ -8,7 +8,6 @@ import androidx.lifecycle.observe
 import android.os.Bundle
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
-import android.text.style.TypefaceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +19,9 @@ import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.shape.CornerFamily
 import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.YearBookApplication
-import com.syrous.ycceyearbook.data.model.User
+import com.syrous.ycceyearbook.model.User
 import com.syrous.ycceyearbook.databinding.FragmentHomeBackBinding
 import com.syrous.ycceyearbook.ui.semester.ActivitySem
 import com.syrous.ycceyearbook.util.DEPARTMENT_OBJECT

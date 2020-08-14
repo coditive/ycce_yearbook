@@ -1,4 +1,4 @@
-package com.syrous.ycceyearbook.data.model
+package com.syrous.ycceyearbook.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

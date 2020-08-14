@@ -5,10 +5,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.syrous.ycceyearbook.data.UserSharedPrefStorage
-import com.syrous.ycceyearbook.data.model.Result
-import com.syrous.ycceyearbook.data.model.Result.Error
-import com.syrous.ycceyearbook.data.model.Result.Success
-import com.syrous.ycceyearbook.data.model.User
+import com.syrous.ycceyearbook.model.Result
+import com.syrous.ycceyearbook.model.Result.Error
+import com.syrous.ycceyearbook.model.Result.Success
+import com.syrous.ycceyearbook.model.User
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
