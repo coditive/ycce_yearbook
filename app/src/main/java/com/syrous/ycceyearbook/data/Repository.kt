@@ -1,14 +1,14 @@
 package com.syrous.ycceyearbook.data
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.observe
 import com.syrous.ycceyearbook.data.local.LocalDataSource
-import com.syrous.ycceyearbook.model.Paper
-import com.syrous.ycceyearbook.model.Resource
-import com.syrous.ycceyearbook.model.Result
+import com.syrous.ycceyearbook.data.remote.RemoteDataSource
+import com.syrous.ycceyearbook.model.*
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
-import com.syrous.ycceyearbook.model.Subject
-import com.syrous.ycceyearbook.data.remote.RemoteDataSource
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
@@ -17,9 +17,11 @@ class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource
 ) {
 
-    fun observeSubjects (department: String, sem: Int): LiveData<Result<List<Subject>>>{
-        return localDataSource.observeSubjects(department, sem)
-    }
+    private val _listOfSubjectList = MutableLiveData<List<List<SemSubModel>>>()
+    val listOfSubjectList: LiveData<List<List<SemSubModel>>> = _listOfSubjectList
+
+    private val _dataLoading = MutableLiveData(false)
+    val dataLoading: LiveData<Boolean> = _dataLoading
 
     fun observePapers (department: String, sem:Int, courseCode: String, exam: String): LiveData<Result<List<Paper>>> {
         return localDataSource.observePapers(department, sem, courseCode, exam)
@@ -54,17 +56,17 @@ class Repository @Inject constructor(
     }
 
     private suspend fun updatePapersFromRemoteDataSource(department: String, sem: Int, courseCode: String, exam: String){
-       coroutineScope {
-           val papers = remoteDataSource.getPapers(department, sem, courseCode, exam)
+        coroutineScope {
+            val papers = remoteDataSource.getPapers(department, sem, courseCode, exam)
 
-           if (papers is Success){
-               papers.data.forEach {paper ->
-                   localDataSource.savePaper(paper)
-               }
-           } else if (papers is Error) {
-               throw papers.exception
-           }
-       }
+            if (papers is Success){
+                papers.data.forEach {paper ->
+                    localDataSource.savePaper(paper)
+                }
+            } else if (papers is Error) {
+                throw papers.exception
+            }
+        }
     }
 
     private suspend fun updateResourcesFromRemoteDataSource(department: String, sem: Int, courseCode: String){
@@ -79,15 +81,68 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun getSubjectsFromLocalStorage(department: String, sem: Int): Result<List<Subject>> {
-        return localDataSource.getSubjects(department, sem)
-    }
-
     suspend fun getPapersFromLocalStorage(department: String, sem:Int, courseCode: String, exam: String): Result<List<Paper>> {
         return localDataSource.getPapers(department, sem, courseCode, exam)
     }
 
     suspend fun getResourcesFromLocalStorage(department: String, sem: Int, courseCode: String): Result<List<Resource>> {
         return localDataSource.getResources(department, sem, courseCode)
+    }
+
+    fun loadListOfSubjects(lifeCycleOwner: LifecycleOwner, department: String) {
+        _dataLoading.postValue(true)
+        localDataSource.observeSemester(department).observe(lifeCycleOwner) {
+            _listOfSubjectList.postValue(filterAndCreateSemester(it))
+            _dataLoading.postValue(false)
+        }
+    }
+
+    private fun filterAndCreateSemester(semesterResult: Result<List<Int>>)
+            : List<List<SemSubModel>>  {
+        var result = emptyList<List<SemSubModel>>()
+        if(semesterResult is Success){
+            val listOfSemesterList = mutableListOf<List<SemSubModel>>()
+            semesterResult.data.forEach { i ->
+                val semSubList = mutableListOf<SemSubModel>()
+                val semester = Semester("Semester $i", i)
+                semSubList.add(semester as SemSubModel)
+                listOfSemesterList.add(semSubList)
+            }
+            result = listOfSemesterList
+        } else if(semesterResult is Error) {
+            TODO(" Display error")
+        }
+        return result
+    }
+
+    fun toggleSubjectVisibility(lifeCycleOwner: LifecycleOwner, department: String, sem: Int) {
+        val subjectList = (_listOfSubjectList.value as List<List<SemSubModel>>).toMutableList()
+        if(_listOfSubjectList.value?.get(sem)?.size == 1) {
+            _listOfSubjectList.value?.get(sem)?.let { semSubModel ->
+                val list = semSubModel.toMutableList()
+                localDataSource.observeSubjects(department, sem).observe(lifeCycleOwner) {
+                    list.addAll(filterSubject(it))
+                }
+                subjectList.add(sem, list)
+                _listOfSubjectList.postValue(subjectList)
+            }
+        } else {
+            for(i in 1 until subjectList.size) {
+                subjectList.removeAt(i)
+            }
+        }
+    }
+
+    private fun filterSubject(subjectResult: Result<List<Subject>>)
+            : List<SemSubModel>  {
+        val result = mutableListOf<SemSubModel>()
+        if(subjectResult is Success){
+            subjectResult.data.forEach {
+                result.add(it as SemSubModel)
+            }
+        } else if(subjectResult is Error) {
+            TODO(" Display error")
+        }
+        return result
     }
 }

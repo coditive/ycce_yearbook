@@ -1,6 +1,9 @@
 package com.syrous.ycceyearbook.ui.semester
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.syrous.ycceyearbook.data.Repository
 import com.syrous.ycceyearbook.model.Result
 import com.syrous.ycceyearbook.model.Result.Error
@@ -44,23 +47,23 @@ class SemVM @Inject constructor(
         _loading.value = true
 
         Timber.d("ViewModel initialization called!!!")
-        for(i in 1..8) {
-            when {
-                i < minSem -> {
-                    listOfSubjectList[i-1] = (emptyList())
-                }
-                i in minSem..maxSem -> {
-                    viewModelScope.launch {
-                        listOfSubjectList[i-1] = (filterSubject(repository.getSubjectsFromLocalStorage(department, i)))
-                        Timber.d("listofSubjects $listOfSubjectList" )
-                    }
-                }
-                else -> {
-                    listOfSubjectList[i-1] = (emptyList())
-                }
-            }
-
-        }
+//        for(i in 1..8) {
+//            when {
+//                i < minSem -> {
+//                    listOfSubjectList[i-1] = (emptyList())
+//                }
+//                i in minSem..maxSem -> {
+//                    viewModelScope.launch {
+//                        listOfSubjectList[i-1] = (filterSubject(repository.getSubjectsFromLocalStorage(department, i)))
+//                        Timber.d("listofSubjects $listOfSubjectList" )
+//                    }
+//                }
+//                else -> {
+//                    listOfSubjectList[i-1] = (emptyList())
+//                }
+//            }
+//
+//        }
         _loading.value = false
     }
 

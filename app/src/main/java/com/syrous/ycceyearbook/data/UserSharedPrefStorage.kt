@@ -1,15 +1,14 @@
 package com.syrous.ycceyearbook.data
 
-import android.app.Application
-import android.content.Context
+import android.content.SharedPreferences
 import com.syrous.ycceyearbook.model.User
-import com.syrous.ycceyearbook.util.*
+import com.syrous.ycceyearbook.util.USER_EMAIL
+import com.syrous.ycceyearbook.util.USER_ID
+import com.syrous.ycceyearbook.util.USER_NAME
+import com.syrous.ycceyearbook.util.USER_PHOTO_URL
 import javax.inject.Inject
 
-class UserSharedPrefStorage @Inject constructor(context: Application) {
-
-    private val sharedPreferences = context.getSharedPreferences(USER_SP_KEY, Context.MODE_PRIVATE)
-
+class UserSharedPrefStorage @Inject constructor(private val sharedPreferences: SharedPreferences) {
     fun saveAccount(user: User) {
         sharedPreferences.edit().apply {
             putString(USER_EMAIL, user.email)
