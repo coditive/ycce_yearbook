@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourcesBinding
+import timber.log.Timber
 
 class FragmentPaperAndResource : Fragment() {
 
@@ -20,6 +21,8 @@ class FragmentPaperAndResource : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPaperAndResourcesBinding.inflate(layoutInflater, container, false)
+
+        Timber.d("FragmentPaperAndResources initialized")
 
         return binding.root
     }

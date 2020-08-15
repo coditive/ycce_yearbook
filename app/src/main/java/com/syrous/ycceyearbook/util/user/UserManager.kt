@@ -9,6 +9,7 @@ import com.syrous.ycceyearbook.model.Result
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
 import com.syrous.ycceyearbook.model.User
+import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,11 +32,12 @@ class UserManager @Inject constructor (
     fun isUserLoggedIn() = userComponent != null
 
     fun getCurrentUser(): Result<User> {
-        return Success(storage.getLoggedInUser())
+        return storage.getLoggedInUser()
     }
 
-    fun loginUser(account: GoogleSignInAccount): Result<User> {
+    suspend fun loginUser(account: GoogleSignInAccount): Result<User> {
         firebaseAuthWithGoogle(account.idToken!!)
+        delay(1200)
         return if (auth.currentUser != null) {
                 if (account.id != null) {
                     val user = User(
@@ -57,11 +59,13 @@ class UserManager @Inject constructor (
             }
     }
 
-    fun logout(): Result<Boolean> {
+    suspend fun logout(): Result<Boolean> {
         //Firebase signOut
         auth.signOut()
 
         var result: Result<Boolean> = Error(Exception("Function not Executed!!"))
+
+        delay(1000)
 
         //Google SignOut
         googleSignInClient.signOut().addOnCompleteListener {
@@ -70,13 +74,15 @@ class UserManager @Inject constructor (
             }
         }
 
+        userComponent = null
         return result
     }
 
-    private fun firebaseAuthWithGoogle (id: String) {
-        //Getting Sign In Credential from google sign in api
+    private suspend fun firebaseAuthWithGoogle (id: String) {
+        // Getting Sign In Credential from google sign in api
         val credential = GoogleAuthProvider.getCredential(id, null)
-//         Sign User into firebase
+        // Sign User into firebase
+        delay(1000)
          auth.signInWithCredential(credential)
             .addOnCompleteListener {
                 if(it.isSuccessful) {

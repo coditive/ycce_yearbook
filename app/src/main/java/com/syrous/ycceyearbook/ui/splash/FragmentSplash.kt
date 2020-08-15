@@ -10,17 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.syrous.ycceyearbook.YearBookApplication
-import com.syrous.ycceyearbook.data.UserSharedPrefStorage
 import com.syrous.ycceyearbook.databinding.FragmentSplashBinding
 import com.syrous.ycceyearbook.ui.home.ActivityHome
 import com.syrous.ycceyearbook.util.user.UserManager
 import kotlinx.coroutines.delay
-import javax.inject.Inject
+import timber.log.Timber
 
 class FragmentSplash: Fragment() {
 
-    @Inject
-    lateinit var userManager: UserManager
+    private lateinit var userManager: UserManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,12 +29,13 @@ class FragmentSplash: Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity().application as YearBookApplication).appComponent.inject(this)
+       userManager =  (requireActivity().application as YearBookApplication).appComponent.userManager()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenCreated {
             delay(2500)
+            Timber.d("value of logged user: ${userManager.isUserLoggedIn()}")
             if(userManager.isUserLoggedIn()) {
                 startActivity(Intent(requireActivity(), ActivityHome::class.java))
             } else {

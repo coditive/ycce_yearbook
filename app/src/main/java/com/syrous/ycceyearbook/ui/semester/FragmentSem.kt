@@ -51,6 +51,8 @@ class FragmentSem : Fragment() {
             requireActivity().startPostponedEnterTransition()
             return@addOnPreDrawListener true
         }
+
+
         return _binding.root
     }
 

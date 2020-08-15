@@ -67,6 +67,7 @@ class Repository @Inject constructor(
             if (papers is Success){
                 papers.data.forEach {paper ->
                     localDataSource.savePaper(paper)
+                    Timber.d("paper list from remote : $paper")
                 }
             } else if (papers is Error) {
                 throw papers.exception

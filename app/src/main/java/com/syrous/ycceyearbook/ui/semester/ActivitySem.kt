@@ -24,7 +24,5 @@ class ActivitySem : AppCompatActivity(R.layout.activity_sem) {
         val args = bundleOf(DEPARTMENT_OBJECT to department)
 
         navController.setGraph(R.navigation.nav_graph3, args)
-
-
     }
 }
