@@ -8,16 +8,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
 import com.syrous.ycceyearbook.R
+import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentSemesterBinding
 import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.ui.home.Department
 import com.syrous.ycceyearbook.util.DEPARTMENT_OBJECT
+import timber.log.Timber
 import javax.inject.Inject
 
 class FragmentSem : Fragment() {
@@ -48,9 +51,6 @@ class FragmentSem : Fragment() {
             requireActivity().startPostponedEnterTransition()
             return@addOnPreDrawListener true
         }
-
-        viewModel.reloadSubjectFromRemote("ct", 3)
-        viewModel.getSubjectFromLocalStorageInVM("ct", 3, 8)
         return _binding.root
     }
 
@@ -64,7 +64,8 @@ class FragmentSem : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
+        (requireActivity().application as YearBookApplication).appComponent.semComponent()
+            .create("ct").inject(this@FragmentSem)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,6 +73,14 @@ class FragmentSem : Fragment() {
         setupThemeOfScreen()
         val adapter = setupAdapter()
         setupSemRecyclerView(adapter)
+        viewModel.loadListOfSubjects(viewLifecycleOwner, "ct")
+        viewModel.subjectList.observe(viewLifecycleOwner) {semSubModel ->
+           viewModel.loadListOfSemestersFromLocal("ct").observe(viewLifecycleOwner) {
+               for(i in it.indices) {
+                   adapterList[i].submitList(semSubModel[i])
+               }
+           }
+        }
     }
 
     private fun setupSemRecyclerView(mergeAdapter: ConcatAdapter) {
@@ -83,14 +92,15 @@ class FragmentSem : Fragment() {
 
     private fun setupAdapter(): ConcatAdapter {
         adapterList = mutableListOf()
-//        for(i in 3..8) {
-//            val adapter = SemAdapter("Semester $i", i, RedirectClickHandler(), ToggleStateClickHandler())
-//            adapter.submitList(viewModel.getSubjectsForSemester(i))
-//            adapterList.add(adapter)
-//            Timber.d("adapter list : $adapterList")
-//        }
+        for(i in 0 until 8) {
+            val adapter = SemAdapter( RedirectClickHandler(), i, ::showHideSubjects)
+            adapterList.add(adapter)
+            Timber.d("adapter list : $adapterList")
+        }
         return ConcatAdapter(adapterList.toList())
     }
+
+    private fun showHideSubjects(sem: Int, index: Int) = viewModel.toggleChildVisibility(viewLifecycleOwner, "ct", sem, index)
 
     private fun setupThemeOfScreen() {
         val department = arguments?.get(DEPARTMENT_OBJECT) as Department
@@ -105,14 +115,4 @@ class FragmentSem : Fragment() {
             findNavController().navigate(FragmentSemDirections.actionFragmentSemToFragmentPaperAndResource())
         }
     }
-
-    inner class ToggleStateClickHandler {
-        fun clickListener (sem : Int) {
-          val subject = viewModel.getSubjectsForSemester(sem)
-            adapterList[sem - 3].submitList(subject)
-        }
-    }
-
-
-
 }

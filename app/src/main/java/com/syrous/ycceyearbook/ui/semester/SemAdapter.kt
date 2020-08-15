@@ -14,7 +14,8 @@ import com.syrous.ycceyearbook.model.Subject
 import timber.log.Timber
 
 class SemAdapter(private val redirectClickHandler: FragmentSem.RedirectClickHandler,
-                 private val toggleSubjectList: (index: Int) -> Unit):
+                 private val index: Int,
+                 private val toggleSubjectList: (sem: Int, index: Int) -> Unit):
     ListAdapter<SemSubModel, SemAdapter.SubjectHolder>(CALLBACK){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectHolder {
@@ -39,7 +40,7 @@ class SemAdapter(private val redirectClickHandler: FragmentSem.RedirectClickHand
 
     override fun onBindViewHolder(holder: SubjectHolder, position: Int) {
         when (holder) {
-            is SubjectHolder.SemesterHeaderVH -> holder.bind(getItem(position) as Semester, toggleSubjectList)
+            is SubjectHolder.SemesterHeaderVH -> holder.bind(getItem(position) as Semester, index, toggleSubjectList)
             is SubjectHolder.SubjectInsideVH -> holder.bind(getItem(position) as Subject, redirectClickHandler)
         }
     }
@@ -48,11 +49,12 @@ class SemAdapter(private val redirectClickHandler: FragmentSem.RedirectClickHand
     sealed class SubjectHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         class SemesterHeaderVH(private val binding: SemesterCardLayoutBinding)
             : SubjectHolder(binding.root) {
-            fun bind (semester: Semester, toggleSubjectList: (index: Int) -> Unit) {
+            fun bind (semester: Semester, index: Int, toggleSubjectList: (sem:Int, index: Int) -> Unit) {
                 binding.semCardTextview.apply {
                     text = semester.name
                     setOnClickListener {
-                        toggleSubjectList(semester.sem)
+                        toggleSubjectList(semester.sem, index)
+                        Timber.d("Semester Header Clicked!!")
                     }
                 }
 
@@ -68,6 +70,7 @@ class SemAdapter(private val redirectClickHandler: FragmentSem.RedirectClickHand
                 binding.subjectCardView.setOnClickListener {
                     redirectClickHandler.clickListener(subject)
                 }
+                Timber.d("Subject Binding Called!!!")
             }
         }
     }

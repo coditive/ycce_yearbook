@@ -10,6 +10,7 @@ import com.syrous.ycceyearbook.model.*
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
 import kotlinx.coroutines.coroutineScope
+import timber.log.Timber
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -25,6 +26,10 @@ class Repository @Inject constructor(
 
     fun observePapers (department: String, sem:Int, courseCode: String, exam: String): LiveData<Result<List<Paper>>> {
         return localDataSource.observePapers(department, sem, courseCode, exam)
+    }
+
+    fun observeSemesters (department: String): LiveData<Result<List<Int>>> {
+        return localDataSource.observeSemester(department)
     }
 
     fun observeResources(department: String, sem: Int, courseCode: String): LiveData<Result<List<Resource>>> {
@@ -105,6 +110,7 @@ class Repository @Inject constructor(
             semesterResult.data.forEach { i ->
                 val semSubList = mutableListOf<SemSubModel>()
                 val semester = Semester("Semester $i", i)
+                Timber.d("$semester Created")
                 semSubList.add(semester as SemSubModel)
                 listOfSemesterList.add(semSubList)
             }
@@ -115,22 +121,31 @@ class Repository @Inject constructor(
         return result
     }
 
-    fun toggleSubjectVisibility(lifeCycleOwner: LifecycleOwner, department: String, sem: Int) {
-        val subjectList = (_listOfSubjectList.value as List<List<SemSubModel>>).toMutableList()
-        if(_listOfSubjectList.value?.get(sem)?.size == 1) {
-            _listOfSubjectList.value?.get(sem)?.let { semSubModel ->
-                val list = semSubModel.toMutableList()
-                localDataSource.observeSubjects(department, sem).observe(lifeCycleOwner) {
-                    list.addAll(filterSubject(it))
+    fun toggleSubjectVisibility(lifeCycleOwner: LifecycleOwner, department: String, sem: Int, index: Int) {
+       _dataLoading.postValue(true)
+        val semSubList = (_listOfSubjectList.value as List<List<SemSubModel>>).toMutableList()
+        val subjectList = semSubList[index].toMutableList()
+        if(subjectList.size == 1) {
+            localDataSource.observeSubjects(department, sem).observe(lifeCycleOwner) {
+                Timber.d("Subject List: $it ,Added as index: $index")
+                filterSubject(it).forEach {subject ->
+                    subjectList.add(subject)
                 }
-                subjectList.add(sem, list)
-                _listOfSubjectList.postValue(subjectList)
+                Timber.d("Subject list Size: ${subjectList.size}")
+                Timber.d("SemSub List Size: ${semSubList.size}")
             }
         } else {
-            for(i in 1 until subjectList.size) {
+            val size = subjectList.size - 1
+            Timber.d("Size of Subject List : $size")
+            for(i in size downTo 1){
+                Timber.d("Removed Subject ${subjectList[i]}")
                 subjectList.removeAt(i)
             }
         }
+
+        semSubList[index] = subjectList
+        _listOfSubjectList.postValue(semSubList)
+        _dataLoading.postValue(false)
     }
 
     private fun filterSubject(subjectResult: Result<List<Subject>>)
@@ -139,6 +154,7 @@ class Repository @Inject constructor(
         if(subjectResult is Success){
             subjectResult.data.forEach {
                 result.add(it as SemSubModel)
+                Timber.d("Subject added : $it")
             }
         } else if(subjectResult is Error) {
             TODO(" Display error")

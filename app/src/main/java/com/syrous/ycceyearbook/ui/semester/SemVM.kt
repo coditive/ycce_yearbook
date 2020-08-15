@@ -1,29 +1,24 @@
 package com.syrous.ycceyearbook.ui.semester
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.syrous.ycceyearbook.data.Repository
 import com.syrous.ycceyearbook.model.Result
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
-import com.syrous.ycceyearbook.model.Subject
+import com.syrous.ycceyearbook.model.SemSubModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class SemVM @Inject constructor(
-    private val repository: Repository)
+    private val repository: Repository,
+    val department: String)
     : ViewModel() {
 
-    private val _loading = MutableLiveData(false)
-    val loading: LiveData<Boolean> = _loading
+    val dataLoading: LiveData<Boolean> = repository.dataLoading
 
     private val _forceUpdate = MutableLiveData(false)
 
-    private val _subjectList = MutableLiveData<List<Subject>>()
-    val subjectList: LiveData<List<Subject>> = _subjectList
+    val subjectList: LiveData<List<List<SemSubModel>>> = repository.listOfSubjectList
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage : LiveData<String> = _errorMessage
@@ -31,61 +26,38 @@ class SemVM @Inject constructor(
     private val _isDataLoadingError = MutableLiveData<Boolean>(false)
     val isDataLoadingError: LiveData<Boolean> = _isDataLoadingError
 
-    private val listOfSubjectList = mutableListOf<List<Subject>>(emptyList(), emptyList(),
-        emptyList(), emptyList(), emptyList(), emptyList(),
-        emptyList(), emptyList())
-
     fun reloadSubjectFromRemote(department: String, sem: Int) {
         viewModelScope.launch {
             repository.refreshSubjects(department, sem)
         }
     }
 
-    private val toggleSemesterState  = mutableListOf(false, false, false, false, false, false, false, false)
-
-    fun getSubjectFromLocalStorageInVM(department: String, minSem: Int, maxSem: Int) {
-        _loading.value = true
-
-        Timber.d("ViewModel initialization called!!!")
-//        for(i in 1..8) {
-//            when {
-//                i < minSem -> {
-//                    listOfSubjectList[i-1] = (emptyList())
-//                }
-//                i in minSem..maxSem -> {
-//                    viewModelScope.launch {
-//                        listOfSubjectList[i-1] = (filterSubject(repository.getSubjectsFromLocalStorage(department, i)))
-//                        Timber.d("listofSubjects $listOfSubjectList" )
-//                    }
-//                }
-//                else -> {
-//                    listOfSubjectList[i-1] = (emptyList())
-//                }
-//            }
-//
-//        }
-        _loading.value = false
+    fun loadListOfSemestersFromLocal(department: String): LiveData<List<Int>> {
+        return repository.observeSemesters(department).map {
+            filterSemester(it)
+        }
     }
 
-    private fun filterSubject(subjectResult: Result<List<Subject>>)
-            : List<Subject>  {
-        var result = listOf<Subject>()
-        if(subjectResult is Success){
-            result = subjectResult.data
-        } else if(subjectResult is Error) {
-            _isDataLoadingError.value = true
-             _errorMessage.value = "Failed to retrieve subjects ${subjectResult.exception}"
+
+    fun loadListOfSubjects(lifeCycleOwner: LifecycleOwner, department: String) {
+        repository.loadListOfSubjects(lifeCycleOwner, department)
+    }
+
+    fun toggleChildVisibility(lifeCycleOwner: LifecycleOwner, department: String, sem: Int, index: Int) {
+        repository.toggleSubjectVisibility(lifeCycleOwner, department, sem, index)
+    }
+
+
+    private fun filterSemester(semesterResult: Result<List<Int>>)
+            : List<Int>  {
+        val result = mutableListOf<Int>()
+        if(semesterResult is Success){
+           semesterResult.data.forEach {
+               result.add(it)
+           }
+        } else if(semesterResult is Error) {
+            TODO(" Display error")
         }
         return result
     }
-
-    fun getSubjectsForSemester(sem: Int) : List<Subject> {
-       return if(!toggleSemesterState[sem - 1]) {
-            listOfSubjectList[sem - 1]
-        } else {
-           emptyList()
-       }
-    }
-
-
 }
