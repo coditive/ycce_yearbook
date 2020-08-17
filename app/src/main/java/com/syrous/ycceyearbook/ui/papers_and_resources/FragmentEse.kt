@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourceDetailBinding
 import javax.inject.Inject
@@ -23,9 +24,7 @@ class FragmentEse : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPaperAndResourceDetailBinding.inflate(layoutInflater, container, false)
-
-
+        binding = FragmentPaperAndResourceDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -34,10 +33,17 @@ class FragmentEse : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity().application as YearBookApplication).appComponent.inject(this)
 
+        val paperAdapter = PaperAdapter()
         viewModel.observeEsePaper("ct", 3, "CT1234").observe(viewLifecycleOwner) {
             if(it.isEmpty()) {
                 viewModel.reloadEsePaperFromRemote(true)
             }
+            paperAdapter.submitList(it)
+        }
+
+        binding.paperAndResourceRecycler.apply {
+            adapter = paperAdapter
+            layoutManager = LinearLayoutManager(requireContext())
         }
     }
 }

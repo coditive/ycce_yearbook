@@ -23,7 +23,7 @@ class FragmentMse : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPaperAndResourceDetailBinding.inflate(layoutInflater, container, false)
+        binding = FragmentPaperAndResourceDetailBinding.inflate(inflater, container, false)
 
 
         return binding.root

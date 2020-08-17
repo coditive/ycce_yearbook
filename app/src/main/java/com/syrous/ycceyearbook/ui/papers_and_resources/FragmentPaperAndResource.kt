@@ -21,9 +21,7 @@ class FragmentPaperAndResource : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPaperAndResourcesBinding.inflate(layoutInflater, container, false)
-
-        Timber.d("FragmentPaperAndResources initialized")
-
+        Timber.d("FragmentPaperAndResources initialized $activity")
         return binding.root
     }
 
@@ -33,18 +31,15 @@ class FragmentPaperAndResource : Fragment() {
         viewPagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle)
 
         binding.apply {
-
             paperAndResourceViewPager.adapter = viewPagerAdapter
-
             TabLayoutMediator(paperAndResourceTabLayout, paperAndResourceViewPager) { tab, position ->
-
                 when(position) {
                     0 -> tab.text = "ESE"
                     1 -> tab.text = "MSE"
                     2 -> tab.text = "Resources"
                 }
-
-            }
+                paperAndResourceViewPager.currentItem = tab.position
+            }.attach()
         }
     }
 }

@@ -50,13 +50,16 @@ class SemAdapter(private val redirectClickHandler: FragmentSem.RedirectClickHand
         class SemesterHeaderVH(private val binding: SemesterCardLayoutBinding)
             : SubjectHolder(binding.root) {
             fun bind (semester: Semester, index: Int, toggleSubjectList: (sem:Int, index: Int) -> Unit) {
-                binding.semCardTextview.apply {
-                    text = semester.name
-                    setOnClickListener {
-                        toggleSubjectList(semester.sem, index)
-                        Timber.d("Semester Header Clicked!!")
+                binding.apply {
+                    semCardTextview.apply {
+                        text = semester.name
+                    }
+
+                    semCardView.setOnClickListener {
+                       toggleSubjectList(semester.sem, index)
                     }
                 }
+
 
                 Timber.d("Semester Header Binding Called!!")
             }

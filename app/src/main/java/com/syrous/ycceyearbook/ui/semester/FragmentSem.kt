@@ -51,8 +51,6 @@ class FragmentSem : Fragment() {
             requireActivity().startPostponedEnterTransition()
             return@addOnPreDrawListener true
         }
-
-
         return _binding.root
     }
 
@@ -61,9 +59,7 @@ class FragmentSem : Fragment() {
             addTarget(R.id.sem_recycler)
         }
     }
-
-
-
+    
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as YearBookApplication).appComponent.semComponent()
