@@ -17,7 +17,7 @@ interface AllDao {
     fun observeSubjects(department: String, sem: Int): LiveData<List<Subject>>
 
     @Query("SELECT distinct sem FROM subjects WHERE department = :department ORDER BY sem ASC")
-    fun observeSemester(department: String): LiveData<List<Int>>
+    suspend fun getSemester(department: String): List<Int>
 
     @Query("SELECT * FROM subjects WHERE department = :department AND sem = :sem")
     suspend fun getSubjects(department: String, sem: Int): List<Subject>

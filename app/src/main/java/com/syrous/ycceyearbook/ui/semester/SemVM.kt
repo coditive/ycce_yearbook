@@ -1,6 +1,9 @@
 package com.syrous.ycceyearbook.ui.semester
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.syrous.ycceyearbook.data.Repository
 import com.syrous.ycceyearbook.model.Result
 import com.syrous.ycceyearbook.model.Result.Error
@@ -32,19 +35,16 @@ class SemVM @Inject constructor(
         }
     }
 
-    fun loadListOfSemestersFromLocal(department: String): LiveData<List<Int>> {
-        return repository.observeSemesters(department).map {
-            filterSemester(it)
+    fun loadListOfSemestersFromLocal(department: String) {
+        viewModelScope.launch {
+            repository.loadListOfSubjectsFromRepo(department)
         }
     }
 
-
-    fun loadListOfSubjects(lifeCycleOwner: LifecycleOwner, department: String) {
-        repository.loadListOfSubjects(lifeCycleOwner, department)
-    }
-
-    fun toggleChildVisibility(lifeCycleOwner: LifecycleOwner, department: String, sem: Int, index: Int) {
-        repository.toggleSubjectVisibility(lifeCycleOwner, department, sem, index)
+    fun toggleChildVisibility(department: String, sem: Int, index: Int) {
+        viewModelScope.launch {
+            repository.toggleSubjectVisibility(department, sem, index)
+        }
     }
 
 

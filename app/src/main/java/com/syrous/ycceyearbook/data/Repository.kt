@@ -1,15 +1,15 @@
 package com.syrous.ycceyearbook.data
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.observe
 import com.syrous.ycceyearbook.data.local.LocalDataSource
 import com.syrous.ycceyearbook.data.remote.RemoteDataSource
 import com.syrous.ycceyearbook.model.*
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,10 +26,6 @@ class Repository @Inject constructor(
 
     fun observePapers (department: String, sem:Int, courseCode: String, exam: String): LiveData<Result<List<Paper>>> {
         return localDataSource.observePapers(department, sem, courseCode, exam)
-    }
-
-    fun observeSemesters (department: String): LiveData<Result<List<Int>>> {
-        return localDataSource.observeSemester(department)
     }
 
     fun observeResources(department: String, sem: Int, courseCode: String): LiveData<Result<List<Resource>>> {
@@ -95,10 +91,11 @@ class Repository @Inject constructor(
         return localDataSource.getResources(department, sem, courseCode)
     }
 
-    fun loadListOfSubjects(lifeCycleOwner: LifecycleOwner, department: String) {
+    suspend fun loadListOfSubjectsFromRepo(department: String) {
         _dataLoading.postValue(true)
-        localDataSource.observeSemester(department).observe(lifeCycleOwner) {
-            _listOfSubjectList.postValue(filterAndCreateSemester(it))
+        withContext(Dispatchers.IO) {
+            val result = localDataSource.getSemesterFromLocal(department)
+            _listOfSubjectList.postValue(filterAndCreateSemester(result))
             _dataLoading.postValue(false)
         }
     }
@@ -122,31 +119,33 @@ class Repository @Inject constructor(
         return result
     }
 
-    fun toggleSubjectVisibility(lifeCycleOwner: LifecycleOwner, department: String, sem: Int, index: Int) {
+    suspend fun toggleSubjectVisibility(department: String, sem: Int, index: Int) {
        _dataLoading.postValue(true)
-        val semSubList = (_listOfSubjectList.value as List<List<SemSubModel>>).toMutableList()
-        val subjectList = semSubList[index].toMutableList()
-        if(subjectList.size == 1) {
-            localDataSource.observeSubjects(department, sem).observe(lifeCycleOwner) {
-                Timber.d("Subject List: $it ,Added as index: $index")
-                filterSubject(it).forEach {subject ->
-                    subjectList.add(subject)
-                }
-                Timber.d("Subject list Size: ${subjectList.size}")
-                Timber.d("SemSub List Size: ${semSubList.size}")
-            }
-        } else {
-            val size = subjectList.size - 1
-            Timber.d("Size of Subject List : $size")
-            for(i in size downTo 1){
-                Timber.d("Removed Subject ${subjectList[i]}")
-                subjectList.removeAt(i)
-            }
-        }
+        withContext(Dispatchers.IO) {
+            val semSubList = (_listOfSubjectList.value as List<List<SemSubModel>>).toMutableList()
+            val subjectList = semSubList[index].toMutableList()
+            if (subjectList.size == 1) {
+                val result = localDataSource.getSubjectFromLocal(department, sem)
+                    Timber.d("Subject List: $result ,Added as index: $index")
+                    filterSubject(result).forEach { subject ->
+                        subjectList.add(subject)
 
-        semSubList[index] = subjectList
-        _listOfSubjectList.postValue(semSubList)
-        _dataLoading.postValue(false)
+                    Timber.d("Subject list Size: ${subjectList.size}")
+                    Timber.d("SemSub List Size: ${semSubList.size}")
+                }
+            } else {
+                val size = subjectList.size - 1
+                Timber.d("Size of Subject List : $size")
+                for (i in size downTo 1) {
+                    Timber.d("Removed Subject ${subjectList[i]}")
+                    subjectList.removeAt(i)
+                }
+            }
+
+            semSubList[index] = subjectList
+            _listOfSubjectList.postValue(semSubList)
+            _dataLoading.postValue(false)
+        }
     }
 
     private fun filterSubject(subjectResult: Result<List<Subject>>)

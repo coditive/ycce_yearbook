@@ -75,12 +75,10 @@ class FragmentSem : Fragment() {
         setupThemeOfScreen()
         val adapter = setupAdapter()
         setupSemRecyclerView(adapter)
-        viewModel.loadListOfSubjects(viewLifecycleOwner, "ct")
-        viewModel.subjectList.observe(viewLifecycleOwner) {semSubModel ->
-           viewModel.loadListOfSemestersFromLocal("ct").observe(viewLifecycleOwner) {
-               for(i in it.indices) {
-                   adapterList[i].submitList(semSubModel[i])
-               }
+        viewModel.loadListOfSemestersFromLocal("ct")
+        viewModel.subjectList.observe(viewLifecycleOwner) {semSubList ->
+           for(i in semSubList.indices){
+               adapterList[i].submitList(semSubList[i])
            }
         }
     }
@@ -102,7 +100,7 @@ class FragmentSem : Fragment() {
         return ConcatAdapter(adapterList.toList())
     }
 
-    private fun showHideSubjects(sem: Int, index: Int) = viewModel.toggleChildVisibility(viewLifecycleOwner, "ct", sem, index)
+    private fun showHideSubjects(sem: Int, index: Int) = viewModel.toggleChildVisibility("ct", sem, index)
 
     private fun setupThemeOfScreen() {
         val department = arguments?.get(DEPARTMENT_OBJECT) as Department

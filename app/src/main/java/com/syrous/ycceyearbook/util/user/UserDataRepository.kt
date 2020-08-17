@@ -2,7 +2,6 @@ package com.syrous.ycceyearbook.util.user
 
 import com.syrous.ycceyearbook.data.UserSharedPrefStorage
 import com.syrous.ycceyearbook.model.Result
-import com.syrous.ycceyearbook.model.Result.Success
 import com.syrous.ycceyearbook.model.User
 import javax.inject.Inject
 
@@ -12,7 +11,7 @@ class UserDataRepository @Inject constructor (private val userManager: UserManag
                                               private val storage: UserSharedPrefStorage) {
 
     fun getLoggedInUser() : Result<User> {
-        return Success(storage.getLoggedInUser())
+        return storage.getLoggedInUser()
     }
 
 

@@ -11,7 +11,7 @@ import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.ui.home.bottom_nav.OnItemSelectedListener
 import kotlinx.android.synthetic.main.activity_home.*
 
-class ActivityHome : AppCompatActivity(R.layout.activity_home) {
+class ActivityHome : AppCompatActivity() {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,8 +22,8 @@ class ActivityHome : AppCompatActivity(R.layout.activity_home) {
         // Attach a callback used to capture the shared elements from this Activity to be used
         // by the container transform transition
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_home)
         navController = findNavController(R.id.home_nav_host)
         bottomBar.setOnItemSelectedListener(object : OnItemSelectedListener {
             override fun onItemSelect(pos: Int): Boolean {
