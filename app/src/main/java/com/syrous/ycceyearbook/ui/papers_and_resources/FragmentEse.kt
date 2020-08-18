@@ -34,10 +34,7 @@ class FragmentEse : Fragment() {
         (requireActivity().application as YearBookApplication).appComponent.inject(this)
 
         val paperAdapter = PaperAdapter()
-        viewModel.observeEsePaper("ct", 3, "CT1234").observe(viewLifecycleOwner) {
-            if(it.isEmpty()) {
-                viewModel.reloadEsePaperFromRemote(true)
-            }
+        viewModel.observeEsePaper("ct", 3, "GE1001").observe(viewLifecycleOwner) {
             paperAdapter.submitList(it)
         }
 
