@@ -21,6 +21,7 @@ import com.syrous.ycceyearbook.databinding.FragmentSemesterBinding
 import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.ui.home.Department
 import com.syrous.ycceyearbook.util.DEPARTMENT_OBJECT
+import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -112,7 +113,7 @@ class FragmentSem : Fragment() {
     inner class RedirectClickHandler {
         fun clickListener (subject: Subject) {
             Toast.makeText(requireContext(), "${subject.course} is selected !!!!", Toast.LENGTH_SHORT).show()
-            val args = bundleOf("subject" to subject)
+            val args = bundleOf(SUBJECT_OBJECT to subject)
             findNavController().navigate(R.id.fragmentPaperAndResource, args)
         }
     }

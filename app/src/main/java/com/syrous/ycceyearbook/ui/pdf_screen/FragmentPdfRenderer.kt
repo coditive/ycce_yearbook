@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPdfRendererBinding
+import com.syrous.ycceyearbook.util.PDF_FILE_OBJECT
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
@@ -40,7 +41,7 @@ class FragmentPdfRenderer : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        pdfFile = arguments?.getSerializable("pdfFile") as File
+        pdfFile = arguments?.getSerializable(PDF_FILE_OBJECT) as File
         Timber.d("File name = ${pdfFile?.exists()}, ${pdfFile?.name}, ${pdfFile?.absoluteFile}")
         (requireActivity().application as YearBookApplication).appComponent.pdfComponent().create(
             pdfFile

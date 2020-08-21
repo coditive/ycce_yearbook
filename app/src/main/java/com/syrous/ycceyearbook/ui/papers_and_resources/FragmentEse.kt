@@ -1,5 +1,6 @@
 package com.syrous.ycceyearbook.ui.papers_and_resources
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.storage.FirebaseStorage
 import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourceDetailBinding
 import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.model.Subject
+import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentPaperAndResource.PaperDownloader
+import com.syrous.ycceyearbook.util.PAPER_DOWNLOADER
+import com.syrous.ycceyearbook.util.PDF_FILE_OBJECT
+import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
 import timber.log.Timber
-import java.io.File
 import javax.inject.Inject
 
 
@@ -26,6 +29,8 @@ class FragmentEse : Fragment() {
     lateinit var viewModel: PaperAndResourceVM
 
     private lateinit var subject: Subject
+
+    private lateinit var downloader: PaperDownloader
 
     private lateinit var binding: FragmentPaperAndResourceDetailBinding
 
@@ -38,17 +43,19 @@ class FragmentEse : Fragment() {
         return binding.root
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as YearBookApplication).appComponent.inject(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity().application as YearBookApplication).appComponent.inject(this)
-
-        subject = arguments?.getSerializable("subject") as Subject
-
-        val paperAdapter = PaperAdapter(ClickHandler())
-//        viewModel.reloadEsePaperFromRemote(true)
-
-        viewModel.observeEsePaper(subject.department, subject.sem, subject.course).observe(viewLifecycleOwner) {
+        subject = arguments?.getSerializable(SUBJECT_OBJECT) as Subject
+        downloader = arguments?.getSerializable(PAPER_DOWNLOADER) as PaperDownloader
+        Timber.d("Subject : $subject")
+        val paperAdapter = PaperAdapter(EseClickHandler())
+        viewModel.reloadEsePaperFromRemote(true)
+        viewModel.observeEsePaper(subject.department, subject.sem, subject.course_code).observe(viewLifecycleOwner) {
             paperAdapter.submitList(it)
         }
 
@@ -58,21 +65,10 @@ class FragmentEse : Fragment() {
         }
     }
 
-
-    fun getFileFromRemote(paper: Paper): File {
-        val path = requireActivity().getExternalFilesDir("papers")
-        val paperFile = File(path, "paper${paper.id}.pdf")
-        val storage = FirebaseStorage.getInstance()
-        val refs = storage.getReferenceFromUrl(paper.url)
-        refs.getFile(paperFile)
-        Timber.d("File path : ${paperFile.name}, ${paperFile.absoluteFile}, Total Space: ${paperFile.totalSpace}")
-        return paperFile
-    }
-
-    inner class ClickHandler {
-        fun onClick(paper: Paper) {
-            val paperFile = getFileFromRemote(paper)
-            val args = bundleOf("pdfFile" to paperFile)
+    inner class EseClickHandler: ClickHandler {
+       override fun onClick(paper: Paper) {
+            val paperFile = downloader.downloadPaper(paper)
+            val args = bundleOf(PDF_FILE_OBJECT to paperFile)
             findNavController().navigate(R.id.fragmentPdfRenderer, args)
         }
     }

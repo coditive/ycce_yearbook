@@ -2,7 +2,11 @@ package com.syrous.ycceyearbook.util
 
 const val BASE_URL = "https://us-central1-ycce-yearbook.cloudfunctions.net/app/api/"
 const val YEARBOOK_DB_NAME = "yearbook_database.db"
+
 const val DEPARTMENT_OBJECT = "department_object"
+const val SUBJECT_OBJECT = "subject_object"
+const val PAPER_DOWNLOADER = "paper_downloader"
+const val PDF_FILE_OBJECT = "pdf_file_object"
 
 //USER FIELDS
 const val USER_SP_KEY = "user_sp_key"
