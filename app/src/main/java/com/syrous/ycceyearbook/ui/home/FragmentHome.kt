@@ -98,14 +98,14 @@ class FragmentHome : Fragment() {
 
     private fun getDepartmentList(): List<Department> {
         val department = mutableListOf<Department>()
-        department.add(Department("CT", R.drawable.ct_art, R.drawable.ct_art_large, R.color.ct_back, R.color.ct_border,0))
-        department.add(Department("IT", R.drawable.it_art, R.drawable.it_art_large, R.color.it_back, R.color.it_border,1))
-        department.add(Department("ME", R.drawable.me_art, R.drawable.me_art_large, R.color.me_back, R.color.me_border,2))
-        department.add(Department("CV", R.drawable.cv_art, R.drawable.cv_art_large, R.color.cv_back, R.color.cv_border,3))
-        department.add(Department("EE", R.drawable.ee_art, R.drawable.ee_art_large, R.color.ee_back, R.color.ee_border,4))
-        department.add(Department("EL", R.drawable.el_art, R.drawable.el_art_large, R.color.el_back, R.color.el_border,5))
-        department.add(Department("ETC", R.drawable.etc_art, R.drawable.etc_art_large, R.color.etc_back, R.color.etc_border,6))
-        department.add(Department("FY", R.drawable.fy_art, R.drawable.fy_art_large, R.color.fy_back, R.color.fy_border,7))
+        department.add(Department("ct", R.drawable.ct_art, R.drawable.ct_art_large, R.color.ct_back, R.color.ct_border,0))
+        department.add(Department("it", R.drawable.it_art, R.drawable.it_art_large, R.color.it_back, R.color.it_border,1))
+        department.add(Department("me", R.drawable.me_art, R.drawable.me_art_large, R.color.me_back, R.color.me_border,2))
+        department.add(Department("cv", R.drawable.cv_art, R.drawable.cv_art_large, R.color.cv_back, R.color.cv_border,3))
+        department.add(Department("ee", R.drawable.ee_art, R.drawable.ee_art_large, R.color.ee_back, R.color.ee_border,4))
+        department.add(Department("el", R.drawable.el_art, R.drawable.el_art_large, R.color.el_back, R.color.el_border,5))
+        department.add(Department("etc", R.drawable.etc_art, R.drawable.etc_art_large, R.color.etc_back, R.color.etc_border,6))
+        department.add(Department("fy", R.drawable.fy_art, R.drawable.fy_art_large, R.color.fy_back, R.color.fy_border,7))
         return department
     }
 
@@ -118,9 +118,7 @@ class FragmentHome : Fragment() {
 
     inner class DepartmentClickHandler {
         fun clickListener(index: Int, view: View) {
-
             val intent = Intent(requireActivity(), ActivitySem::class.java)
-
             when(index) {
                 0 -> {
                     Toast.makeText(requireContext(), "CT Selected", Toast.LENGTH_SHORT).show()

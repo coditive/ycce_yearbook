@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourcesBinding
+import com.syrous.ycceyearbook.model.Subject
 import timber.log.Timber
 
 class FragmentPaperAndResource : Fragment() {
@@ -28,7 +29,9 @@ class FragmentPaperAndResource : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewPagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        val subject = arguments?.getSerializable("subject") as Subject
+
+        viewPagerAdapter = ViewPagerAdapter(subject, childFragmentManager, lifecycle)
 
         binding.apply {
             paperAndResourceViewPager.adapter = viewPagerAdapter

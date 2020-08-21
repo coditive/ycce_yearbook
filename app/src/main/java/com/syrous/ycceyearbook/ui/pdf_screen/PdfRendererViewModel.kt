@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.File
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -21,7 +22,7 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class PdfRendererViewModel @Inject constructor(
         application: Application,
-        file: File
+       private val file: File?
 ) : AndroidViewModel(application) {
 
     private var useInstantExecutor: Boolean = false
@@ -38,7 +39,6 @@ class PdfRendererViewModel @Inject constructor(
     private var pdfRenderer: PdfRenderer? = null
     private var currentPage: PdfRenderer.Page? = null
     private var cleared = false
-    private var fileToOpen = file
 
     private val _pageBitmap = MutableLiveData<Bitmap>()
     val pageBitmap: LiveData<Bitmap>
@@ -99,19 +99,16 @@ class PdfRendererViewModel @Inject constructor(
     }
 
     private fun openPdfRenderer() {
-        val application = getApplication<Application>()
-//        if (!file.exists()) {
-//                application.assets.open(filename).use { asset ->
-//                    file.writeBytes(asset.readBytes())
-//                }
-//            }
+        Timber.d("File status : ${file?.name}")
 
-        fileDescriptor = ParcelFileDescriptor.open(fileToOpen, ParcelFileDescriptor.MODE_READ_ONLY).also {
-            pdfRenderer = PdfRenderer(it)
-//        }
+        if (!file?.exists()!!) {
+             Timber.d("File Not Found !!!")
+        } else {
+            fileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).also {
+                pdfRenderer = PdfRenderer(it)
+            }
         }
     }
-
 
     private fun showPage(index: Int) {
         // Make sure to close the current page before opening another one.

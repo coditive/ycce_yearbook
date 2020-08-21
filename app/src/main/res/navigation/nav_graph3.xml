@@ -17,12 +17,35 @@
             app:nullable="true"/>
         <action
             android:id="@+id/action_fragmentSem_to_fragmentPaperAndResource"
-            app:destination="@id/fragmentPaperAndResource" />
+            app:destination="@id/fragmentPaperAndResource" >
+        </action>
     </fragment>
     <fragment
         android:id="@+id/fragmentPaperAndResource"
         android:name="com.syrous.ycceyearbook.ui.papers_and_resources.FragmentPaperAndResource"
         android:label="FragmentPaperAndResource"
-        tools:layout="@layout/fragment_paper_and_resources"/>
+        tools:layout="@layout/fragment_paper_and_resources">
+        <argument
+            android:name="subject"
+            app:argType=".model.Subject"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <action
+            android:id="@+id/action_fragmentPaperAndResource_to_fragmentPdfRenderer"
+            app:destination="@id/fragmentPdfRenderer">
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentPdfRenderer"
+        android:name="com.syrous.ycceyearbook.ui.pdf_screen.FragmentPdfRenderer"
+        android:label="FragmentPdfRenderer"
+        tools:layout="@layout/fragment_pdf_renderer">
+        <argument
+            android:name="pdfRef"
+            app:argType="java.io.File"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+    </fragment>
 
 </navigation>

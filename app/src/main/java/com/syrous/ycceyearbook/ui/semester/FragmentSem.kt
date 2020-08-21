@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -30,6 +31,8 @@ class FragmentSem : Fragment() {
 
     private lateinit var _binding: FragmentSemesterBinding
 
+    private lateinit var department: Department
+
     private lateinit var adapterList: MutableList<SemAdapter>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,11 +49,11 @@ class FragmentSem : Fragment() {
         _binding = FragmentSemesterBinding.inflate(layoutInflater, container, false)
 
         val sharedView = _binding.departmentNameText
-
         sharedView.viewTreeObserver.addOnPreDrawListener{
             requireActivity().startPostponedEnterTransition()
             return@addOnPreDrawListener true
         }
+
         return _binding.root
     }
 
@@ -62,8 +65,10 @@ class FragmentSem : Fragment() {
     
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        department = arguments?.getSerializable(DEPARTMENT_OBJECT) as Department
+        Timber.d("Department got : ${department.name}")
         (requireActivity().application as YearBookApplication).appComponent.semComponent()
-            .create("ct").inject(this@FragmentSem)
+            .create(department.name).inject(this@FragmentSem)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,7 +76,7 @@ class FragmentSem : Fragment() {
         setupThemeOfScreen()
         val adapter = setupAdapter()
         setupSemRecyclerView(adapter)
-        viewModel.loadListOfSemestersFromLocal("ct")
+        viewModel.loadListOfSemestersFromLocal(department.name)
         viewModel.subjectList.observe(viewLifecycleOwner) {semSubList ->
            for(i in semSubList.indices){
                adapterList[i].submitList(semSubList[i])
@@ -96,10 +101,9 @@ class FragmentSem : Fragment() {
         return ConcatAdapter(adapterList.toList())
     }
 
-    private fun showHideSubjects(sem: Int, index: Int) = viewModel.toggleChildVisibility("ct", sem, index)
+    private fun showHideSubjects(sem: Int, index: Int) = viewModel.toggleChildVisibility(department.name, sem, index)
 
     private fun setupThemeOfScreen() {
-        val department = arguments?.get(DEPARTMENT_OBJECT) as Department
         _binding.semToolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), department.backgroundColor))
         _binding.departmentNameText.setBackgroundColor(ContextCompat.getColor(requireContext(), department.backgroundColor))
         _binding.departmentNameText.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(requireContext(), department.largeDrawableId),null,null)
@@ -108,7 +112,8 @@ class FragmentSem : Fragment() {
     inner class RedirectClickHandler {
         fun clickListener (subject: Subject) {
             Toast.makeText(requireContext(), "${subject.course} is selected !!!!", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(FragmentSemDirections.actionFragmentSemToFragmentPaperAndResource())
+            val args = bundleOf("subject" to subject)
+            findNavController().navigate(R.id.fragmentPaperAndResource, args)
         }
     }
 }

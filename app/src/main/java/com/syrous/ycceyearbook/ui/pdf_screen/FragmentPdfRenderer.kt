@@ -11,7 +11,8 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.syrous.ycceyearbook.YearBookApplication
-import com.syrous.ycceyearbook.databinding.PdfRendererBasicFragmentBinding
+import com.syrous.ycceyearbook.databinding.FragmentPdfRendererBinding
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -24,15 +25,30 @@ class FragmentPdfRenderer : Fragment() {
     @Inject
     lateinit var viewModel: PdfRendererViewModel
 
-    private lateinit var binding: PdfRendererBasicFragmentBinding
+    private var pdfFile: File? = null
+
+    private lateinit var binding: FragmentPdfRendererBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+       binding = FragmentPdfRendererBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
-       binding = PdfRendererBasicFragmentBinding.inflate(layoutInflater, container, false)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        pdfFile = arguments?.getSerializable("pdfFile") as File
+        Timber.d("File name = ${pdfFile?.exists()}, ${pdfFile?.name}, ${pdfFile?.absoluteFile}")
+        (requireActivity().application as YearBookApplication).appComponent.pdfComponent().create(
+            pdfFile
+        ).inject(this@FragmentPdfRenderer)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.pageBitmap.observe(viewLifecycleOwner, Observer { bitmap ->
             binding.pdfImageView.setImageBitmap(bitmap)
@@ -46,13 +62,13 @@ class FragmentPdfRenderer : Fragment() {
             binding.next.isEnabled = it
         })
 
-        return binding.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (requireActivity().application as YearBookApplication).appComponent.pdfComponent().create(
-            File("sample.text")
-        ).inject(this@FragmentPdfRenderer)
+        binding.apply {
+            previous.setOnClickListener {
+                viewModel.showPrevious()
+            }
+            next.setOnClickListener {
+                viewModel.showNext()
+            }
+        }
     }
 }

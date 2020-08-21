@@ -10,7 +10,7 @@ interface PdfComponent {
 
     @Subcomponent.Factory
     interface Factory {
-        fun create(@BindsInstance file: File): PdfComponent
+        fun create(@BindsInstance file: File?): PdfComponent
     }
 
     fun inject(fragmentPdfRenderer: FragmentPdfRenderer)

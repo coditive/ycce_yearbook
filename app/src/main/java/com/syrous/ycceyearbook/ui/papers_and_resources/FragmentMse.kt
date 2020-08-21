@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourceDetailBinding
 import javax.inject.Inject
@@ -32,10 +31,6 @@ class FragmentMse : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity().application as YearBookApplication).appComponent.inject(this)
-        viewModel.observeMsePaper("ct", 3, "CT1234").observe(viewLifecycleOwner) {
-            if(it.isEmpty()) {
-                viewModel.reloadMsePaperFromRemote(true)
-            }
-        }
+
     }
 }

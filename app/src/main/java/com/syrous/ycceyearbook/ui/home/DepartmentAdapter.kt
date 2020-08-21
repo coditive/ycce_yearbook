@@ -36,7 +36,7 @@ class DepartmentAdapter(
                 setCardBackgroundColor(ContextCompat.getColor(context, department.backgroundColor))
             }
             binding.departmentName.apply {
-                text = department.name
+                text = department.name.toUpperCase()
                 setTextColor(ContextCompat.getColor(context, department.textColor))
                 setCompoundDrawablesWithIntrinsicBounds(department.smallDrawableId,0,0,0)
             }

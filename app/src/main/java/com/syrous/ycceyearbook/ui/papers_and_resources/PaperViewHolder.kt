@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.syrous.ycceyearbook.databinding.PaperCardLayoutBinding
 import com.syrous.ycceyearbook.model.Paper
 
-class PaperAdapter: ListAdapter<Paper, PaperAdapter.PaperViewHolder>(CALLBACK) {
+class PaperAdapter(private val clickHandler: FragmentEse.ClickHandler): ListAdapter<Paper, PaperAdapter.PaperViewHolder>(CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaperViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -17,12 +17,15 @@ class PaperAdapter: ListAdapter<Paper, PaperAdapter.PaperViewHolder>(CALLBACK) {
     }
 
     override fun onBindViewHolder(holder: PaperViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), clickHandler)
     }
 
     class PaperViewHolder(private val binding: PaperCardLayoutBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(paper: Paper) {
+        fun bind(paper: Paper, clickHandler: FragmentEse.ClickHandler) {
             binding.paperTitle.text = paper.id
+            binding.root.setOnClickListener {
+                clickHandler.onClick(paper)
+            }
         }
     }
 
