@@ -4,6 +4,7 @@ import android.app.Application
 import com.syrous.ycceyearbook.ui.login.LoginComponent
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentEse
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentMse
+import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentPaperAndResource
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentResource
 import com.syrous.ycceyearbook.ui.pdf_screen.PdfComponent
 import com.syrous.ycceyearbook.ui.semester.SemComponent
@@ -31,6 +32,8 @@ interface AppComponent {
     fun pdfComponent(): PdfComponent.Factory
 
     fun semComponent(): SemComponent.Factory
+
+    fun inject(fragmentPaperAndResource: FragmentPaperAndResource)
 
     fun inject(fragmentEse: FragmentEse)
 

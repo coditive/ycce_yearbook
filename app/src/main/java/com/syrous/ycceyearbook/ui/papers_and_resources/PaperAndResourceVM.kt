@@ -86,6 +86,12 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
         }
     }
 
+    fun storeRecentlyUsedPaper(paper: Paper) {
+        viewModelScope.launch {
+            repository.saveRecentlyUsedPaper(paper)
+        }
+    }
+
     private fun filterPaper(paperResult: Result<List<Paper>>)
             : List<Paper>  {
         var result = listOf<Paper>()

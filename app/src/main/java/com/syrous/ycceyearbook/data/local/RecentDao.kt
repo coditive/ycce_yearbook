@@ -1,8 +1,10 @@
 package com.syrous.ycceyearbook.data.local
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import com.syrous.ycceyearbook.model.Paper
+import com.syrous.ycceyearbook.model.Recent
 import com.syrous.ycceyearbook.model.Resource
 
 
@@ -15,4 +17,6 @@ interface RecentDao {
     @Query("SELECT * FROM resources JOIN recents ON resources.id = recents.id WHERE type MATCH 'resource'")
     suspend fun observeRecentResources(): List<Resource>
 
+    @Insert
+    suspend fun insertRecentPaper(recent: Recent)
 }

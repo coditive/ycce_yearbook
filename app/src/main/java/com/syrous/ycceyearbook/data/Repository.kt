@@ -161,4 +161,13 @@ class Repository @Inject constructor(
         }
         return result
     }
+
+    suspend fun saveRecentlyUsedPaper(paper: Paper) {
+        withContext(Dispatchers.IO) {
+        val recent = Recent(paper.id, "paper")
+        localDataSource.saveRecentlyUsedPaper(recent)
+        }
+    }
+
+
 }

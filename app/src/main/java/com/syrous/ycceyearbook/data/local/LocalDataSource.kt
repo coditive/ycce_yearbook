@@ -3,19 +3,18 @@ package com.syrous.ycceyearbook.data.local
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.syrous.ycceyearbook.data.LibraryDataSource
-import com.syrous.ycceyearbook.model.Paper
-import com.syrous.ycceyearbook.model.Resource
-import com.syrous.ycceyearbook.model.Result
+import com.syrous.ycceyearbook.model.*
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
-import com.syrous.ycceyearbook.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
-    private val allDao: AllDao
+    private val allDao: AllDao,
+    private val recentDao: RecentDao,
+    private val sharedPrefStorage: UserSharedPrefStorage
 ): LibraryDataSource {
 
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -108,5 +107,25 @@ class LocalDataSource @Inject constructor(
 
     override suspend fun saveResource(resource: Resource) = withContext (ioDispatcher) {
         allDao.insertResource(resource)
+    }
+
+    fun saveUser(user: User) {
+        sharedPrefStorage.saveAccount(user)
+    }
+
+    fun getUser(): Result<User> {
+       return sharedPrefStorage.getLoggedInUser()
+    }
+
+    fun saveNotificationToken(token: String) {
+        sharedPrefStorage.saveNotificationToken(token)
+    }
+
+    fun getNotificationToken(): Result<String> {
+      return sharedPrefStorage.getNotificationToken()
+    }
+
+    suspend fun saveRecentlyUsedPaper(recent: Recent) {
+        recentDao.insertRecentPaper(recent)
     }
 }

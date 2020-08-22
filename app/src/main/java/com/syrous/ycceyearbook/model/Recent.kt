@@ -12,17 +12,10 @@ import androidx.room.PrimaryKey
             parentColumns = ["id"],
             childColumns = ["id"],
             onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = Resource::class,
-            parentColumns = ["id"],
-            childColumns = ["id"],
-            onDelete = ForeignKey.CASCADE
         )
         ]
 )
 data class Recent (
-    @PrimaryKey(autoGenerate = true) val rowid: Int,
-    val id: String,
+    @PrimaryKey val id: String,
     val type: String
 )

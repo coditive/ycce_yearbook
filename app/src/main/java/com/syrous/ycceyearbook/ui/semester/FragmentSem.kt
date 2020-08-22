@@ -77,6 +77,11 @@ class FragmentSem : Fragment() {
         setupThemeOfScreen()
         val adapter = setupAdapter()
         setupSemRecyclerView(adapter)
+
+        for(i in 3..8) {
+            viewModel.reloadSubjectFromRemote(department.name, i)
+        }
+
         viewModel.loadListOfSemestersFromLocal(department.name)
         viewModel.subjectList.observe(viewLifecycleOwner) {semSubList ->
            for(i in semSubList.indices){

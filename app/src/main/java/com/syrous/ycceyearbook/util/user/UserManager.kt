@@ -4,7 +4,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.syrous.ycceyearbook.data.UserSharedPrefStorage
+import com.syrous.ycceyearbook.data.local.UserSharedPrefStorage
 import com.syrous.ycceyearbook.model.Result
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
@@ -62,18 +62,14 @@ class UserManager @Inject constructor (
     suspend fun logout(): Result<Boolean> {
         //Firebase signOut
         auth.signOut()
-
         var result: Result<Boolean> = Error(Exception("Function not Executed!!"))
-
         delay(1000)
-
         //Google SignOut
         googleSignInClient.signOut().addOnCompleteListener {
             if (it.isSuccessful) {
                 result = Success(true)
             }
         }
-
         userComponent = null
         return result
     }
@@ -82,7 +78,7 @@ class UserManager @Inject constructor (
         // Getting Sign In Credential from google sign in api
         val credential = GoogleAuthProvider.getCredential(id, null)
         // Sign User into firebase
-        delay(1000)
+        delay(500)
          auth.signInWithCredential(credential)
             .addOnCompleteListener {
                 if(it.isSuccessful) {
@@ -92,7 +88,6 @@ class UserManager @Inject constructor (
                     Timber.e(it.exception)
                 }
             }
-
     }
 
     private fun userJustLoggedIn() {

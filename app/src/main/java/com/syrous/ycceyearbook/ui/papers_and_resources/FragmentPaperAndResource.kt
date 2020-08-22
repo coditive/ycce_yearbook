@@ -1,5 +1,6 @@
 package com.syrous.ycceyearbook.ui.papers_and_resources
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
+import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourcesBinding
 import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.model.Subject
@@ -14,10 +16,14 @@ import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
 import timber.log.Timber
 import java.io.File
 import java.io.Serializable
+import javax.inject.Inject
 
 class FragmentPaperAndResource : Fragment() {
 
     private lateinit var binding: FragmentPaperAndResourcesBinding
+
+    @Inject
+    lateinit var viewModel: PaperAndResourceVM
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
@@ -29,6 +35,11 @@ class FragmentPaperAndResource : Fragment() {
         binding = FragmentPaperAndResourcesBinding.inflate(layoutInflater, container, false)
         Timber.d("FragmentPaperAndResources initialized $activity")
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as YearBookApplication).appComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,6 +63,7 @@ class FragmentPaperAndResource : Fragment() {
 
     inner class PaperDownloader: Serializable {
         fun downloadPaper(paper: Paper): File {
+            viewModel.storeRecentlyUsedPaper(paper)
             val path = requireActivity().getExternalFilesDir("papers")
             val paperFile = File(path, "paper${paper.id}.pdf")
             val storage = FirebaseStorage.getInstance()

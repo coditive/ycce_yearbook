@@ -1,18 +1,16 @@
-package com.syrous.ycceyearbook.data
+package com.syrous.ycceyearbook.data.local
 
 import android.content.SharedPreferences
 import com.syrous.ycceyearbook.model.Result
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
 import com.syrous.ycceyearbook.model.User
-import com.syrous.ycceyearbook.util.USER_EMAIL
-import com.syrous.ycceyearbook.util.USER_ID
-import com.syrous.ycceyearbook.util.USER_NAME
-import com.syrous.ycceyearbook.util.USER_PHOTO_URL
+import com.syrous.ycceyearbook.util.*
 import timber.log.Timber
 import javax.inject.Inject
 
 class UserSharedPrefStorage @Inject constructor(private val sharedPreferences: SharedPreferences) {
+
     fun saveAccount(user: User) {
         sharedPreferences.edit().apply {
             putString(USER_EMAIL, user.email)
@@ -39,6 +37,23 @@ class UserSharedPrefStorage @Inject constructor(private val sharedPreferences: S
             Error(e)
         }
 
+    fun saveNotificationToken(token: String) {
+        sharedPreferences.edit().apply {
+            putString(USER_NOTIFICATION_TOKEN, token)
+            apply()
+        }
+        Timber.d("Saved Notification Token : $token")
+    }
+
+    fun getNotificationToken(): Result<String> =
+        try {
+            with(sharedPreferences) {
+                val token = getString(USER_NOTIFICATION_TOKEN, null) as String
+                return@with Success(token)
+            }
+        }catch (e: Exception) {
+            Error(e)
+        }
 
     fun logout(): Boolean =
         with(sharedPreferences.edit()) {

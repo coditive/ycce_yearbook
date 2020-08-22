@@ -13,13 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ui.home.ActivityHome"
             android:screenOrientation="locked">
         </activity>
 
         <activity android:name=".ui.semester.ActivitySem"
             android:screenOrientation="locked"/>
-
 
         <activity android:name=".ui.ActivityMain"
             android:screenOrientation="locked">
@@ -29,6 +29,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <!-- Firebase Service -->
+        <service android:name=".util.NotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
