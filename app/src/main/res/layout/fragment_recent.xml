@@ -22,7 +22,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recent_recycler"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         app:layout_constraintTop_toBottomOf="@id/recent_textview"

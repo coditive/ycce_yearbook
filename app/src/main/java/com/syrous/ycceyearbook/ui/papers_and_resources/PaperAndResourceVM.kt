@@ -88,7 +88,7 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
 
     fun storeRecentlyUsedPaper(paper: Paper) {
         viewModelScope.launch {
-            repository.saveRecentlyUsedPaper(paper)
+            repository.saveOrUpdateRecentlyUsedPaper(paper)
         }
     }
 

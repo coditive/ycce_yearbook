@@ -24,6 +24,8 @@ class Repository @Inject constructor(
     private val _dataLoading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _dataLoading
 
+    val listOfRecentPapers = localDataSource.observeRecentPapers()
+
     fun observePapers (department: String, sem:Int, courseCode: String, exam: String): LiveData<Result<List<Paper>>> {
         return localDataSource.observePapers(department, sem, courseCode, exam)
     }
@@ -162,12 +164,18 @@ class Repository @Inject constructor(
         return result
     }
 
-    suspend fun saveRecentlyUsedPaper(paper: Paper) {
+    suspend fun saveOrUpdateRecentlyUsedPaper(paper: Paper) {
         withContext(Dispatchers.IO) {
-        val recent = Recent(paper.id, "paper")
-        localDataSource.saveRecentlyUsedPaper(recent)
+            val result = localDataSource.getRecentsObject(paper.id)
+            if(result is Success) {
+              if(result.data.isEmpty()) {
+                  val recent = Recent(paper.id, "paper", 1)
+                  localDataSource.saveRecentlyUsedPaper(recent)
+              } else {
+                  localDataSource.updateHits(paper.id)
+              }
+            }
         }
     }
-
 
 }

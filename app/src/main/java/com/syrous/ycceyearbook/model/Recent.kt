@@ -17,5 +17,6 @@ import androidx.room.PrimaryKey
 )
 data class Recent (
     @PrimaryKey val id: String,
-    val type: String
+    val type: String,
+    val hits: Int
 )

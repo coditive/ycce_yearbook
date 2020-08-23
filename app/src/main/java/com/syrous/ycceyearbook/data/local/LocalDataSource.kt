@@ -128,4 +128,22 @@ class LocalDataSource @Inject constructor(
     suspend fun saveRecentlyUsedPaper(recent: Recent) {
         recentDao.insertRecentPaper(recent)
     }
+
+    suspend fun getRecentsObject(recentId: String): Result<List<Recent>> {
+      return try {
+            Success(recentDao.getRecent(recentId))
+       } catch (e: Exception) {
+           Error(e)
+       }
+    }
+
+    suspend fun updateHits(recentId: String) {
+        recentDao.updateHits(recentId)
+    }
+
+    fun observeRecentPapers(): LiveData<Result<List<Paper>>> {
+        return recentDao.observeRecentPapers().map {
+            Success(it)
+        }
+    }
 }
