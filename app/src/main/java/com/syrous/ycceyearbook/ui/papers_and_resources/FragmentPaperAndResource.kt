@@ -6,13 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourcesBinding
 import com.syrous.ycceyearbook.model.Paper
-import com.syrous.ycceyearbook.model.Subject
-import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
 import timber.log.Timber
 import java.io.File
 import java.io.Serializable
@@ -24,6 +23,8 @@ class FragmentPaperAndResource : Fragment() {
 
     @Inject
     lateinit var viewModel: PaperAndResourceVM
+
+    private val args: FragmentPaperAndResourceArgs by navArgs()
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
@@ -45,8 +46,7 @@ class FragmentPaperAndResource : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val subject = arguments?.getSerializable(SUBJECT_OBJECT) as Subject
-        viewPagerAdapter = ViewPagerAdapter(subject, PaperDownloader(), childFragmentManager, lifecycle)
+        viewPagerAdapter = ViewPagerAdapter(args.subject, PaperDownloader(), childFragmentManager, lifecycle)
 
         binding.apply {
             paperAndResourceViewPager.adapter = viewPagerAdapter
@@ -62,7 +62,7 @@ class FragmentPaperAndResource : Fragment() {
     }
 
     inner class PaperDownloader: Serializable {
-        fun downloadPaper(paper: Paper): File {
+        suspend fun downloadPaper(paper: Paper): File {
             viewModel.storeRecentlyUsedPaper(paper)
             val path = requireActivity().getExternalFilesDir("papers")
             val paperFile = File(path, "paper${paper.id}.pdf")

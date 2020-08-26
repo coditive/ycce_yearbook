@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -21,7 +20,6 @@ import com.syrous.ycceyearbook.databinding.FragmentSemesterBinding
 import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.ui.home.Department
 import com.syrous.ycceyearbook.util.DEPARTMENT_OBJECT
-import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -82,7 +80,7 @@ class FragmentSem : Fragment() {
             viewModel.reloadSubjectFromRemote(department.name, i)
         }
 
-        viewModel.loadListOfSemestersFromLocal(department.name)
+        viewModel.loadListOfSemestersFromLocal(viewLifecycleOwner, department.name)
         viewModel.subjectList.observe(viewLifecycleOwner) {semSubList ->
            for(i in semSubList.indices){
                adapterList[i].submitList(semSubList[i])
@@ -118,8 +116,7 @@ class FragmentSem : Fragment() {
     inner class RedirectClickHandler {
         fun clickListener (subject: Subject) {
             Toast.makeText(requireContext(), "${subject.course} is selected !!!!", Toast.LENGTH_SHORT).show()
-            val args = bundleOf(SUBJECT_OBJECT to subject)
-            findNavController().navigate(R.id.fragmentPaperAndResource, args)
+            findNavController().navigate(FragmentSemDirections.actionFragmentSemToFragmentPaperAndResource(subject))
         }
     }
 }

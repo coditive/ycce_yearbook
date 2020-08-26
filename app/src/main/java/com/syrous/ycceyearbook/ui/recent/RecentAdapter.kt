@@ -9,7 +9,8 @@ import com.syrous.ycceyearbook.databinding.RecentCardLayoutBinding
 import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.ui.recent.FragmentRecent.ClickHandler
 
-class RecentAdapter (private val clickHandler: ClickHandler): ListAdapter<Paper, RecentAdapter.RecentViewHolder>(CALLBACK) {
+class RecentAdapter (private val clickHandler: ClickHandler):
+    ListAdapter<Paper, RecentAdapter.RecentViewHolder>(CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentViewHolder {
         val inflater = LayoutInflater.from(parent.context)

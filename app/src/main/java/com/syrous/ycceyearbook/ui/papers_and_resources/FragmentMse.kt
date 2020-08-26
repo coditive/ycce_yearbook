@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.util.PAPER_DOWNLOADER
 import com.syrous.ycceyearbook.util.PDF_FILE_OBJECT
 import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -66,9 +68,11 @@ class FragmentMse : Fragment() {
 
     inner class MseClickHandler: ClickHandler {
         override fun onClick(paper: Paper) {
-            val paperFile = downloader.downloadPaper(paper)
-            val args = bundleOf(PDF_FILE_OBJECT to paperFile)
-            findNavController().navigate(R.id.fragmentPdfRenderer, args)
+            lifecycleScope.launch {
+                val paperFile = downloader.downloadPaper(paper)
+                val args = bundleOf(PDF_FILE_OBJECT to paperFile)
+                findNavController().navigate(R.id.fragmentPdfRenderer, args)
+            }
         }
     }
 }

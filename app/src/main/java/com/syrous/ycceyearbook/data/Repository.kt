@@ -1,7 +1,9 @@
 package com.syrous.ycceyearbook.data
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.observe
 import com.syrous.ycceyearbook.data.local.LocalDataSource
 import com.syrous.ycceyearbook.data.remote.RemoteDataSource
 import com.syrous.ycceyearbook.model.*
@@ -93,14 +95,14 @@ class Repository @Inject constructor(
         return localDataSource.getResources(department, sem, courseCode)
     }
 
-    suspend fun loadListOfSubjectsFromRepo(department: String) {
+    fun loadListOfSubjectsFromRepo(lifeCycleOwner: LifecycleOwner, department: String) {
         _dataLoading.postValue(true)
-        withContext(Dispatchers.IO) {
-            val result = localDataSource.getSemesterFromLocal(department)
-            _listOfSubjectList.postValue(filterAndCreateSemester(result))
+            localDataSource.observeSemesterFromLocal(department).observe(lifeCycleOwner) {
+                _listOfSubjectList.postValue(filterAndCreateSemester(it))
+            }
             _dataLoading.postValue(false)
-        }
     }
+
 
     private fun filterAndCreateSemester(semesterResult: Result<List<Int>>)
             : List<List<SemSubModel>>  {

@@ -13,11 +13,14 @@
         <argument
             android:name="department_object"
             app:argType=".ui.home.Department"
-            android:defaultValue="@null"
-            app:nullable="true"/>
+            app:nullable="false"/>
         <action
             android:id="@+id/action_fragmentSem_to_fragmentPaperAndResource"
-            app:destination="@id/fragmentPaperAndResource" >
+            app:destination="@id/fragmentPaperAndResource">
+            <argument
+                android:name="subject"
+                app:argType=".model.Subject"
+                app:nullable="false"/>
         </action>
     </fragment>
     <fragment
@@ -28,11 +31,14 @@
         <argument
             android:name="subject"
             app:argType=".model.Subject"
-            android:defaultValue="@null"
-            app:nullable="true"/>
+            app:nullable="false"/>
         <action
             android:id="@+id/action_fragmentPaperAndResource_to_fragmentPdfRenderer"
             app:destination="@id/fragmentPdfRenderer">
+            <argument
+                android:name="pdfRef"
+                app:argType="java.io.File"
+                app:nullable="false"/>
         </action>
     </fragment>
 
@@ -44,8 +50,7 @@
         <argument
             android:name="pdfRef"
             app:argType="java.io.File"
-            android:defaultValue="@null"
-            app:nullable="true"/>
+            app:nullable="false"/>
     </fragment>
 
 </navigation>

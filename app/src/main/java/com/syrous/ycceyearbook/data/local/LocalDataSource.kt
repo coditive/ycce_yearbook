@@ -30,6 +30,12 @@ class LocalDataSource @Inject constructor(
         return Success(result)
     }
 
+    fun observeSemesterFromLocal(department: String): LiveData<Result<List<Int>>> {
+        return allDao.observeSemester(department).map {
+            Success(it)
+        }
+    }
+
     suspend fun getSubjectFromLocal(department: String, sem: Int): Result<List<Subject>> {
         val result = allDao.getSubjects(department, sem)
         return Success(result)
