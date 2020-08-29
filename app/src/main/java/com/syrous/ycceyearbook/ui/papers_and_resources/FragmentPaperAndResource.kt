@@ -12,6 +12,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourcesBinding
 import com.syrous.ycceyearbook.model.Paper
+import kotlinx.coroutines.delay
 import timber.log.Timber
 import java.io.File
 import java.io.Serializable
@@ -69,6 +70,7 @@ class FragmentPaperAndResource : Fragment() {
             val storage = FirebaseStorage.getInstance()
             val refs = storage.getReferenceFromUrl(paper.url)
             refs.getFile(paperFile)
+            delay(2000)
             Timber.d("File path : ${paperFile.name}, ${paperFile.absoluteFile}, Total Space: ${paperFile.totalSpace}")
             return paperFile
         }

@@ -75,7 +75,7 @@
     </style>
 
     <style name="AppButton" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">?attr/colorSecondary</item>
+        <item name="backgroundTint">?attr/colorPrimaryVariant</item>
         <!--        <item name="android:textColor">@color/button_text_color</item>-->
         <!--        <item name="iconTint">@color/button_text_color</item>-->
         <!--        <item name="rippleColor">@color/button_ripple_color</item>-->
@@ -109,7 +109,7 @@
 
     <style name="login_title_textView" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/color_secondary_variant</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -118,6 +118,16 @@
         <item name="android:textSize">40sp</item>
         <item name="fontWeight">1</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="GreetingScreenButton" parent="Widget.MaterialComponents.Button">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+        <item name="backgroundTint">?attr/colorPrimaryVariant</item>
     </style>
 
     <!-- Home Screen Styles   -->   

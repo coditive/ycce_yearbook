@@ -10,6 +10,9 @@
         android:name="com.syrous.ycceyearbook.ui.login.FragmentLogin"
         android:label="FragmentLogin"
         tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_fragmentLogin_to_fragmentGreeting"
+            app:destination="@id/fragmentGreeting" />
     </fragment>
 
 
@@ -23,6 +26,9 @@
             app:destination="@id/fragmentLogin" />
 
     </fragment>
-
-
+    <fragment
+        android:id="@+id/fragmentGreeting"
+        android:name="com.syrous.ycceyearbook.ui.login.FragmentGreeting"
+        android:label="FragmentGreeting"
+        tools:layout="@layout/fragment_greeting_screen"/>
 </navigation>

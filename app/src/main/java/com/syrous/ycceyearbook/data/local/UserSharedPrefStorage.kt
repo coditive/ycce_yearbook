@@ -10,7 +10,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class UserSharedPrefStorage @Inject constructor(private val sharedPreferences: SharedPreferences) {
-
     fun saveAccount(user: User) {
         sharedPreferences.edit().apply {
             putString(USER_EMAIL, user.email)

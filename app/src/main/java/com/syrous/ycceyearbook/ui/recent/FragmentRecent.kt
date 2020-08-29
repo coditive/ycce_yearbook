@@ -1,6 +1,7 @@
 package com.syrous.ycceyearbook.ui.recent
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentRecentBinding
 import com.syrous.ycceyearbook.model.Paper
+import com.syrous.ycceyearbook.ui.semester.ActivitySem
 import javax.inject.Inject
 
 class FragmentRecent : Fragment() {
@@ -50,13 +52,13 @@ class FragmentRecent : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-
     }
 
     inner class ClickHandler {
         fun onClick(paper: Paper) {
             Toast.makeText(requireContext(), "Paper = ${paper.id} selected", Toast.LENGTH_SHORT).show()
-            TODO("Navigate to Pdf Renderer using deep link")
+            val intent = Intent(requireActivity(), ActivitySem::class.java)
+            
         }
     }
 }

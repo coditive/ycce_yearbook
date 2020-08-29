@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
@@ -17,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentLoginBinding
-import com.syrous.ycceyearbook.ui.home.ActivityHome
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -25,6 +25,8 @@ class FragmentLogin: Fragment() {
 
     @Inject
     lateinit var viewModel: LoginVM
+
+    private lateinit var binding: FragmentLoginBinding
 
     private lateinit var loginComponent: LoginComponent
 
@@ -41,8 +43,26 @@ class FragmentLogin: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
-        val binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        // Creates an instance of Registration component by grabbing the factory from the app graph
+        loginComponent = (requireActivity().application as YearBookApplication).appComponent.loginComponent()
+            .create()
+
+        loginComponent.inject(this@FragmentLogin)
+
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.loginLoadingView.setAnimation("loading_paperplane.json")
 
         viewModel.status.observe(viewLifecycleOwner) {
             when (it) {
@@ -59,8 +79,8 @@ class FragmentLogin: Fragment() {
                         "Logged In Successfully",
                         Toast.LENGTH_SHORT
                     ).show()
-
-                    startActivity(Intent(requireActivity(), ActivityHome::class.java))
+                    blankTheScreen()
+                    findNavController().navigate(FragmentLoginDirections.actionFragmentLoginToFragmentGreeting())
                 }
                 LoginState.LOGIN_ERROR -> {
                     Toast.makeText(
@@ -74,8 +94,14 @@ class FragmentLogin: Fragment() {
 
         viewModel.loading.observe(viewLifecycleOwner) {
             when(it) {
-                true -> binding.loginProgress.visibility = View.VISIBLE
-                false -> binding.loginProgress.visibility = View.GONE
+                true -> {
+                    binding.loginLoadingView.visibility = View.VISIBLE
+                    blankTheScreen()
+                }
+                false -> {
+                    binding.loginLoadingView.visibility = View.GONE
+                    makeScreenVisible()
+                }
             }
         }
 
@@ -86,19 +112,24 @@ class FragmentLogin: Fragment() {
             }
         }
 
-        return binding.root
     }
 
+    private fun blankTheScreen() {
+        binding.apply {
+            buttonSignIn.visibility = View.GONE
+            loginLogo.visibility = View.GONE
+            loginTitle.visibility = View.GONE
+            loginSubtitle.visibility = View.GONE
+        }
+    }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        // Creates an instance of Registration component by grabbing the factory from the app graph
-        loginComponent = (requireActivity().application as YearBookApplication).appComponent.loginComponent()
-            .create()
-
-        loginComponent.inject(this@FragmentLogin)
-
+    private fun makeScreenVisible() {
+        binding.apply {
+            buttonSignIn.visibility = View.VISIBLE
+            loginLogo.visibility = View.VISIBLE
+            loginTitle.visibility = View.VISIBLE
+            loginSubtitle.visibility = View.VISIBLE
+        }
     }
 
     private fun signIn() {
