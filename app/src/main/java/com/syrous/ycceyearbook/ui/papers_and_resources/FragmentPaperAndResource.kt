@@ -6,13 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.storage.FirebaseStorage
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourcesBinding
 import com.syrous.ycceyearbook.model.Paper
-import kotlinx.coroutines.delay
 import timber.log.Timber
 import java.io.File
 import java.io.Serializable
@@ -47,6 +46,7 @@ class FragmentPaperAndResource : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.prLoadingView.setAnimation("loading_spiral.json")
         viewPagerAdapter = ViewPagerAdapter(args.subject, PaperDownloader(), childFragmentManager, lifecycle)
 
         binding.apply {
@@ -60,19 +60,35 @@ class FragmentPaperAndResource : Fragment() {
                 paperAndResourceViewPager.currentItem = tab.position
             }.attach()
         }
+
+        viewModel.dataLoading.observe(viewLifecycleOwner) {
+            if(it) {
+                binding.prLoadingView.visibility = View.VISIBLE
+                blankScreen()
+            } else {
+              binding.prLoadingView.visibility = View.GONE
+                showScreen()
+            }
+        }
     }
 
     inner class PaperDownloader: Serializable {
         suspend fun downloadPaper(paper: Paper): File {
-            viewModel.storeRecentlyUsedPaper(paper)
-            val path = requireActivity().getExternalFilesDir("papers")
-            val paperFile = File(path, "paper${paper.id}.pdf")
-            val storage = FirebaseStorage.getInstance()
-            val refs = storage.getReferenceFromUrl(paper.url)
-            refs.getFile(paperFile)
-            delay(2000)
-            Timber.d("File path : ${paperFile.name}, ${paperFile.absoluteFile}, Total Space: ${paperFile.totalSpace}")
-            return paperFile
+           return viewModel.storeRecentlyUsedPaper(requireActivity(),paper)
+        }
+    }
+
+    private fun blankScreen() {
+        binding.apply {
+            paperAndResourceTabLayout.visibility = View.INVISIBLE
+            paperAndResourceViewPager.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showScreen() {
+        binding.apply {
+            paperAndResourceTabLayout.visibility = View.VISIBLE
+            paperAndResourceViewPager.visibility = View.VISIBLE
         }
     }
 }

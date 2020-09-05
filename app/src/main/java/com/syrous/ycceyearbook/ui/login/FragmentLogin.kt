@@ -28,8 +28,6 @@ class FragmentLogin: Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
 
-    private lateinit var loginComponent: LoginComponent
-
     @Inject
     lateinit var googleSignInClient: GoogleSignInClient
 
@@ -51,18 +49,13 @@ class FragmentLogin: Fragment() {
         super.onAttach(context)
 
         // Creates an instance of Registration component by grabbing the factory from the app graph
-        loginComponent = (requireActivity().application as YearBookApplication).appComponent.loginComponent()
-            .create()
-
-        loginComponent.inject(this@FragmentLogin)
-
+        (requireActivity().application as YearBookApplication).appComponent.inject(this)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.loginLoadingView.setAnimation("loading_paperplane.json")
+        binding.loginLoadingView.setAnimation("loading_spiral.json")
 
         viewModel.status.observe(viewLifecycleOwner) {
             when (it) {
@@ -116,10 +109,10 @@ class FragmentLogin: Fragment() {
 
     private fun blankTheScreen() {
         binding.apply {
-            buttonSignIn.visibility = View.GONE
-            loginLogo.visibility = View.GONE
-            loginTitle.visibility = View.GONE
-            loginSubtitle.visibility = View.GONE
+            buttonSignIn.visibility = View.INVISIBLE
+            loginLogo.visibility = View.INVISIBLE
+            loginTitle.visibility = View.INVISIBLE
+            loginSubtitle.visibility = View.INVISIBLE
         }
     }
 

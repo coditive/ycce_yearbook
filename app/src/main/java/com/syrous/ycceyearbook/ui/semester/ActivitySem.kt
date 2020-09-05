@@ -15,9 +15,9 @@ class ActivitySem : AppCompatActivity(R.layout.activity_sem) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        postponeEnterTransition()
-
         navController = findNavController(R.id.sem_nav_host)
+
+        postponeEnterTransition()
 
         val department = intent.getSerializableExtra(DEPARTMENT_OBJECT)
 

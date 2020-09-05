@@ -8,8 +8,7 @@ import com.syrous.ycceyearbook.databinding.OtherFeaturesCardLayoutBinding
 class OtherFeaturesAdapter(
     private val otherFeatures: List<OtherFeature>,
     private val clickHandler: FragmentHome.OtherFeatureClickHandler
-) :
-    RecyclerView.Adapter<OtherFeaturesAdapter.OtherFeaturesViewHolder>() {
+) : RecyclerView.Adapter<OtherFeaturesAdapter.OtherFeaturesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OtherFeaturesViewHolder {
         val inflater = LayoutInflater.from(parent.context)

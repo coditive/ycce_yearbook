@@ -24,6 +24,14 @@
         <action
             android:id="@+id/action_fragmentRecent_to_fragmentNotices"
             app:destination="@id/fragmentNotices" />
+        <action
+            android:id="@+id/action_fragmentRecent_to_fragmentPdfRenderer2"
+            app:destination="@id/fragmentPdfRenderer2">
+            <argument
+                android:name="pdfRef"
+                app:argType="java.io.File"
+                app:nullable="false"/>
+        </action>
     </fragment>
 
     <fragment
@@ -41,5 +49,15 @@
         android:name="com.syrous.ycceyearbook.ui.more.FragmentMore"
         android:label="FragmentMore"
         tools:layout="@layout/fragment_more">
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentPdfRenderer2"
+        android:name="com.syrous.ycceyearbook.ui.pdf_screen.FragmentPdfRenderer"
+        android:label="FragmentPdfRenderer"
+        tools:layout="@layout/fragment_pdf_renderer">
+        <argument
+            android:name="pdfRef"
+            app:argType="java.io.File"
+            app:nullable="false"/>
     </fragment>
 </navigation>

@@ -1,14 +1,17 @@
 package com.syrous.ycceyearbook.di
 
 import android.app.Application
-import com.syrous.ycceyearbook.ui.login.LoginComponent
+import com.syrous.ycceyearbook.ui.home.FragmentHome
+import com.syrous.ycceyearbook.ui.login.FragmentLogin
+import com.syrous.ycceyearbook.ui.notices.FragmentNotices
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentEse
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentMse
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentPaperAndResource
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentResource
 import com.syrous.ycceyearbook.ui.pdf_screen.PdfComponent
+import com.syrous.ycceyearbook.ui.recent.FragmentRecent
 import com.syrous.ycceyearbook.ui.semester.SemComponent
-import com.syrous.ycceyearbook.util.user.UserManager
+import com.syrous.ycceyearbook.util.user.UserDataRepository
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -25,9 +28,7 @@ interface AppComponent {
         fun create(@BindsInstance context: Application): AppComponent
     }
 
-    fun userManager(): UserManager
-
-    fun loginComponent(): LoginComponent.Factory
+    fun userRepository(): UserDataRepository
 
     fun pdfComponent(): PdfComponent.Factory
 
@@ -40,5 +41,13 @@ interface AppComponent {
     fun inject(fragmentMse: FragmentMse)
 
     fun inject(fragmentResource: FragmentResource)
+
+    fun inject(fragmentHome: FragmentHome)
+
+    fun inject(fragmentNotices: FragmentNotices)
+
+    fun inject(fragmentRecent: FragmentRecent)
+
+    fun inject(fragmentLogin: FragmentLogin)
 
 }

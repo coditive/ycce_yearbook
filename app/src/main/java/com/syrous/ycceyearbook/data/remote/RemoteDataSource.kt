@@ -11,7 +11,6 @@ import com.syrous.ycceyearbook.model.Result.Success
 import com.syrous.ycceyearbook.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
@@ -29,18 +28,16 @@ class RemoteDataSource @Inject constructor(
     }
 
     override suspend fun getSubjects(department: String, sem: Int): Result<List<Subject>> {
-        return withContext(ioDispatcher){
-            try {
+        return try {
                 val subjects = remoteApi.getSubjects(department, sem)
                 Success(subjects)
             } catch (e: Exception){
                 Error(e)
-            }
         }
     }
 
     override suspend fun refreshSubjects(department: String, sem: Int) {
-        observableSubjects.value = getSubjects(department, sem)!!
+        observableSubjects.value = getSubjects(department, sem)
     }
 
     override fun observePapers(department: String, sem: Int, courseCode: String, exam: String): LiveData<Result<List<Paper>>> {
@@ -48,8 +45,7 @@ class RemoteDataSource @Inject constructor(
     }
 
     override suspend fun getPapers(department: String, sem: Int, courseCode: String, exam: String): Result<List<Paper>> {
-        return withContext(ioDispatcher){
-            try {
+        return try {
                 if(exam == "mse"){
                     val papers = remoteApi.getMsePapers(department, sem, courseCode)
                     Success(papers)
@@ -57,9 +53,8 @@ class RemoteDataSource @Inject constructor(
                     val papers = remoteApi.getEsePapers(department, sem, courseCode)
                     Success(papers)
                 }
-            } catch (e: Exception){
+        } catch (e: Exception){
                 Error(e)
-            }
         }
     }
 
@@ -69,7 +64,7 @@ class RemoteDataSource @Inject constructor(
         courseCode: String,
         exam: String
     ) {
-        observablePapers.value = getPapers(department, sem, courseCode, exam)!!
+        observablePapers.value = getPapers(department, sem, courseCode, exam)
     }
 
     override fun observeResources(department: String, sem: Int, courseCode: String): LiveData<Result<List<Resource>>> {
@@ -77,18 +72,16 @@ class RemoteDataSource @Inject constructor(
     }
 
     override suspend fun getResources(department: String, sem: Int, courseCode: String): Result<List<Resource>> {
-        return withContext(ioDispatcher){
-            try {
-                val resources = remoteApi.getResource(department, sem, courseCode)
-                Success(resources)
-            } catch (e: Exception){
-                Error(e)
-            }
+        return try {
+            val resources = remoteApi.getResource(department, sem, courseCode)
+            Success(resources)
+        } catch (e: Exception){
+            Error(e)
         }
     }
 
     override suspend fun refreshResources(department: String, sem: Int, courseCode: String) {
-        observableResources.value = getResources(department, sem, courseCode)!!
+        observableResources.value = getResources(department, sem, courseCode)
     }
 
     override suspend fun saveSubject(subject: Subject) {

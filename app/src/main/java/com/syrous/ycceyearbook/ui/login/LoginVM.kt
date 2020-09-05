@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
-import com.syrous.ycceyearbook.util.user.UserManager
+import com.syrous.ycceyearbook.util.user.UserDataRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 
-class LoginVM @Inject constructor(private val userManager: UserManager) : ViewModel() {
+class LoginVM @Inject constructor(private val userDataRepository: UserDataRepository) : ViewModel() {
 
     private val _status = MutableLiveData(LoginState.NOT_LOGGED_IN)
     val status: LiveData<LoginState> = _status
@@ -25,7 +25,7 @@ class LoginVM @Inject constructor(private val userManager: UserManager) : ViewMo
    fun loginUser(account: GoogleSignInAccount) {
         _loading.value = true
        viewModelScope.launch {
-           val result = userManager.loginUser(account)
+           val result = userDataRepository.loginAndStoreUser(account)
            if(result is Success){
                _status.value = LoginState.LOGGED_IN
            } else if(result is Error) {

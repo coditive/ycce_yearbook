@@ -80,7 +80,22 @@ class FragmentSem : Fragment() {
             viewModel.reloadSubjectFromRemote(department.name, i)
         }
 
+        _binding.semesterLoadingView.setAnimation("loading_spiral.json")
+
         viewModel.loadListOfSemestersFromLocal(viewLifecycleOwner, department.name)
+
+        viewModel.dataLoading.observe(viewLifecycleOwner) {
+            if(it) {
+                _binding.semesterLoadingView.visibility = View.VISIBLE
+                blankScreen()
+            }
+            else {
+                _binding.semesterLoadingView.visibility = View.GONE
+                showScreen()
+            }
+        }
+
+
         viewModel.subjectList.observe(viewLifecycleOwner) {semSubList ->
            for(i in semSubList.indices){
                adapterList[i].submitList(semSubList[i])
@@ -112,6 +127,19 @@ class FragmentSem : Fragment() {
         _binding.departmentNameText.setBackgroundColor(ContextCompat.getColor(requireContext(), department.backgroundColor))
         _binding.departmentNameText.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(requireContext(), department.largeDrawableId),null,null)
     }
+
+    private fun blankScreen() {
+        _binding.apply {
+            semRecycler.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showScreen() {
+        _binding.apply {
+            semRecycler.visibility = View.VISIBLE
+        }
+    }
+
 
     inner class RedirectClickHandler {
         fun clickListener (subject: Subject) {

@@ -22,15 +22,8 @@
                 app:argType=".model.Subject"
                 app:nullable="false"/>
         </action>
-        <action
-            android:id="@+id/action_fragmentSem_to_fragmentPdfRenderer"
-            app:destination="@id/fragmentPdfRenderer">
-        <argument
-            android:name="pdfRef"
-            app:argType="java.io.File"
-            app:nullable="false"/>
-        </action>
     </fragment>
+
     <fragment
         android:id="@+id/fragmentPaperAndResource"
         android:name="com.syrous.ycceyearbook.ui.papers_and_resources.FragmentPaperAndResource"

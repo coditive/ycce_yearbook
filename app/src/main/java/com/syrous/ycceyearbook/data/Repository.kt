@@ -10,7 +10,7 @@ import com.syrous.ycceyearbook.model.*
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -49,19 +49,24 @@ class Repository @Inject constructor(
     }
 
     private suspend fun updateSubjectsFromRemoteDataSource(department: String, sem: Int){
-        val subjects = remoteDataSource.getSubjects(department, sem)
-
-        if (subjects is Success){
-            subjects.data.forEach {subject ->
-                localDataSource.saveSubject(subject)
+        _dataLoading.value = true
+        withContext(Dispatchers.IO) {
+            val subjects = remoteDataSource.getSubjects(department, sem)
+            if (subjects is Success) {
+                subjects.data.forEach { subject ->
+                    localDataSource.saveSubject(subject)
+                }
+            } else if (subjects is Error) {
+                throw subjects.exception
             }
-        } else if (subjects is Error) {
-            throw subjects.exception
+            delay(200)
+            _dataLoading.postValue(false)
         }
     }
 
     private suspend fun updatePapersFromRemoteDataSource(department: String, sem: Int, courseCode: String, exam: String){
-        coroutineScope {
+        _dataLoading.value = true
+        withContext(Dispatchers.IO) {
             val papers = remoteDataSource.getPapers(department, sem, courseCode, exam)
 
             if (papers is Success){
@@ -72,18 +77,24 @@ class Repository @Inject constructor(
             } else if (papers is Error) {
                 throw papers.exception
             }
+            delay(200)
+            _dataLoading.postValue(false)
         }
     }
 
     private suspend fun updateResourcesFromRemoteDataSource(department: String, sem: Int, courseCode: String){
-        val resources = remoteDataSource.getResources(department, sem, courseCode)
-
-        if (resources is Success){
-            resources.data.forEach {resource ->
-                localDataSource.saveResource(resource)
+        _dataLoading.value = true
+        withContext(Dispatchers.IO) {
+            val resources = remoteDataSource.getResources(department, sem, courseCode)
+            if (resources is Success){
+                resources.data.forEach {resource ->
+                    localDataSource.saveResource(resource)
+                }
+            } else if (resources is Error) {
+                throw resources.exception
             }
-        } else if (resources is Error) {
-            throw resources.exception
+            delay(200)
+            _dataLoading.postValue(false)
         }
     }
 
@@ -96,16 +107,13 @@ class Repository @Inject constructor(
     }
 
     fun loadListOfSubjectsFromRepo(lifeCycleOwner: LifecycleOwner, department: String) {
-        _dataLoading.postValue(true)
-            localDataSource.observeSemesterFromLocal(department).observe(lifeCycleOwner) {
-                _listOfSubjectList.postValue(filterAndCreateSemester(it))
-            }
-            _dataLoading.postValue(false)
+        localDataSource.observeSemesterFromLocal(department).observe(lifeCycleOwner) {
+           _listOfSubjectList.postValue(filterAndCreateSemester(it))
+        }
     }
 
 
-    private fun filterAndCreateSemester(semesterResult: Result<List<Int>>)
-            : List<List<SemSubModel>>  {
+    private fun filterAndCreateSemester(semesterResult: Result<List<Int>>): List<List<SemSubModel>>  {
         var result = emptyList<List<SemSubModel>>()
         if(semesterResult is Success){
             val listOfSemesterList = mutableListOf<List<SemSubModel>>()
@@ -124,7 +132,6 @@ class Repository @Inject constructor(
     }
 
     suspend fun toggleSubjectVisibility(department: String, sem: Int, index: Int) {
-       _dataLoading.postValue(true)
         withContext(Dispatchers.IO) {
             val semSubList = (_listOfSubjectList.value as List<List<SemSubModel>>).toMutableList()
             val subjectList = semSubList[index].toMutableList()
@@ -148,12 +155,10 @@ class Repository @Inject constructor(
 
             semSubList[index] = subjectList
             _listOfSubjectList.postValue(semSubList)
-            _dataLoading.postValue(false)
         }
     }
 
-    private fun filterSubject(subjectResult: Result<List<Subject>>)
-            : List<SemSubModel>  {
+    private fun filterSubject(subjectResult: Result<List<Subject>>): List<SemSubModel>  {
         val result = mutableListOf<SemSubModel>()
         if(subjectResult is Success){
             subjectResult.data.forEach {
