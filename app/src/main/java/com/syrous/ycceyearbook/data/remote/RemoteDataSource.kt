@@ -1,7 +1,6 @@
 package com.syrous.ycceyearbook.data.remote
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.syrous.ycceyearbook.data.LibraryDataSource
 import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.model.Resource
@@ -9,22 +8,14 @@ import com.syrous.ycceyearbook.model.Result
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
 import com.syrous.ycceyearbook.model.Subject
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
     private val remoteApi: RemoteApi
 ): LibraryDataSource {
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-
-    private val observableSubjects = MutableLiveData<Result<List<Subject>>>()
-    private val observablePapers = MutableLiveData<Result<List<Paper>>>()
-    private val observableResources = MutableLiveData<Result<List<Resource>>>()
-
 
     override fun observeSubjects(department: String, sem: Int): LiveData<Result<List<Subject>>> {
-        return observableSubjects
+        TODO("Not yet implemented")
     }
 
     override suspend fun getSubjects(department: String, sem: Int): Result<List<Subject>> {
@@ -37,11 +28,11 @@ class RemoteDataSource @Inject constructor(
     }
 
     override suspend fun refreshSubjects(department: String, sem: Int) {
-        observableSubjects.value = getSubjects(department, sem)
+        TODO("Not yet implemented")
     }
 
     override fun observePapers(department: String, sem: Int, courseCode: String, exam: String): LiveData<Result<List<Paper>>> {
-        return observablePapers
+        TODO("Not yet implemented")
     }
 
     override suspend fun getPapers(department: String, sem: Int, courseCode: String, exam: String): Result<List<Paper>> {
@@ -64,11 +55,11 @@ class RemoteDataSource @Inject constructor(
         courseCode: String,
         exam: String
     ) {
-        observablePapers.value = getPapers(department, sem, courseCode, exam)
+        TODO("Not yet implemented")
     }
 
     override fun observeResources(department: String, sem: Int, courseCode: String): LiveData<Result<List<Resource>>> {
-        return observableResources
+        TODO("Not yet implemented")
     }
 
     override suspend fun getResources(department: String, sem: Int, courseCode: String): Result<List<Resource>> {
@@ -81,12 +72,10 @@ class RemoteDataSource @Inject constructor(
     }
 
     override suspend fun refreshResources(department: String, sem: Int, courseCode: String) {
-        observableResources.value = getResources(department, sem, courseCode)
+        TODO("Not yet implemented")
     }
 
     override suspend fun saveSubject(subject: Subject) {
-
-
     }
 
     override suspend fun savePaper(paper: Paper) {

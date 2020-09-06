@@ -52,6 +52,8 @@
         android:layoutAnimation="@anim/recycler_layout_anim"
         tools:listitem="@layout/department_card_layout"
         tools:itemCount="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar"/>
 
     <com.airbnb.lottie.LottieAnimationView

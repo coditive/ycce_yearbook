@@ -52,5 +52,6 @@
     <string name="next">Next</string>
 
 
-
+<!--  Notification Manager   -->
+    <string name="yearbook_channel">YEARBOOK_CHANNEL</string>
 </resources>

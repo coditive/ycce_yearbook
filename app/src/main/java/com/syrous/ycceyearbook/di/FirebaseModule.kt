@@ -34,5 +34,4 @@ class FirebaseModule {
         return FirebaseAuth.getInstance()
     }
 
-
 }
