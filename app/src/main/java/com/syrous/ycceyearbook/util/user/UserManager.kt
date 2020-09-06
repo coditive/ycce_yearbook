@@ -30,6 +30,7 @@ class UserManager @Inject constructor (
                 if (account.id != null) {
                     val user = User(
                         account.id!!,
+                        auth.currentUser!!.uid,
                         account.displayName,
                         account.email,
                         account.photoUrl.toString()

@@ -13,7 +13,8 @@ class UserSharedPrefStorage @Inject constructor(private val sharedPreferences: S
     fun saveAccount(user: User) {
         sharedPreferences.edit().apply {
             putString(USER_EMAIL, user.email)
-            putString(USER_ID, user.id)
+            putString(USER_GOOGLE_ID, user.googleid)
+            putString(USER_AUTH_ID, user.authid)
             putString(USER_NAME, user.name)
             putString(USER_PHOTO_URL, user.profilePhotoUrl)
             apply()
@@ -25,7 +26,8 @@ class UserSharedPrefStorage @Inject constructor(private val sharedPreferences: S
         try {
             with(sharedPreferences) {
                 val user = User(
-                    id = getString(USER_ID, null)!!,
+                    googleid = getString(USER_GOOGLE_ID, null)!!,
+                    authid = getString(USER_AUTH_ID, null)!!,
                     name = getString(USER_NAME, null),
                     email = getString(USER_EMAIL, null),
                     profilePhotoUrl = getString(USER_PHOTO_URL, null)
@@ -59,7 +61,8 @@ class UserSharedPrefStorage @Inject constructor(private val sharedPreferences: S
             remove(USER_PHOTO_URL)
             remove(USER_EMAIL)
             remove(USER_NAME)
-            remove(USER_ID)
+            remove(USER_AUTH_ID)
+            remove(USER_GOOGLE_ID)
             commit()
         }
 }

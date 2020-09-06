@@ -8,11 +8,12 @@ import com.syrous.ycceyearbook.R
 
 private val NOTIFICATION_ID = 41414141
 
-fun sendNotification(applicationContext: Context, messageBody: String) {
+fun sendNotification(applicationContext: Context, messageTitle: String, messageBody: String) {
     val builder = NotificationCompat.Builder(
             applicationContext,
             applicationContext.getString(R.string.yearbook_channel)
         )
+            .setContentTitle(messageTitle)
             .setContentText(messageBody)
             .setAutoCancel(true)
 
