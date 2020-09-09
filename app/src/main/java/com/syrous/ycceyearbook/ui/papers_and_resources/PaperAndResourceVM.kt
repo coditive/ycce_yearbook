@@ -2,6 +2,8 @@ package com.syrous.ycceyearbook.ui.papers_and_resources
 
 import android.content.Context
 import androidx.lifecycle.*
+import androidx.navigation.NavController
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.storage.FirebaseStorage
 import com.syrous.ycceyearbook.data.Repository
 import com.syrous.ycceyearbook.model.Paper
@@ -9,7 +11,6 @@ import com.syrous.ycceyearbook.model.Resource
 import com.syrous.ycceyearbook.model.Result
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
@@ -24,6 +25,12 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
     private val _forceUpdateEse = MutableLiveData(false)
 
     private val _forceUpdateMse = MutableLiveData(false)
+
+    private val _paperDownload = MutableLiveData<String>()
+    val paperDownload: LiveData<String> = _paperDownload
+
+    private val _resourcesDownloaded = MutableLiveData<String>()
+    val resourcesDownload: LiveData<String> = _resourcesDownloaded
 
     private val _loading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _loading
@@ -91,18 +98,21 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
         }
     }
 
-    suspend fun storeRecentlyUsedPaper(context: Context, paper: Paper): File {
+    suspend fun storeRecentlyUsedPaper(context: Context, navController: NavController, paper: Paper) {
         _loading.postValue(true)
         repository.saveOrUpdateRecentlyUsedPaper(paper)
         val path = context.getExternalFilesDir("papers")
         val paperFile = File(path, "paper${paper.id}.pdf")
         val storage = FirebaseStorage.getInstance()
         val refs = storage.getReferenceFromUrl(paper.url)
-        refs.getFile(paperFile)
-        delay(2000)
-        Timber.d("File path : ${paperFile.name}, ${paperFile.absoluteFile}, Total Space: ${paperFile.totalSpace}")
-        _loading.postValue(false)
-        return paperFile
+        refs.getFile(paperFile).addOnCompleteListener(OnCompleteListener {
+            if(it.isSuccessful) {
+                Timber.d("File path : ${paperFile.name}, ${paperFile.absoluteFile}, Total Space: ${paperFile.totalSpace}")
+                navController.navigate(FragmentPaperAndResourceDirections
+                    .actionFragmentPaperAndResourceToFragmentPdfRenderer("paper${paper.id}.pdf"))
+                _loading.postValue(false)
+            }
+        })
     }
 
     private fun filterPaper(paperResult: Result<List<Paper>>)

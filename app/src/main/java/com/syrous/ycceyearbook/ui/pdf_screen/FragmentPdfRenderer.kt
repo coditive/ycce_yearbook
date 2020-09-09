@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPdfRendererBinding
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -42,9 +43,11 @@ class FragmentPdfRenderer : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Timber.d("File name = ${args.pdfRef.exists()}, ${args.pdfRef.name}, ${args.pdfRef.absoluteFile}")
+        Timber.d("File name = ${args.pdfRef}")
+        val paperFile = requireActivity().getExternalFilesDir("papers/${args.pdfRef}") as File
+
         (requireActivity().application as YearBookApplication).appComponent.pdfComponent().create(
-            args.pdfRef
+            paperFile
         ).inject(this@FragmentPdfRenderer)
     }
 

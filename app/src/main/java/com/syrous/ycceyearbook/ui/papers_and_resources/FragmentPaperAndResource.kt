@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourcesBinding
 import com.syrous.ycceyearbook.model.Paper
 import timber.log.Timber
-import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -70,11 +70,12 @@ class FragmentPaperAndResource : Fragment() {
                 showScreen()
             }
         }
+
     }
 
     inner class PaperDownloader: Serializable {
-        suspend fun downloadPaper(paper: Paper): File {
-           return viewModel.storeRecentlyUsedPaper(requireActivity(),paper)
+        suspend fun downloadPaper(paper: Paper) {
+           viewModel.storeRecentlyUsedPaper(requireActivity(), findNavController(), paper)
         }
     }
 

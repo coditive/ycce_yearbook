@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourceDetailBinding
@@ -67,9 +66,7 @@ class FragmentEse : Fragment() {
     inner class EseClickHandler: ClickHandler {
        override fun onClick(paper: Paper) {
            lifecycleScope.launch {
-               val paperFile = downloader.downloadPaper(paper)
-               findNavController().navigate(FragmentPaperAndResourceDirections
-                   .actionFragmentPaperAndResourceToFragmentPdfRenderer(paperFile))
+               downloader.downloadPaper(paper)
            }
         }
     }
