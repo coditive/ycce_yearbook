@@ -4,6 +4,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FieldValue
 import com.syrous.ycceyearbook.model.Result
 import com.syrous.ycceyearbook.model.Result.Error
 import com.syrous.ycceyearbook.model.Result.Success
@@ -25,7 +26,7 @@ class UserManager @Inject constructor (
 
     suspend fun loginUser(account: GoogleSignInAccount): Result<User> {
         firebaseAuthWithGoogle(account.idToken!!)
-        delay(2000)
+        delay(3000)
         return if (auth.currentUser != null) {
                 if (account.id != null) {
                     val user = User(
@@ -33,7 +34,9 @@ class UserManager @Inject constructor (
                         auth.currentUser!!.uid,
                         account.displayName,
                         account.email,
-                        account.photoUrl.toString()
+                        null,
+                        account.photoUrl.toString(),
+                        FieldValue.serverTimestamp()
                     )
                     Success(user)
                 } else {
@@ -50,7 +53,7 @@ class UserManager @Inject constructor (
         //Firebase signOut
         auth.signOut()
         var result: Result<Boolean> = Error(Exception("Function not Executed!!"))
-        delay(2000)
+        delay(3000)
         //Google SignOut
         googleSignInClient.signOut().addOnCompleteListener {
             if (it.isSuccessful) {
@@ -64,7 +67,7 @@ class UserManager @Inject constructor (
         // Getting Sign In Credential from google sign in api
         val credential = GoogleAuthProvider.getCredential(id, null)
         // Sign User into firebase
-        delay(500)
+        delay(2000)
          auth.signInWithCredential(credential)
             .addOnCompleteListener {
                 if(it.isSuccessful) {

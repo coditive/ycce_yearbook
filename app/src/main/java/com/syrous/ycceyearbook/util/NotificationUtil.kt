@@ -13,6 +13,7 @@ fun sendNotification(applicationContext: Context, messageTitle: String, messageB
             applicationContext,
             applicationContext.getString(R.string.yearbook_channel)
         )
+            .setSmallIcon(R.drawable.ic_chevron_right)
             .setContentTitle(messageTitle)
             .setContentText(messageBody)
             .setAutoCancel(true)

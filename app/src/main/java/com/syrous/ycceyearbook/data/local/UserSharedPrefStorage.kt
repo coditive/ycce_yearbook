@@ -30,7 +30,9 @@ class UserSharedPrefStorage @Inject constructor(private val sharedPreferences: S
                     authid = getString(USER_AUTH_ID, null)!!,
                     name = getString(USER_NAME, null),
                     email = getString(USER_EMAIL, null),
-                    profilePhotoUrl = getString(USER_PHOTO_URL, null)
+                    ntToken = getString(USER_NOTIFICATION_TOKEN, null),
+                    profilePhotoUrl = getString(USER_PHOTO_URL, null),
+                    timestamp = null
                 )
                 return@with Success(user)
             }
@@ -62,6 +64,7 @@ class UserSharedPrefStorage @Inject constructor(private val sharedPreferences: S
             remove(USER_EMAIL)
             remove(USER_NAME)
             remove(USER_AUTH_ID)
+            remove(USER_NOTIFICATION_TOKEN)
             remove(USER_GOOGLE_ID)
             commit()
         }

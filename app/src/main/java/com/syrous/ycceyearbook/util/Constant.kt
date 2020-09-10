@@ -21,6 +21,7 @@ const val USER_AUTH_ID = "user_auth_id"
 const val USER_NAME = "user_name"
 const val USER_PHOTO_URL = "user_photo_url"
 const val USER_NOTIFICATION_TOKEN = "user_notification_token"
+const val USER_TIMESTAMP = "user_timestamp"
 
 // Notification Service
 const val USER_COLLECTION = "users"

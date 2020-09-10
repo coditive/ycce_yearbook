@@ -34,6 +34,4 @@ class UserDataRepository @Inject constructor (
         userManager.logout()
         storage.logout()
     }
-
-
 }
