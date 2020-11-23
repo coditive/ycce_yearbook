@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.syrous.ycceyearbook.data.local.AllDao
+import com.syrous.ycceyearbook.data.local.NotificationDao
 import com.syrous.ycceyearbook.data.local.RecentDao
 import com.syrous.ycceyearbook.data.local.YearBookDatabase
 import com.syrous.ycceyearbook.util.USER_SP_KEY
@@ -35,6 +36,9 @@ class RoomModule {
 
     @Provides
     fun provideRecentDao(db: YearBookDatabase): RecentDao = db.recentDao()
+
+    @Provides
+    fun provideNotificationDao(db: YearBookDatabase): NotificationDao = db.notificationDao()
 
     @Provides
     fun provideSharedPreferences(context: Application): SharedPreferences {
