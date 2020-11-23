@@ -12,15 +12,15 @@ import com.syrous.ycceyearbook.model.Recent
 @Dao
 interface RecentDao {
 
-    @Query("SELECT * FROM papers JOIN recents ON papers.id = (SELECT recents.id FROM recents WHERE type = 'paper' ORDER BY hits DESC)")
+    @Query("SELECT * FROM papers JOIN recents ON papers.id = recents.id WHERE type = 'paper' ORDER BY hits DESC")
     fun observeRecentPapers(): LiveData<List<Paper>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertRecentPaper(recent: Recent)
 
-    @Query("SELECT * FROM recents WHERE id = :recentId")
-    suspend fun getRecent(recentId: String): List<Recent>
+    @Query("SELECT * FROM recents WHERE id = :paperId")
+    suspend fun getRecent(paperId: String): List<Recent>
 
-    @Query("UPDATE recents SET hits = hits + 1 WHERE id =:recentId")
-    suspend fun updateHits(recentId: String)
+    @Query("UPDATE recents SET hits = hits + 1 WHERE id =:paperId")
+    suspend fun updateHits(paperId: String)
 }

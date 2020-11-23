@@ -29,7 +29,7 @@
             app:destination="@id/fragmentPdfRenderer2">
             <argument
                 android:name="pdfRef"
-                app:argType="java.io.File"
+                app:argType="string"
                 app:nullable="false"/>
         </action>
     </fragment>
@@ -57,7 +57,7 @@
         tools:layout="@layout/fragment_pdf_renderer">
         <argument
             android:name="pdfRef"
-            app:argType="java.io.File"
+            app:argType="string"
             app:nullable="false"/>
     </fragment>
 </navigation>

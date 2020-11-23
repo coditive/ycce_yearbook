@@ -70,12 +70,12 @@ class FragmentPdfRenderer : Fragment() {
 
         binding.apply {
             previous.setOnClickListener {
-                viewModel.showPrevious()
                 binding.pageNumber.text = (count - 1).toString()
+                viewModel.showPrevious()
             }
             next.setOnClickListener {
-                viewModel.showNext()
                 binding.pageNumber.text = (count + 1).toString()
+                viewModel.showNext()
             }
         }
     }

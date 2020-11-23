@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e4e003703b7ef2a82c250c7bbbbfc6f6",
+    "identityHash": "7291e7b4e0ed4fbfc48d1ae85e947490",
     "entities": [
       {
         "tableName": "subjects",
@@ -192,7 +192,7 @@
       },
       {
         "tableName": "recents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `type` TEXT NOT NULL, `hits` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `papers`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `type` TEXT NOT NULL, `hits` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `papers`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -223,7 +223,7 @@
         "foreignKeys": [
           {
             "table": "papers",
-            "onDelete": "CASCADE",
+            "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
               "id"
@@ -282,7 +282,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e4e003703b7ef2a82c250c7bbbbfc6f6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7291e7b4e0ed4fbfc48d1ae85e947490')"
     ]
   }
 }

@@ -1,5 +1,6 @@
 package com.syrous.ycceyearbook.ui.recent
 
+import android.text.style.AbsoluteSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.syrous.ycceyearbook.databinding.RecentCardLayoutBinding
 import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.ui.recent.FragmentRecent.ClickHandler
+import com.syrous.ycceyearbook.util.Truss
 
 class RecentAdapter (private val clickHandler: ClickHandler):
     ListAdapter<Paper, RecentAdapter.RecentViewHolder>(CALLBACK) {
@@ -26,7 +28,10 @@ class RecentAdapter (private val clickHandler: ClickHandler):
         : RecyclerView.ViewHolder(binding.root) {
         fun bind(paper: Paper, clickHandler: ClickHandler) {
             binding.apply {
-                recentTitle.text = paper.id
+                recentTitle.text = Truss()
+                    .pushSpan(AbsoluteSizeSpan(18, true))
+                    .append(paper.sem.toString() + "-" + paper.exam.toUpperCase() + "-" + paper.courseCode.toUpperCase())
+                    .build()
                 root.setOnClickListener {
                     clickHandler.onClick(paper)
                 }

@@ -29,6 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_gravity="center_horizontal"
         tools:itemCount="5"
         tools:listitem="@layout/recent_card_layout"/>
 

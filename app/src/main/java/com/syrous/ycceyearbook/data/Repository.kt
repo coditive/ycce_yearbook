@@ -173,6 +173,7 @@ class Repository @Inject constructor(
 
     suspend fun saveOrUpdateRecentlyUsedPaper(paper: Paper) {
         withContext(Dispatchers.IO) {
+            Timber.d("Recent Called!!")
             val result = localDataSource.getRecentsObject(paper.id)
             if(result is Success) {
               if(result.data.isEmpty()) {

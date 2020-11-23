@@ -135,9 +135,9 @@ class LocalDataSource @Inject constructor(
         recentDao.insertRecentPaper(recent)
     }
 
-    suspend fun getRecentsObject(recentId: String): Result<List<Recent>> {
+    suspend fun getRecentsObject(paperId: String): Result<List<Recent>> {
       return try {
-            Success(recentDao.getRecent(recentId))
+            Success(recentDao.getRecent(paperId))
        } catch (e: Exception) {
            Error(e)
        }

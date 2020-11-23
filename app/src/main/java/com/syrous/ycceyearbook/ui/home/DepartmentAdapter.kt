@@ -11,7 +11,6 @@ class DepartmentAdapter(
     private val clickHandler: FragmentHome.DepartmentClickHandler
 ): RecyclerView.Adapter<DepartmentAdapter.DptViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DptViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DepartmentCardLayoutBinding.inflate(inflater, parent, false)

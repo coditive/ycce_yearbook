@@ -37,7 +37,7 @@ interface AllDao {
     @Query("SELECT * FROM papers WHERE department = :department AND sem = :sem AND courseCode = :courseCode AND exam = :exam")
     suspend fun getPapers(department: String, sem: Int, courseCode: String, exam: String): List<Paper>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPaper(paper: Paper)
 
     @Query("DELETE FROM papers WHERE department = :department AND sem = :sem AND courseCode = :courseCode AND exam = :exam")

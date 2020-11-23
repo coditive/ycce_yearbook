@@ -21,7 +21,7 @@ class RecentVM @Inject constructor(private val repository: Repository): ViewMode
        return if(paperResult is Success){
             paperResult.data
         } else {
-           TODO("Generate Error Message and show error on screen")
+           result
        }
     }
 

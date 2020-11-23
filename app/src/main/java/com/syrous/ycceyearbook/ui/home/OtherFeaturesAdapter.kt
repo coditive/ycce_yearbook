@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.syrous.ycceyearbook.databinding.OtherFeaturesCardLayoutBinding
+import timber.log.Timber
 
 class OtherFeaturesAdapter(
     private val otherFeatures: List<OtherFeature>,
@@ -31,6 +32,7 @@ class OtherFeaturesAdapter(
                 RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(feature: OtherFeature) {
+            Timber.d("Other Features on bind called!! ${feature.name}")
             binding.otherFeatureItem.text = feature.name
             binding.otherFeatureItem.setCompoundDrawablesWithIntrinsicBounds(0, feature.drawableId,0,0)
         }
