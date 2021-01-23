@@ -16,7 +16,7 @@ import kotlin.coroutines.CoroutineContext
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class RouteStore @Inject constructor(
+class RouteStore constructor(
     private val dispatcher: Dispatcher,
     private val coroutineContext: CoroutineContext
 ) {
@@ -25,7 +25,7 @@ class RouteStore @Inject constructor(
     private val _routes = StackRelayFlow.create<RouteAction>(RouteAction.StartUp)
     open val routes: StateFlow<RouteAction> = _routes.stackStateFlow
 
-    fun observeRouteAction() {
+    init {
         coroutineScope.launch {
             dispatcher.getDispatcherChannelSubscription()
                 .receiveAsFlow()
@@ -48,10 +48,6 @@ class RouteStore @Inject constructor(
                     }
                 }
         }
-    }
-
-    init {
-        observeRouteAction()
     }
 
     fun clearBackStack() {
