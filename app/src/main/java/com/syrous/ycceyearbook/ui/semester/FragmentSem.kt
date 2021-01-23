@@ -144,7 +144,7 @@ class FragmentSem : Fragment() {
     inner class RedirectClickHandler {
         fun clickListener (subject: Subject) {
             Toast.makeText(requireContext(), "${subject.course} is selected !!!!", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(FragmentSemDirections.actionFragmentSemToFragmentPaperAndResource(subject))
+            
         }
     }
 }

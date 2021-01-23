@@ -73,7 +73,6 @@ class FragmentLogin: Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     blankTheScreen()
-                    findNavController().navigate(FragmentLoginDirections.actionFragmentLoginToFragmentGreeting())
                 }
                 LoginState.LOGIN_ERROR -> {
                     Toast.makeText(

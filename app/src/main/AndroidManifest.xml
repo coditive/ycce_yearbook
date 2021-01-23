@@ -15,13 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.home.ActivityHome"
-            android:screenOrientation="locked">
-        </activity>
-
-        <activity android:name=".ui.semester.ActivitySem"
-            android:screenOrientation="locked"/>
-
         <activity android:name=".ui.ActivityMain"
             android:screenOrientation="locked">
             <intent-filter>
@@ -50,6 +43,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/color_primary" />
+
+        <meta-data android:name="io.sentry.dsn"
+            android:value="https://adb50e0885ff43b6a825a2664466e575@o502049.ingest.sentry.io/5583990" />
 
     </application>
 

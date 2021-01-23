@@ -1,7 +1,6 @@
 package com.syrous.ycceyearbook.ui.splash
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,46 +14,24 @@ import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentSplashBinding
 import com.syrous.ycceyearbook.model.Result.Success
 import com.syrous.ycceyearbook.model.User
-import com.syrous.ycceyearbook.ui.home.ActivityHome
 import com.syrous.ycceyearbook.util.USER_COLLECTION
 import com.syrous.ycceyearbook.util.user.UserDataRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.coroutineScope
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class FragmentSplash: Fragment() {
-
-    private lateinit var userDataRepository: UserDataRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentSplashBinding.inflate(layoutInflater, container, false).root
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-       userDataRepository =  (requireActivity().application as YearBookApplication).appComponent.userRepository()
-    }
+    ): View = FragmentSplashBinding.inflate(layoutInflater, container, false).root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            val user = userDataRepository.getLoggedInUser()
-            if(user is Success) {
-                user.data.timestamp = FieldValue.serverTimestamp()
-                syncDataWithServer(user.data)
-            } else {
-                findNavController().navigate(FragmentSplashDirections.actionFragmentSplashToFragmentLogin())
-            }
 
     }
 
-    private fun syncDataWithServer(user: User) {
-        val db = FirebaseFirestore.getInstance()
-        val query = db.collection(USER_COLLECTION).document(user.googleid)
-        query.set(user).addOnCompleteListener(OnCompleteListener {
-            if(it.isSuccessful) {
-                startActivity(Intent(requireActivity(), ActivityHome::class.java))
-            } else {
-                TODO("Error Networking is not there")
-            }
-        })
-    }
 }

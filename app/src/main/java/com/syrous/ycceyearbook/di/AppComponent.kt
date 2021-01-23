@@ -1,6 +1,8 @@
 package com.syrous.ycceyearbook.di
 
 import android.app.Application
+import com.syrous.ycceyearbook.YearBookApplication
+import com.syrous.ycceyearbook.ui.ActivityMain
 import com.syrous.ycceyearbook.ui.home.FragmentHome
 import com.syrous.ycceyearbook.ui.login.FragmentLogin
 import com.syrous.ycceyearbook.ui.notices.FragmentNotices
@@ -14,18 +16,25 @@ import com.syrous.ycceyearbook.ui.semester.SemComponent
 import com.syrous.ycceyearbook.util.user.UserDataRepository
 import dagger.BindsInstance
 import dagger.Component
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import javax.inject.Singleton
+import kotlin.coroutines.CoroutineContext
 
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 @Singleton
-@Component(modules = [RoomModule::class, NetworkModule::class, AppSubcomponents::class, FirebaseModule::class])
+@Component(modules = [RoomModule::class, NetworkModule::class,
+    AppSubcomponents::class, FirebaseModule::class, SingletonModule::class])
 interface AppComponent {
 
     // Factory to create instances of the AppComponent
     @Component.Factory
     interface Factory {
         // With @BindsInstance, the Context passed in will be available in the graph
-        fun create(@BindsInstance context: Application): AppComponent
+        fun create(@BindsInstance context: Application,
+                   @BindsInstance applicationCoroutineContext: CoroutineContext): AppComponent
     }
 
     fun userRepository(): UserDataRepository
@@ -33,6 +42,10 @@ interface AppComponent {
     fun pdfComponent(): PdfComponent.Factory
 
     fun semComponent(): SemComponent.Factory
+
+    fun inject(yearBookApplication: YearBookApplication)
+
+    fun inject(activityMain: ActivityMain)
 
     fun inject(fragmentPaperAndResource: FragmentPaperAndResource)
 

@@ -27,6 +27,12 @@ const val USER_TIMESTAMP = "user_timestamp"
 const val USER_COLLECTION = "users"
 const val UPDATE_TIMESTAMP = "update_timestamp"
 
+object Constant {
+
+    object RequestCode {
+        const val noResult = 0
+    }
+}
 
 
 

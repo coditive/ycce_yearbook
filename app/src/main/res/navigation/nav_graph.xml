@@ -3,32 +3,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmentSplash">
+    app:startDestination="@id/fragment_splash">
 
     <fragment
-        android:id="@+id/fragmentLogin"
+        android:id="@+id/fragment_login"
         android:name="com.syrous.ycceyearbook.ui.login.FragmentLogin"
         android:label="FragmentLogin"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_fragmentLogin_to_fragmentGreeting"
-            app:destination="@id/fragmentGreeting" />
+            android:id="@+id/action_fragment_login_to_fragmentHome"
+            app:destination="@id/fragment_home" />
     </fragment>
 
 
     <fragment
-        android:id="@+id/fragmentSplash"
+        android:id="@+id/fragment_splash"
         android:name="com.syrous.ycceyearbook.ui.splash.FragmentSplash"
         android:label="FragmentSplash"
         tools:layout="@layout/fragment_splash">
         <action
-            android:id="@+id/action_fragmentSplash_to_fragmentLogin"
-            app:destination="@id/fragmentLogin" />
+            android:id="@+id/action_fragment_splash_to_fragment_login"
+            app:destination="@id/fragment_login" />
+        <action
+            android:id="@+id/action_fragment_splash_to_fragment_welcome"
+            app:destination="@id/fragment_welcome" />
+        <action
+            android:id="@+id/action_fragment_splash_to_fragment_home"
+            app:destination="@id/fragment_home" />
 
     </fragment>
     <fragment
-        android:id="@+id/fragmentGreeting"
+        android:id="@+id/fragment_welcome"
         android:name="com.syrous.ycceyearbook.ui.login.FragmentGreeting"
         android:label="FragmentGreeting"
-        tools:layout="@layout/fragment_greeting_screen"/>
+        tools:layout="@layout/fragment_greeting_screen">
+        <action
+            android:id="@+id/action_fragment_welcome_to_fragment_login"
+            app:destination="@id/fragment_login" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="com.syrous.ycceyearbook.ui.home.FragmentHome"
+        android:label="FragmentHome"
+        tools:layout="@layout/fragment_home_back">
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentRecent"
+            app:destination="@id/fragment_recent" />
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentNotices"
+            app:destination="@id/fragment_notices" />
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentMore"
+            app:destination="@id/fragment_more" />
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentSem"
+            app:destination="@id/fragment_sem" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_recent"
+        android:name="com.syrous.ycceyearbook.ui.recent.FragmentRecent"
+        android:label="FragmentRecent"
+        tools:layout="@layout/fragment_recent"/>
+    <fragment
+        android:id="@+id/fragment_notices"
+        android:name="com.syrous.ycceyearbook.ui.notices.FragmentNotices"
+        android:label="FragmentNotices"
+        tools:layout="@layout/fragment_notice"/>
+
+    <fragment
+        android:id="@+id/fragment_more"
+        android:name="com.syrous.ycceyearbook.ui.more.FragmentMore"
+        android:label="FragmentMore"
+        tools:layout="@layout/fragment_more"/>
+
+    <fragment
+        android:id="@+id/fragment_sem"
+        android:name="com.syrous.ycceyearbook.ui.semester.FragmentSem"
+        android:label="FragmentSem"
+        tools:layout="@layout/fragment_semester">
+        <action
+            android:id="@+id/action_fragmentSem_to_fragmentPaperAndResource"
+            app:destination="@id/fragment_paper_and_resource" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_paper_and_resource"
+        android:name="com.syrous.ycceyearbook.ui.papers_and_resources.FragmentPaperAndResource"
+        android:label="FragmentPaperAndResource"
+        tools:layout="@layout/fragment_paper_and_resources">
+        <action
+            android:id="@+id/action_fragmentPaperAndResource_to_fragmentPdfRenderer"
+            app:destination="@id/fragment_pdf_renderer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_pdf_renderer"
+        android:name="com.syrous.ycceyearbook.ui.pdf_screen.FragmentPdfRenderer"
+        android:label="FragmentPdfRenderer"
+        tools:layout="@layout/fragment_pdf_renderer"/>
 </navigation>

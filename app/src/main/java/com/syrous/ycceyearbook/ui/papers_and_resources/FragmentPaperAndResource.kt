@@ -24,8 +24,6 @@ class FragmentPaperAndResource : Fragment() {
     @Inject
     lateinit var viewModel: PaperAndResourceVM
 
-    private val args: FragmentPaperAndResourceArgs by navArgs()
-
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     override fun onCreateView(
@@ -47,7 +45,6 @@ class FragmentPaperAndResource : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.prLoadingView.setAnimation("loading_spiral.json")
-        viewPagerAdapter = ViewPagerAdapter(args.subject, PaperDownloader(), childFragmentManager, lifecycle)
 
         binding.apply {
             paperAndResourceViewPager.adapter = viewPagerAdapter

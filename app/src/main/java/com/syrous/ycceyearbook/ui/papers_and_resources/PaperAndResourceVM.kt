@@ -108,8 +108,7 @@ class PaperAndResourceVM @Inject constructor(private val repository: Repository)
         refs.getFile(paperFile).addOnCompleteListener(OnCompleteListener {
             if(it.isSuccessful) {
                 Timber.d("File path : ${paperFile.name}, ${paperFile.absoluteFile}, Total Space: ${paperFile.totalSpace}")
-                navController.navigate(FragmentPaperAndResourceDirections
-                    .actionFragmentPaperAndResourceToFragmentPdfRenderer("paper${paper.id}.pdf"))
+
                 _loading.postValue(false)
             }
         })

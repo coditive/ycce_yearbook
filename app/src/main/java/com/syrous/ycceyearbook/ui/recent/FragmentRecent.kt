@@ -57,7 +57,7 @@ class FragmentRecent : Fragment() {
             Toast.makeText(requireContext(), "Paper = ${paper.id} selected", Toast.LENGTH_SHORT).show()
             val pdfFile = viewModel.getFileFromStorage(requireActivity(), paper)
             requireActivity().findViewById<BottomNavView>(R.id.bottomBar).visibility = View.GONE
-            findNavController().navigate(FragmentRecentDirections.actionFragmentRecentToFragmentPdfRenderer2(pdfFile.name))
+
         }
     }
 }

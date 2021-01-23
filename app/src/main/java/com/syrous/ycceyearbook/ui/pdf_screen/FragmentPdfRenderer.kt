@@ -26,8 +26,6 @@ class FragmentPdfRenderer : Fragment() {
     @Inject
     lateinit var viewModel: PdfRendererViewModel
 
-    private val args: FragmentPdfRendererArgs by navArgs()
-
     private var count = 1
 
     private lateinit var binding: FragmentPdfRendererBinding
@@ -43,12 +41,6 @@ class FragmentPdfRenderer : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Timber.d("File name = ${args.pdfRef}")
-        val paperFile = requireActivity().getExternalFilesDir("papers/${args.pdfRef}") as File
-
-        (requireActivity().application as YearBookApplication).appComponent.pdfComponent().create(
-            paperFile
-        ).inject(this@FragmentPdfRenderer)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

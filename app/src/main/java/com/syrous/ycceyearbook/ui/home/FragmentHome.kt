@@ -1,7 +1,6 @@
 package com.syrous.ycceyearbook.ui.home
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -10,11 +9,8 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
-import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,13 +20,15 @@ import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentHomeBackBinding
 import com.syrous.ycceyearbook.model.User
-import com.syrous.ycceyearbook.ui.semester.ActivitySem
-import com.syrous.ycceyearbook.util.DEPARTMENT_OBJECT
 import com.syrous.ycceyearbook.util.Truss
 import com.syrous.ycceyearbook.util.getDepartmentList
 import com.syrous.ycceyearbook.util.getOtherFeatureList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class FragmentHome : Fragment() {
 
     private lateinit var _binding: FragmentHomeBackBinding
@@ -99,17 +97,17 @@ class FragmentHome : Fragment() {
 
     inner class DepartmentClickHandler {
         fun clickListener(index: Int, view: View) {
-            val intent = Intent(requireActivity(), ActivitySem::class.java)
-            when(index) {
-                0 -> {
-                    Toast.makeText(requireContext(), "CT Selected", Toast.LENGTH_SHORT).show()
-                    intent.putExtra(DEPARTMENT_OBJECT, departmentList[index])
-                    val cardViewPair = Pair.create(view, "shared_element")
-                    val textViewPair = Pair.create(view.findViewById(R.id.department_name) as View, "shared_textview")
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), cardViewPair, textViewPair)
-                    startActivity(intent, options.toBundle())
-                }
-            }
+            TODO("Navigate")
+//            when(index) {
+//                0 -> {
+//                    Toast.makeText(requireContext(), "CT Selected", Toast.LENGTH_SHORT).show()
+//                    intent.putExtra(DEPARTMENT_OBJECT, departmentList[index])
+//                    val cardViewPair = Pair.create(view, "shared_element")
+//                    val textViewPair = Pair.create(view.findViewById(R.id.department_name) as View, "shared_textview")
+//                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), cardViewPair, textViewPair)
+//                    startActivity(intent, options.toBundle())
+//                }
+//            }
         }
     }
 
