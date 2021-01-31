@@ -1,33 +1,34 @@
 package com.syrous.ycceyearbook.presenter
 
-import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import com.syrous.ycceyearbook.R
-import com.syrous.ycceyearbook.action.DialogAction
-import com.syrous.ycceyearbook.action.RouteAction
-import com.syrous.ycceyearbook.action.ToastNotificationAction
+import com.syrous.ycceyearbook.action.*
 import com.syrous.ycceyearbook.flux.Dispatcher
+import com.syrous.ycceyearbook.store.AccountStore
 import com.syrous.ycceyearbook.store.RouteStore
+import com.syrous.ycceyearbook.ui.ActivityMain
 import com.syrous.ycceyearbook.ui.home.bottom_nav.BottomNavView
 import com.syrous.ycceyearbook.view.DialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.filterIsInstance
 import timber.log.Timber
-import javax.inject.Inject
+
+
+interface AppRoutePresenterCallback {
+    fun initiateLogin()
+}
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 class AppRoutePresenter constructor(
     private val activity: AppCompatActivity,
-    dispatcher: Dispatcher,
-    private val routeStore: RouteStore
-): RoutePresenter(activity, dispatcher, routeStore) {
+    private val dispatcher: Dispatcher,
+    private val routeStore: RouteStore,
+    private val accountStore: AccountStore
+    ): RoutePresenter(activity, dispatcher, routeStore) {
 
     override fun onViewReady() {
         super.onViewReady()
@@ -53,21 +54,26 @@ class AppRoutePresenter constructor(
         routeStore.routes.asLiveData().observe(activity) {
             routeAction -> route(routeAction)
         }
-    }
 
-    override fun showDialogFragment(
-        dialogFragment: DialogFragment,
-        destination: RouteAction.DialogFragment
-    ) {
-        super.showDialogFragment(dialogFragment, destination)
+        accountStore.accountState.asLiveData().observe(activity) {
+          accountState ->
+            if(accountState is AccountStore.State.GoogleLogin) {
+                Timber.d("AccountStore State GoogleLogin Got and Login initiated on in Activity")
+                    (activity as ActivityMain).initiateLogin()
+            }
+        }
     }
 
     override fun route(action: RouteAction) {
         activity.setTheme(R.style.AppTheme)
         when(action) {
-            is RouteAction.StartUp -> navigateToFragment(R.id.fragment_splash)
+            is RouteAction.StartUp -> {
+                navigateToFragment(R.id.fragment_splash)
+                dispatcher.dispatch(AccountAction.AutomaticLogin)
+            }
             is RouteAction.Login -> navigateToFragment(R.id.fragment_login)
             is RouteAction.Welcome -> navigateToFragment(R.id.fragment_welcome)
+            is RouteAction.Home -> navigateToFragment(R.id.fragment_home)
             is DialogAction -> showDialog(action)
             is ToastNotificationAction -> showToastNotification(action)
         }
@@ -78,6 +84,7 @@ class AppRoutePresenter constructor(
             R.id.fragment_splash to R.id.fragment_login -> R.id.action_fragment_splash_to_fragment_login
             R.id.fragment_splash to R.id.fragment_welcome -> R.id.action_fragment_splash_to_fragment_welcome
             R.id.fragment_welcome to R.id.fragment_login -> R.id.action_fragment_welcome_to_fragment_login
+            R.id.fragment_splash to R.id.fragment_home -> R.id.action_fragment_splash_to_fragment_home
             R.id.fragment_login to R.id.fragment_home -> R.id.action_fragment_login_to_fragmentHome
             R.id.fragment_home to R.id.fragment_notices -> R.id.action_fragmentHome_to_fragmentNotices
             R.id.fragment_home to R.id.fragment_recent -> R.id.action_fragmentHome_to_fragmentRecent

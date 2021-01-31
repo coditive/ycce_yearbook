@@ -4,6 +4,7 @@ import android.app.Application
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.ui.ActivityMain
 import com.syrous.ycceyearbook.ui.home.FragmentHome
+import com.syrous.ycceyearbook.ui.login.FragmentGreeting
 import com.syrous.ycceyearbook.ui.login.FragmentLogin
 import com.syrous.ycceyearbook.ui.notices.FragmentNotices
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentEse
@@ -13,7 +14,7 @@ import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentResource
 import com.syrous.ycceyearbook.ui.pdf_screen.PdfComponent
 import com.syrous.ycceyearbook.ui.recent.FragmentRecent
 import com.syrous.ycceyearbook.ui.semester.SemComponent
-import com.syrous.ycceyearbook.util.user.UserDataRepository
+import com.syrous.ycceyearbook.ui.splash.FragmentSplash
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,8 +38,6 @@ interface AppComponent {
                    @BindsInstance applicationCoroutineContext: CoroutineContext): AppComponent
     }
 
-    fun userRepository(): UserDataRepository
-
     fun pdfComponent(): PdfComponent.Factory
 
     fun semComponent(): SemComponent.Factory
@@ -46,6 +45,10 @@ interface AppComponent {
     fun inject(yearBookApplication: YearBookApplication)
 
     fun inject(activityMain: ActivityMain)
+
+    fun inject(fragmentSplash: FragmentSplash)
+
+    fun inject(fragmentGreeting: FragmentGreeting)
 
     fun inject(fragmentPaperAndResource: FragmentPaperAndResource)
 

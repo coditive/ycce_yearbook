@@ -37,12 +37,9 @@ abstract class RoutePresenter(
     private val activity: AppCompatActivity,
     private val dispatcher: Dispatcher,
     private val routeStore: RouteStore
-): Presenter(), CoroutineScope {
+): Presenter() {
 
     protected lateinit var navController: NavController
-    override lateinit var coroutineContext: CoroutineContext
-    private lateinit var job: Job
-
     open val navHostFragmentManager: FragmentManager
      get()  {
          val fragmentManager = activity.supportFragmentManager
@@ -77,13 +74,8 @@ abstract class RoutePresenter(
     override fun onViewReady() {
         super.onViewReady()
         onBackPressedDispatcher.addCallback(activity, callback)
-        job = Job()
-        coroutineContext = Dispatchers.IO + job
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
 
     override fun onResume() {
         super.onResume()
@@ -196,11 +188,6 @@ abstract class RoutePresenter(
             Timber.e(e.localizedMessage)
             navController.navigate(destinationId, args)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()
     }
 
     private infix fun Bundle?.hasSameContentOf(another: Bundle?): Boolean {

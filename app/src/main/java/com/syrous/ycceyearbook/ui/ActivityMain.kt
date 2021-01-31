@@ -1,29 +1,45 @@
 package com.syrous.ycceyearbook.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
+import com.google.firebase.auth.FirebaseAuth
 import com.syrous.ycceyearbook.YearBookApplication
+import com.syrous.ycceyearbook.action.AccountAction
+import com.syrous.ycceyearbook.action.SentryAction
 import com.syrous.ycceyearbook.databinding.ActivityMainBinding
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.presenter.AppRoutePresenter
+import com.syrous.ycceyearbook.presenter.AppRoutePresenterCallback
+import com.syrous.ycceyearbook.store.AccountStore
 import com.syrous.ycceyearbook.store.RouteStore
-import io.sentry.Sentry
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class ActivityMain : AppCompatActivity() {
+class ActivityMain : AppCompatActivity(), AppRoutePresenterCallback {
 
     @Inject
     lateinit var dispatcher: Dispatcher
 
     @Inject
     lateinit var routeStore: RouteStore
+
+    @Inject
+    lateinit var accountStore: AccountStore
+
+    @Inject
+    lateinit var googleSignInClient: GoogleSignInClient
+    
+    private val RC_SIGN_IN = 1001
 
     private lateinit var presenter: AppRoutePresenter
 
@@ -36,8 +52,8 @@ class ActivityMain : AppCompatActivity() {
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
 
         (application as YearBookApplication).appComponent.inject(this)
-        presenter = AppRoutePresenter(this, dispatcher, routeStore)
 
+        presenter = AppRoutePresenter(this, dispatcher, routeStore, accountStore)
         setContentView(binding.root)
         presenter.onViewReady()
     }
@@ -66,5 +82,26 @@ class ActivityMain : AppCompatActivity() {
        if(!presenter.onBackPressed()) {
            super.onBackPressed()
        }
+    }
+
+    override fun initiateLogin() {
+        val loginIntent = googleSignInClient.signInIntent
+        startActivityForResult(loginIntent, RC_SIGN_IN)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                dispatcher.dispatch(AccountAction.FirebaseLogin(account))
+            } catch (e: ApiException) {
+                dispatcher.dispatch(SentryAction(e))
+            }
+
+        }
     }
 }

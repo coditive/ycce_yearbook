@@ -4,7 +4,12 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.syrous.ycceyearbook.flux.Dispatcher
+import com.syrous.ycceyearbook.store.AccountStore
 import com.syrous.ycceyearbook.store.NetworkStore
 import com.syrous.ycceyearbook.store.RouteStore
 import com.syrous.ycceyearbook.store.SentryStore
@@ -28,8 +33,9 @@ class SingletonModule {
 
     @Singleton
     @Provides
-    fun provideRouteStore(dispatcher: Dispatcher, coroutineContext: CoroutineContext): RouteStore {
-        return RouteStore(dispatcher, coroutineContext)
+    fun provideRouteStore(dispatcher: Dispatcher, accountStore: AccountStore,
+                          coroutineContext: CoroutineContext): RouteStore {
+        return RouteStore(dispatcher, accountStore, coroutineContext)
     }
 
     @Singleton
@@ -45,5 +51,4 @@ class SingletonModule {
                             coroutineContext: CoroutineContext): NetworkStore {
         return NetworkStore(context, dispatcher, coroutineContext)
     }
-
 }

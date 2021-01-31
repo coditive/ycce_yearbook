@@ -33,9 +33,6 @@ class FragmentHome : Fragment() {
 
     private lateinit var _binding: FragmentHomeBackBinding
 
-    @Inject
-    lateinit var viewModel: HomeVM
-
     private lateinit var departmentList: List<Department>
 
     private lateinit var otherFeatureList: List<OtherFeature>
@@ -55,11 +52,6 @@ class FragmentHome : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.getUserProfile()
-        viewModel.userProfile.observe(viewLifecycleOwner) {
-            Glide.with(requireContext()).load(it.profilePhotoUrl).into(_binding.profileView)
-            setupUserNameOnWelcomeScreen(it)
-        }
         departmentList = getDepartmentList()
         setupRecyclerViewForDepartment(departmentList)
         otherFeatureList = getOtherFeatureList()

@@ -23,8 +23,9 @@ enum class TelemetryEventMethod {
     sync_start,
     sync_end,
     sync_error,
-    list_update,
-    list_update_error,
+    automatic_log_in,
+    log_in,
+    logged_in,
     touch,
     update_credentials,
     delete,
@@ -36,9 +37,11 @@ enum class TelemetryEventMethod {
 
 enum class TelemetryEventObject {
     app,
+    activity,
     splash_screen,
     welcome_screen,
     login_student_mis,
+    account_store,
     home_screen,
     semester_screen,
     paper_and_resources_screen,
