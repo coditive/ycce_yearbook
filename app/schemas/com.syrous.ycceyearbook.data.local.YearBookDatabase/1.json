@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7291e7b4e0ed4fbfc48d1ae85e947490",
+    "identityHash": "48c37fe8857ad4deb6434769560a7edb",
     "entities": [
       {
         "tableName": "subjects",
@@ -277,12 +277,68 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "departments",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `smallDrawableId` INTEGER NOT NULL, `largeDrawableId` INTEGER NOT NULL, `backgroundColor` INTEGER NOT NULL, `textColor` INTEGER NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "smallDrawableId",
+            "columnName": "smallDrawableId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "largeDrawableId",
+            "columnName": "largeDrawableId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "backgroundColor",
+            "columnName": "backgroundColor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "textColor",
+            "columnName": "textColor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7291e7b4e0ed4fbfc48d1ae85e947490')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '48c37fe8857ad4deb6434769560a7edb')"
     ]
   }
 }

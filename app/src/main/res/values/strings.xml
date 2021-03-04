@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">YCCE YearBook</string>
+    <string name="app_name">YCCE ExamPrep</string>
     <string name="web_server_id">"248534790481-h3sjgnfr4akcunqvm1f1ameat5mpj7io.apps.googleusercontent.com"</string>
+    <string name="demo_user">Hello, \nDipesh!</string>
 
 <!-- Image Content Description-->
     <string name="splash_icon">Splash Icon</string>
@@ -33,9 +34,6 @@
         <string name="moodle">Moodle</string>
         <string name="upload_paper">Upload Paper</string>
         <string name="fees_payment">Fees Payment</string>
-
-    <!--  front screen bottom  -->
-
 
 
 <!--  Recent Screen -->

@@ -6,24 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourcesBinding
-import com.syrous.ycceyearbook.model.Paper
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import timber.log.Timber
-import java.io.Serializable
-import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class FragmentPaperAndResource : Fragment() {
 
     private lateinit var binding: FragmentPaperAndResourcesBinding
-
-    @Inject
-    lateinit var viewModel: PaperAndResourceVM
-
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     override fun onCreateView(
@@ -57,24 +51,24 @@ class FragmentPaperAndResource : Fragment() {
                 paperAndResourceViewPager.currentItem = tab.position
             }.attach()
         }
-
-        viewModel.dataLoading.observe(viewLifecycleOwner) {
-            if(it) {
-                binding.prLoadingView.visibility = View.VISIBLE
-                blankScreen()
-            } else {
-              binding.prLoadingView.visibility = View.GONE
-                showScreen()
-            }
-        }
+//
+//        viewModel.dataLoading.observe(viewLifecycleOwner) {
+//            if(it) {
+//                binding.prLoadingView.visibility = View.VISIBLE
+//                blankScreen()
+//            } else {
+//              binding.prLoadingView.visibility = View.GONE
+//                showScreen()
+//            }
+//        }
 
     }
 
-    inner class PaperDownloader: Serializable {
-        suspend fun downloadPaper(paper: Paper) {
-           viewModel.storeRecentlyUsedPaper(requireActivity(), findNavController(), paper)
-        }
-    }
+//    inner class PaperDownloader: Serializable {
+//        suspend fun downloadPaper(paper: Paper) {
+//           viewModel.storeRecentlyUsedPaper(requireActivity(), findNavController(), paper)
+//        }
+//    }
 
     private fun blankScreen() {
         binding.apply {

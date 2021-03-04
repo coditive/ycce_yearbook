@@ -1,38 +1,34 @@
 package com.syrous.ycceyearbook.ui.login
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.coroutineScope
 import com.syrous.ycceyearbook.R
-import com.syrous.ycceyearbook.YearBookApplication
-import com.syrous.ycceyearbook.action.AccountAction
 import com.syrous.ycceyearbook.databinding.FragmentLoginBinding
-import com.syrous.ycceyearbook.flux.Dispatcher
+import com.syrous.ycceyearbook.flux.Presenter
+import com.syrous.ycceyearbook.presenter.LoginPresenter
+import com.syrous.ycceyearbook.presenter.LoginView
+import com.syrous.ycceyearbook.ui.BaseFragment
+import com.syrous.ycceyearbook.util.Constant
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import timber.log.Timber
-import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 @ExperimentalCoroutinesApi
 @FlowPreview
-class FragmentLogin: Fragment() {
-
+class FragmentLogin: BaseFragment(), LoginView {
     private lateinit var binding: FragmentLoginBinding
-
-    @Inject
-    lateinit var dispatcher: Dispatcher
+    private val _loginButton = MutableSharedFlow<Unit>()
+    override val loginButton: SharedFlow<Unit>
+        get() = _loginButton
+    override val coroutineScope: CoroutineScope
+        get() = viewLifecycleOwner.lifecycle.coroutineScope
+    override var presenter: Presenter = LoginPresenter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,29 +38,31 @@ class FragmentLogin: Fragment() {
         binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        // Creates an instance of Registration component by grabbing the factory from the app graph
-        (requireActivity().application as YearBookApplication).appComponent.inject(this)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.apply {
-            loginLoadingView.setAnimation("loading_spiral.json")
+            loginLoadingView.setAnimation(Constant.Indicator.loading)
             buttonSignIn.apply {
                 (this.getChildAt(0) as TextView).text = resources.getText(R.string.sign_in_button)
                 setOnClickListener {
-                    Timber.d("Google Login initiated !!!")
-                    dispatcher.dispatch(AccountAction.InitiateLogin)
+                    viewLifecycleOwner.lifecycle.coroutineScope.launchWhenCreated {
+                        _loginButton.emit(Unit)
+                    }
                 }
             }
         }
     }
 
-    private fun blankTheScreen() {
+    override fun showAllView() {
+        binding.apply {
+            buttonSignIn.visibility = View.VISIBLE
+            loginLogo.visibility = View.VISIBLE
+            loginTitle.visibility = View.VISIBLE
+            loginSubtitle.visibility = View.VISIBLE
+        }
+    }
+
+    override fun hideAllView() {
         binding.apply {
             buttonSignIn.visibility = View.INVISIBLE
             loginLogo.visibility = View.INVISIBLE
@@ -73,12 +71,11 @@ class FragmentLogin: Fragment() {
         }
     }
 
-    private fun makeScreenVisible() {
-        binding.apply {
-            buttonSignIn.visibility = View.VISIBLE
-            loginLogo.visibility = View.VISIBLE
-            loginTitle.visibility = View.VISIBLE
-            loginSubtitle.visibility = View.VISIBLE
-        }
+    override fun showLoadingIndicator() {
+        binding.loginLoadingView.visibility = View.VISIBLE
+    }
+
+    override fun hideLoadingIndicator() {
+        binding.loginLoadingView.visibility = View.GONE
     }
 }

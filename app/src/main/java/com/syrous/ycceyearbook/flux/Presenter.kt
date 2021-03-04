@@ -1,10 +1,15 @@
 package com.syrous.ycceyearbook.flux
 
+import android.content.Context
 import androidx.annotation.CallSuper
 
 abstract class Presenter {
 
     open fun onViewReady() {
+
+    }
+
+    open fun onAttach(context: Context) {
 
     }
 

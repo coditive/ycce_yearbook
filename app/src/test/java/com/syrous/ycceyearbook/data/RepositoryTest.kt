@@ -1,13 +1,10 @@
 package com.syrous.ycceyearbook.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.truth.Truth.assertThat
 import com.syrous.ycceyearbook.model.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class RepositoryTest {
@@ -27,7 +24,6 @@ class RepositoryTest {
     private lateinit var localDataSource: FakeDataSource
     private lateinit var remoteDataSource: FakeDataSource
 
-    private lateinit var repository: Repository
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -42,43 +38,5 @@ class RepositoryTest {
 
 //        repository = Repository(localDataSource, remoteDataSource, Dispatchers.Unconfined)
     }
-
-
-    @Test
-    fun updatePapersFromRemoteToLocal_remotePapersAndLocalPapers_returnsCombinedListOfPapers() = runBlockingTest {
-        //Given -> localDataSource to the repository with list of papers already in it.
-
-        //when -> refresh method is called from the repository
-        repository.refreshPapers("ct", 3, "GE1001", "mse")
-
-        //then -> it should return combined list of local and remote papers
-        assertThat(repository.getPapersFromLocalStorage("ct", 3, "GE1001", "mse"))
-            .isNotEqualTo(totalPapers)
-    }
-
-    @Test
-    fun updateSubjectsFromRemoteToLocal_remoteSubjectsAndLocalSubjects_returnsCombinedListOfSubjects() = runBlockingTest {
-        //Given -> localDataSource to the repository with list of subjects already in it.
-
-        //when -> refresh method is called from the repository
-        repository.refreshSubjects("ct", 3)
-
-        //then -> it should return combined list of local and remote resources
-//        assertThat(repository.getSubjectsFromLocalStorage("ct", 3))
-//            .isNotEqualTo(totalSubjects)
-    }
-
-    @Test
-    fun updateResourcesFromRemoteToLocal_remoteResourcesAndLocalResources_returnsCombinedListOfResources() = runBlockingTest {
-        //Given -> localDataSource to the repository with list of resources already in it.
-
-        //when -> refresh method is called from the repository
-        repository.refreshResources("ct", 3, "GE1001")
-
-        //then -> it should return combined list of local and remote resources
-        assertThat(repository.getResourcesFromLocalStorage("ct", 3, "GE1001"))
-            .isNotEqualTo(totalResources)
-    }
-
 
 }

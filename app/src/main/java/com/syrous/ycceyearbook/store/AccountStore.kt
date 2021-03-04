@@ -1,7 +1,6 @@
 package com.syrous.ycceyearbook.store
 
 import android.app.Application
-import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -10,7 +9,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FieldValue
 import com.syrous.ycceyearbook.action.AccountAction
 import com.syrous.ycceyearbook.action.SentryAction
+import com.syrous.ycceyearbook.data.local.UserSharedPrefStorage
 import com.syrous.ycceyearbook.flux.Dispatcher
+import com.syrous.ycceyearbook.model.Result
+import com.syrous.ycceyearbook.model.Result.Success
 import com.syrous.ycceyearbook.model.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,14 +26,15 @@ import kotlin.coroutines.CoroutineContext
 class AccountStore @Inject constructor(
     private val context: Application,
     private val dispatcher: Dispatcher,
+    private val storage: UserSharedPrefStorage,
     private val googleSignInClient: GoogleSignInClient,
     private val auth: FirebaseAuth,
-    private val coroutineContext: CoroutineContext
+    coroutineContext: CoroutineContext
 ) {
     private val coroutineScope = CoroutineScope(coroutineContext)
 
     sealed class State {
-        object Login: State()
+        object Welcome: State()
         object GoogleLogin: State()
         object Reset: State()
         data class LoggedInUserDetails(val user: User): State()
@@ -40,6 +43,9 @@ class AccountStore @Inject constructor(
     enum class SyncState {
         Syncing, NotSyncing
     }
+
+    private val _loading = MutableStateFlow(false)
+    val loading: StateFlow<Boolean> = _loading
 
     private val _accountState = MutableSharedFlow<State>()
     val accountState: SharedFlow<State> = _accountState
@@ -59,7 +65,7 @@ class AccountStore @Inject constructor(
                         is AccountAction.LoggedIn -> _accountState
                             .emit(State.LoggedInUserDetails(action.user))
                         is AccountAction.Reset -> signOut()
-                        is AccountAction.GoogleLogin -> _accountState.emit(State.Login)
+                        is AccountAction.GoogleLogin -> _accountState.emit(State.Welcome)
                         is AccountAction.InitiateLogin -> _accountState.emit(State.GoogleLogin)
                     }
                 }
@@ -68,12 +74,15 @@ class AccountStore @Inject constructor(
 
     private fun automaticLogin() {
         val account = GoogleSignIn.getLastSignedInAccount(context)
-        val auth = FirebaseAuth.getInstance()
         if (account != null){
-            val user = User(account.id!!, auth.currentUser!!.uid, account.displayName,
-                account.email,null, account.photoUrl.toString(),
-                FieldValue.serverTimestamp())
-            dispatcher.dispatch(AccountAction.LoggedIn(user))
+           val result = storage.getLoggedInUser()
+            if(result is Success) {
+                dispatcher.dispatch(AccountAction.LoggedIn(result.data))
+            }else if(result is Result.Error) {
+                Timber.e(result.exception)
+                dispatcher.dispatch(SentryAction(result.exception))
+            }
+
         } else {
             dispatcher.dispatch(AccountAction.GoogleLogin)
         }
@@ -88,6 +97,7 @@ class AccountStore @Inject constructor(
                 val currentUser = auth.currentUser!!
                 val user = User(account.id!!, currentUser.uid, account.displayName, account.email,null,
                     account.photoUrl.toString(), FieldValue.serverTimestamp())
+                storage.saveAccount(user)
                 dispatcher.dispatch(AccountAction.LoggedIn(user))
             } else {
                 dispatcher.dispatch(SentryAction(task.exception!!))

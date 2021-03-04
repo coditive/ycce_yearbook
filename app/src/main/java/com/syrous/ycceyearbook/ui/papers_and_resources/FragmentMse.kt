@@ -6,30 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourceDetailBinding
-import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.model.Subject
-import com.syrous.ycceyearbook.util.PAPER_DOWNLOADER
-import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
-import kotlinx.coroutines.launch
-import timber.log.Timber
-import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class FragmentMse : Fragment() {
-
-    @Inject
-    lateinit var viewModel: PaperAndResourceVM
-
     private lateinit var subject: Subject
-
-    private lateinit var downloader: FragmentPaperAndResource.PaperDownloader
-
     private lateinit var binding: FragmentPaperAndResourceDetailBinding
 
     override fun onCreateView(
@@ -48,26 +35,26 @@ class FragmentMse : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subject = arguments?.getSerializable(SUBJECT_OBJECT) as Subject
-        downloader = arguments?.getSerializable(PAPER_DOWNLOADER) as FragmentPaperAndResource.PaperDownloader
-        Timber.d("Subject : $subject")
-        val paperAdapter = PaperAdapter(MseClickHandler())
-        viewModel.reloadEsePaperFromRemote(true)
-        viewModel.observeEsePaper(subject.department, subject.sem, subject.course_code).observe(viewLifecycleOwner) {
-            paperAdapter.submitList(it)
-        }
-
-        binding.paperAndResourceRecycler.apply {
-            adapter = paperAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
+//        subject = arguments?.getSerializable(SUBJECT_OBJECT) as Subject
+//        downloader = arguments?.getSerializable(PAPER_DOWNLOADER) as FragmentPaperAndResource.PaperDownloader
+//        Timber.d("Subject : $subject")
+//        val paperAdapter = PaperAdapter(MseClickHandler())
+//        viewModel.reloadEsePaperFromRemote(true)
+//        viewModel.observeEsePaper(subject.department, subject.sem, subject.course_code).observe(viewLifecycleOwner) {
+//            paperAdapter.submitList(it)
+//        }
+//
+//        binding.paperAndResourceRecycler.apply {
+//            adapter = paperAdapter
+//            layoutManager = LinearLayoutManager(requireContext())
+//        }
     }
 
-    inner class MseClickHandler: ClickHandler {
-        override fun onClick(paper: Paper) {
-            lifecycleScope.launch {
-                viewModel.storeRecentlyUsedPaper(requireContext(), findNavController(), paper)
-            }
-        }
-    }
+//    inner class MseClickHandler: ClickHandler {
+//        override fun onClick(paper: Paper) {
+//            lifecycleScope.launch {
+//                viewModel.storeRecentlyUsedPaper(requireContext(), findNavController(), paper)
+//            }
+//        }
+//    }
 }

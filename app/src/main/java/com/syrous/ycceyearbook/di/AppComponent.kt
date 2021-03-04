@@ -2,10 +2,11 @@ package com.syrous.ycceyearbook.di
 
 import android.app.Application
 import com.syrous.ycceyearbook.YearBookApplication
+import com.syrous.ycceyearbook.presenter.HomePresenter
+import com.syrous.ycceyearbook.presenter.LoginPresenter
+import com.syrous.ycceyearbook.presenter.SplashPresenter
+import com.syrous.ycceyearbook.presenter.WelcomePresenter
 import com.syrous.ycceyearbook.ui.ActivityMain
-import com.syrous.ycceyearbook.ui.home.FragmentHome
-import com.syrous.ycceyearbook.ui.login.FragmentGreeting
-import com.syrous.ycceyearbook.ui.login.FragmentLogin
 import com.syrous.ycceyearbook.ui.notices.FragmentNotices
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentEse
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentMse
@@ -14,7 +15,6 @@ import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentResource
 import com.syrous.ycceyearbook.ui.pdf_screen.PdfComponent
 import com.syrous.ycceyearbook.ui.recent.FragmentRecent
 import com.syrous.ycceyearbook.ui.semester.SemComponent
-import com.syrous.ycceyearbook.ui.splash.FragmentSplash
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -46,9 +46,9 @@ interface AppComponent {
 
     fun inject(activityMain: ActivityMain)
 
-    fun inject(fragmentSplash: FragmentSplash)
+    fun inject(splashPresenter: SplashPresenter)
 
-    fun inject(fragmentGreeting: FragmentGreeting)
+    fun inject(welcomePresenter: WelcomePresenter)
 
     fun inject(fragmentPaperAndResource: FragmentPaperAndResource)
 
@@ -58,12 +58,12 @@ interface AppComponent {
 
     fun inject(fragmentResource: FragmentResource)
 
-    fun inject(fragmentHome: FragmentHome)
+    fun inject(homePresenter: HomePresenter)
 
     fun inject(fragmentNotices: FragmentNotices)
 
     fun inject(fragmentRecent: FragmentRecent)
 
-    fun inject(fragmentLogin: FragmentLogin)
+    fun inject(loginPresenter: LoginPresenter)
 
 }

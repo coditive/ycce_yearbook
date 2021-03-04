@@ -34,9 +34,9 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_welcome"
-        android:name="com.syrous.ycceyearbook.ui.login.FragmentGreeting"
+        android:name="com.syrous.ycceyearbook.ui.login.FragmentWelcome"
         android:label="FragmentGreeting"
-        tools:layout="@layout/fragment_greeting_screen">
+        tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_fragment_welcome_to_fragment_login"
             app:destination="@id/fragment_login" />
@@ -45,7 +45,7 @@
         android:id="@+id/fragment_home"
         android:name="com.syrous.ycceyearbook.ui.home.FragmentHome"
         android:label="FragmentHome"
-        tools:layout="@layout/fragment_home_back">
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_fragmentHome_to_fragmentRecent"
             app:destination="@id/fragment_recent" />

@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentPaperAndResourceDetailBinding
-import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class FragmentResource : Fragment() {
-
-    @Inject
-    lateinit var viewModel: PaperAndResourceVM
 
     private lateinit var binding: FragmentPaperAndResourceDetailBinding
 
@@ -23,7 +23,6 @@ class FragmentResource : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPaperAndResourceDetailBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 

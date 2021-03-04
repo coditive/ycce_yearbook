@@ -5,8 +5,14 @@ import com.syrous.ycceyearbook.action.RouteAction
 import com.syrous.ycceyearbook.action.ToastNotificationAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.flux.StackRelayFlow
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -38,6 +44,7 @@ class RouteStore constructor(
                         _routes.trim {
                             when (it) {
                                 is DialogAction,
+                                is RouteAction.Welcome,
                                 is RouteAction.DialogFragment,
                                 is RouteAction.SystemIntent,
                                 is ToastNotificationAction -> true
@@ -57,7 +64,7 @@ class RouteStore constructor(
 
     private fun accountStoreToRouteActions(accountState: AccountStore.State) {
         when(accountState) {
-            is AccountStore.State.Login -> {
+            is AccountStore.State.Welcome -> {
                 Timber.d("State Changed to Login, so dispatching RouteAction Welcome")
                 dispatcher.dispatch(RouteAction.Welcome)
             }

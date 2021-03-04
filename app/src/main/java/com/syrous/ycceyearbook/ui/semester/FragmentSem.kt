@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.MaterialContainerTransform
@@ -17,21 +15,18 @@ import com.google.android.material.transition.MaterialFadeThrough
 import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentSemesterBinding
+import com.syrous.ycceyearbook.model.Department
 import com.syrous.ycceyearbook.model.Subject
-import com.syrous.ycceyearbook.ui.home.Department
 import com.syrous.ycceyearbook.util.DEPARTMENT_OBJECT
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import timber.log.Timber
-import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class FragmentSem : Fragment() {
-
-    @Inject
-    lateinit var viewModel: SemVM
-
     private lateinit var _binding: FragmentSemesterBinding
-
     private lateinit var department: Department
-
     private lateinit var adapterList: MutableList<SemAdapter>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,31 +71,31 @@ class FragmentSem : Fragment() {
         val adapter = setupAdapter()
         setupSemRecyclerView(adapter)
 
-        for(i in 3..8) {
-            viewModel.reloadSubjectFromRemote(department.name, i)
-        }
+//        for(i in 3..8) {
+//            viewModel.reloadSubjectFromRemote(department.name, i)
+//        }
+//
+//        _binding.semesterLoadingView.setAnimation("loading_spiral.json")
+//
+//        viewModel.loadListOfSemestersFromLocal(viewLifecycleOwner, department.name)
+//
+//        viewModel.dataLoading.observe(viewLifecycleOwner) {
+//            if(it) {
+//                _binding.semesterLoadingView.visibility = View.VISIBLE
+//                blankScreen()
+//            }
+//            else {
+//                _binding.semesterLoadingView.visibility = View.GONE
+//                showScreen()
+//            }
+//        }
 
-        _binding.semesterLoadingView.setAnimation("loading_spiral.json")
 
-        viewModel.loadListOfSemestersFromLocal(viewLifecycleOwner, department.name)
-
-        viewModel.dataLoading.observe(viewLifecycleOwner) {
-            if(it) {
-                _binding.semesterLoadingView.visibility = View.VISIBLE
-                blankScreen()
-            }
-            else {
-                _binding.semesterLoadingView.visibility = View.GONE
-                showScreen()
-            }
-        }
-
-
-        viewModel.subjectList.observe(viewLifecycleOwner) {semSubList ->
-           for(i in semSubList.indices){
-               adapterList[i].submitList(semSubList[i])
-           }
-        }
+//        viewModel.subjectList.observe(viewLifecycleOwner) {semSubList ->
+//           for(i in semSubList.indices){
+//               adapterList[i].submitList(semSubList[i])
+//           }
+//        }
     }
 
     private fun setupSemRecyclerView(mergeAdapter: ConcatAdapter) {
@@ -112,15 +107,15 @@ class FragmentSem : Fragment() {
 
     private fun setupAdapter(): ConcatAdapter {
         adapterList = mutableListOf()
-        for(i in 0 until 8) {
-            val adapter = SemAdapter( RedirectClickHandler(), i, ::showHideSubjects)
-            adapterList.add(adapter)
-            Timber.d("adapter list : $adapterList")
-        }
+//        for(i in 0 until 8) {
+//            val adapter = SemAdapter( RedirectClickHandler(), i, ::showHideSubjects)
+//            adapterList.add(adapter)
+//            Timber.d("adapter list : $adapterList")
+//        }
         return ConcatAdapter(adapterList.toList())
     }
 
-    private fun showHideSubjects(sem: Int, index: Int) = viewModel.toggleChildVisibility(department.name, sem, index)
+//    private fun showHideSubjects(sem: Int, index: Int) = viewModel.toggleChildVisibility(department.name, sem, index)
 
     private fun setupThemeOfScreen() {
         _binding.semToolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), department.backgroundColor))

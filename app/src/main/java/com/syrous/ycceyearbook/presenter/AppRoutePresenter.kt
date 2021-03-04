@@ -5,13 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import androidx.navigation.Navigation
 import com.syrous.ycceyearbook.R
-import com.syrous.ycceyearbook.action.*
+import com.syrous.ycceyearbook.action.AccountAction
+import com.syrous.ycceyearbook.action.DialogAction
+import com.syrous.ycceyearbook.action.RouteAction
+import com.syrous.ycceyearbook.action.ToastNotificationAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.store.AccountStore
 import com.syrous.ycceyearbook.store.RouteStore
 import com.syrous.ycceyearbook.ui.ActivityMain
 import com.syrous.ycceyearbook.ui.home.bottom_nav.BottomNavView
-import com.syrous.ycceyearbook.view.DialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import timber.log.Timber
@@ -65,9 +67,9 @@ class AppRoutePresenter constructor(
     }
 
     override fun route(action: RouteAction) {
-        activity.setTheme(R.style.AppTheme)
         when(action) {
             is RouteAction.StartUp -> {
+                Timber.d("App in startup Process and navigating to splash")
                 navigateToFragment(R.id.fragment_splash)
                 dispatcher.dispatch(AccountAction.AutomaticLogin)
             }

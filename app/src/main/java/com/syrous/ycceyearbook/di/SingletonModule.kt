@@ -3,16 +3,11 @@ package com.syrous.ycceyearbook.di
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
+import com.syrous.ycceyearbook.data.local.DataDao
+import com.syrous.ycceyearbook.data.local.NotificationDao
+import com.syrous.ycceyearbook.data.remote.RemoteApi
 import com.syrous.ycceyearbook.flux.Dispatcher
-import com.syrous.ycceyearbook.store.AccountStore
-import com.syrous.ycceyearbook.store.NetworkStore
-import com.syrous.ycceyearbook.store.RouteStore
-import com.syrous.ycceyearbook.store.SentryStore
+import com.syrous.ycceyearbook.store.*
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -51,4 +46,21 @@ class SingletonModule {
                             coroutineContext: CoroutineContext): NetworkStore {
         return NetworkStore(context, dispatcher, coroutineContext)
     }
+
+    @Singleton
+    @Provides
+    fun provideDataStore(
+        dispatcher: Dispatcher, networkStore: NetworkStore, dataDao: DataDao,
+        remoteApi: RemoteApi, coroutineContext: CoroutineContext): DataStore {
+        return DataStore(dispatcher, networkStore, dataDao, remoteApi, coroutineContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationStore(
+        dispatcher: Dispatcher, notificationDao: NotificationDao,
+        coroutineContext: CoroutineContext): NotificationStore {
+        return NotificationStore(dispatcher, notificationDao, coroutineContext)
+    }
+
 }
