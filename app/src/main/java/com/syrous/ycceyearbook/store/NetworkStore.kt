@@ -1,6 +1,6 @@
 package com.syrous.ycceyearbook.store
 
-import android.content.Context
+import android.app.Application
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Build
@@ -13,16 +13,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 @RequiresApi(Build.VERSION_CODES.M)
 @ExperimentalCoroutinesApi
 class NetworkStore(
-    context: Context,
+    context: Application,
     dispatcher: Dispatcher,
     coroutineContext: CoroutineContext
 ) {
-    var connectivityManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    var connectivityManager: ConnectivityManager = context.applicationContext.getSystemService(
+        ConnectivityManager::class.java) as ConnectivityManager
     private val coroutineScope = CoroutineScope(coroutineContext)
     private val _isConnected = MutableStateFlow(false)
     val isConnected: StateFlow<Boolean> = _isConnected
@@ -32,6 +34,7 @@ class NetworkStore(
 
     private val connectivityCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
+            Timber.d("Network is connected ")
             isConnectedState = connectivityManager.isOnline(network)
         }
 
@@ -41,34 +44,40 @@ class NetworkStore(
     }
 
     init {
-        coroutineScope.launch {
-            dispatcher.getDispatcherChannelSubscription()
-                .receiveAsFlow()
-                .filterIsInstance<NetworkAction>()
-                .collect {
-                    when(it) {
-                        is NetworkAction.CheckConnectivity -> {
-                            checkConnectivity()
+        coroutineScope.launch{
+            launch {
+                dispatcher.getDispatcherChannelSubscription()
+                    .receiveAsFlow()
+                    .filterIsInstance<NetworkAction>()
+                    .collect {
+                        when(it) {
+                            is NetworkAction.CheckConnectivity -> {
+                                Timber.d("Check internet connectivity called!!!")
+                                checkConnectivity()
+                            }
                         }
                     }
-                }
 
-            dispatcher.getDispatcherChannelSubscription()
-                .receiveAsFlow()
-                .filterIsInstance<LifecycleAction>()
-                .collect {
-                    when(it) {
-                        LifecycleAction.Startup -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            connectivityManager.registerDefaultNetworkCallback(connectivityCallback)
-                        }
-                        LifecycleAction.Background -> connectivityManager.unregisterNetworkCallback(connectivityCallback)
+                launch {
+                    dispatcher.getDispatcherChannelSubscription()
+                        .receiveAsFlow()
+                        .filterIsInstance<LifecycleAction>()
+                        .collect {
+                            Timber.d("LifeCycleAction emitted $it")
+                            when(it) {
+                                LifecycleAction.Startup -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    connectivityManager.registerDefaultNetworkCallback(connectivityCallback)
+                                }
+                                LifecycleAction.Background -> connectivityManager.unregisterNetworkCallback(connectivityCallback)
 
-                        LifecycleAction.Foreground -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            connectivityManager.registerDefaultNetworkCallback(connectivityCallback)
+                                LifecycleAction.Foreground -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    connectivityManager.registerDefaultNetworkCallback(connectivityCallback)
+                                }
+                                LifecycleAction.ShutDown -> connectivityManager.unregisterNetworkCallback(connectivityCallback)
+                            }
                         }
-                        LifecycleAction.ShutDown -> connectivityManager.unregisterNetworkCallback(connectivityCallback)
-                    }
                 }
+            }
         }
     }
 

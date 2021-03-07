@@ -1,5 +1,6 @@
 package com.syrous.ycceyearbook.action
 
+import android.os.Bundle
 import androidx.annotation.StringRes
 import com.syrous.ycceyearbook.util.Constant
 
@@ -11,7 +12,9 @@ open class RouteAction (
     object Welcome: RouteAction(TelemetryEventMethod.show, TelemetryEventObject.welcome_screen)
     object Login: RouteAction(TelemetryEventMethod.show, TelemetryEventObject.login_student_mis)
     object Home: RouteAction(TelemetryEventMethod.show, TelemetryEventObject.home_screen)
-    object Semester: RouteAction(TelemetryEventMethod.show, TelemetryEventObject.semester_screen)
+    data class Semester(val args: Bundle
+    ): RouteAction(TelemetryEventMethod.show, TelemetryEventObject.semester_screen)
+
     object PaperAndResource: RouteAction(TelemetryEventMethod.show,
         TelemetryEventObject.paper_and_resources_screen)
 

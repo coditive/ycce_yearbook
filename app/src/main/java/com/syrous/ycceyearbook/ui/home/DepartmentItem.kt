@@ -8,10 +8,17 @@ import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.databinding.DepartmentCardLayoutBinding
 import com.syrous.ycceyearbook.model.Department
 import com.xwray.groupie.viewbinding.BindableItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
 class DepartmentItem(
     private val department: Department,
     private val context: Context,
+    private val departmentClicks: MutableSharedFlow<Department>,
+    private val coroutineScope: CoroutineScope
     ): BindableItem<DepartmentCardLayoutBinding>() {
     init {
         extras[INSET_TYPE_KEY] = INSET
@@ -25,6 +32,12 @@ class DepartmentItem(
         )
         viewBinding.departmentCard.setCardBackgroundColor(ContextCompat.getColor(context,
             department.backgroundColor))
+
+        viewBinding.root.setOnClickListener {
+           coroutineScope.launch {
+               departmentClicks.emit(department)
+           }
+        }
     }
 
     override fun getLayout(): Int = R.layout.department_card_layout

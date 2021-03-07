@@ -2,19 +2,14 @@ package com.syrous.ycceyearbook.di
 
 import android.app.Application
 import com.syrous.ycceyearbook.YearBookApplication
-import com.syrous.ycceyearbook.presenter.HomePresenter
-import com.syrous.ycceyearbook.presenter.LoginPresenter
-import com.syrous.ycceyearbook.presenter.SplashPresenter
-import com.syrous.ycceyearbook.presenter.WelcomePresenter
+import com.syrous.ycceyearbook.presenter.*
 import com.syrous.ycceyearbook.ui.ActivityMain
 import com.syrous.ycceyearbook.ui.notices.FragmentNotices
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentEse
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentMse
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentPaperAndResource
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentResource
-import com.syrous.ycceyearbook.ui.pdf_screen.PdfComponent
 import com.syrous.ycceyearbook.ui.recent.FragmentRecent
-import com.syrous.ycceyearbook.ui.semester.SemComponent
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
 @ExperimentalCoroutinesApi
 @Singleton
 @Component(modules = [RoomModule::class, NetworkModule::class,
-    AppSubcomponents::class, FirebaseModule::class, SingletonModule::class])
+    FirebaseModule::class, SingletonModule::class])
 interface AppComponent {
 
     // Factory to create instances of the AppComponent
@@ -38,10 +33,6 @@ interface AppComponent {
                    @BindsInstance applicationCoroutineContext: CoroutineContext): AppComponent
     }
 
-    fun pdfComponent(): PdfComponent.Factory
-
-    fun semComponent(): SemComponent.Factory
-
     fun inject(yearBookApplication: YearBookApplication)
 
     fun inject(activityMain: ActivityMain)
@@ -49,6 +40,8 @@ interface AppComponent {
     fun inject(splashPresenter: SplashPresenter)
 
     fun inject(welcomePresenter: WelcomePresenter)
+
+    fun inject(semPresenter: SemPresenter)
 
     fun inject(fragmentPaperAndResource: FragmentPaperAndResource)
 

@@ -1,33 +1,77 @@
 package com.syrous.ycceyearbook.ui.semester
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ConcatAdapter
+import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
 import com.syrous.ycceyearbook.R
-import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.databinding.FragmentSemesterBinding
+import com.syrous.ycceyearbook.flux.Presenter
 import com.syrous.ycceyearbook.model.Department
+import com.syrous.ycceyearbook.model.Semester
 import com.syrous.ycceyearbook.model.Subject
-import com.syrous.ycceyearbook.util.DEPARTMENT_OBJECT
+import com.syrous.ycceyearbook.presenter.SemPresenter
+import com.syrous.ycceyearbook.presenter.SemView
+import com.syrous.ycceyearbook.ui.BaseFragment
+import com.syrous.ycceyearbook.util.Constant
+import com.xwray.groupie.ExpandableGroup
+import com.xwray.groupie.Group
+import com.xwray.groupie.GroupieAdapter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import timber.log.Timber
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @FlowPreview
-class FragmentSem : Fragment() {
+class FragmentSem : BaseFragment(), SemView {
+
     private lateinit var _binding: FragmentSemesterBinding
     private lateinit var department: Department
-    private lateinit var adapterList: MutableList<SemAdapter>
+    private val semesterAdapter = GroupieAdapter()
+
+    override val coroutineScope: CoroutineScope
+        get() = viewLifecycleOwner.lifecycle.coroutineScope
+
+    private val _departmentName = MutableSharedFlow<Department>()
+    override val departmentName: SharedFlow<Department>
+        get() = _departmentName
+
+    private val _subjectClicks = MutableSharedFlow<Subject>()
+    override val subjectClicks: SharedFlow<Subject>
+        get() = _subjectClicks
+
+    override var presenter: Presenter = SemPresenter(this)
+
+    override fun showLoadingIndicator() {
+        _binding.semesterLoadingView.visibility = View.VISIBLE
+    }
+
+    override fun hideLoadingIndicator() {
+        _binding.semesterLoadingView.visibility = View.INVISIBLE
+    }
+
+    override fun addSemesterListToRecycler(semesterList: List<Semester>) {
+        semesterAdapter.clear()
+        val groupList = mutableListOf<Group>()
+        for(sem in semesterList) {
+          val section = ExpandableGroup(SemesterItem(sem.number)).apply {
+               for(subject in sem.subjectList) {
+                   add(SubjectItem(subject, viewLifecycleOwner.lifecycle.coroutineScope,
+                       _subjectClicks))
+               }
+           }
+            groupList.add(section)
+        }
+        semesterAdapter.update(groupList)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +82,7 @@ class FragmentSem : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         enteringTransitionForFragment()
         _binding = FragmentSemesterBinding.inflate(layoutInflater, container, false)
 
@@ -47,7 +91,7 @@ class FragmentSem : Fragment() {
             requireActivity().startPostponedEnterTransition()
             return@addOnPreDrawListener true
         }
-
+        department = arguments?.getSerializable(Constant.Department.DEPARTMENT_NAME) as Department
         return _binding.root
     }
 
@@ -56,90 +100,44 @@ class FragmentSem : Fragment() {
             addTarget(R.id.sem_recycler)
         }
     }
-    
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        department = arguments?.getSerializable(DEPARTMENT_OBJECT) as Department
-        Timber.d("Department got : ${department.name}")
-        (requireActivity().application as YearBookApplication).appComponent.semComponent()
-            .create(department.name).inject(this@FragmentSem)
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupThemeOfScreen()
-        val adapter = setupAdapter()
-        setupSemRecyclerView(adapter)
+        coroutineScope.launch {
+            _departmentName.emit(department)
+        }
 
-//        for(i in 3..8) {
-//            viewModel.reloadSubjectFromRemote(department.name, i)
-//        }
-//
-//        _binding.semesterLoadingView.setAnimation("loading_spiral.json")
-//
-//        viewModel.loadListOfSemestersFromLocal(viewLifecycleOwner, department.name)
-//
-//        viewModel.dataLoading.observe(viewLifecycleOwner) {
-//            if(it) {
-//                _binding.semesterLoadingView.visibility = View.VISIBLE
-//                blankScreen()
-//            }
-//            else {
-//                _binding.semesterLoadingView.visibility = View.GONE
-//                showScreen()
-//            }
-//        }
+        _binding.semesterLoadingView.setAnimation(Constant.Indicator.loading)
 
 
-//        viewModel.subjectList.observe(viewLifecycleOwner) {semSubList ->
-//           for(i in semSubList.indices){
-//               adapterList[i].submitList(semSubList[i])
-//           }
-//        }
-    }
-
-    private fun setupSemRecyclerView(mergeAdapter: ConcatAdapter) {
         _binding.semRecycler.apply {
-            adapter = mergeAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = semesterAdapter
+            layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
-    private fun setupAdapter(): ConcatAdapter {
-        adapterList = mutableListOf()
-//        for(i in 0 until 8) {
-//            val adapter = SemAdapter( RedirectClickHandler(), i, ::showHideSubjects)
-//            adapterList.add(adapter)
-//            Timber.d("adapter list : $adapterList")
-//        }
-        return ConcatAdapter(adapterList.toList())
-    }
-
-//    private fun showHideSubjects(sem: Int, index: Int) = viewModel.toggleChildVisibility(department.name, sem, index)
 
     private fun setupThemeOfScreen() {
-        _binding.semToolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), department.backgroundColor))
-        _binding.departmentNameText.setBackgroundColor(ContextCompat.getColor(requireContext(), department.backgroundColor))
-        _binding.departmentNameText.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(requireContext(), department.largeDrawableId),null,null)
+        _binding.semToolbar.setBackgroundColor(ContextCompat.getColor(requireContext(),
+            department.backgroundColor))
+        _binding.departmentNameText.setBackgroundColor(ContextCompat.getColor(requireContext(),
+            department.backgroundColor))
+        _binding.departmentNameText.setCompoundDrawablesWithIntrinsicBounds(null,
+            ContextCompat.getDrawable(requireContext(),
+                department.largeDrawableId),null,null)
     }
 
-    private fun blankScreen() {
-        _binding.apply {
-            semRecycler.visibility = View.INVISIBLE
-        }
-    }
-
-    private fun showScreen() {
+    override fun showAllViews() {
         _binding.apply {
             semRecycler.visibility = View.VISIBLE
         }
     }
 
-
-    inner class RedirectClickHandler {
-        fun clickListener (subject: Subject) {
-            Toast.makeText(requireContext(), "${subject.course} is selected !!!!", Toast.LENGTH_SHORT).show()
-            
+    override fun hideAllViews() {
+        _binding.apply {
+            semRecycler.visibility = View.INVISIBLE
         }
     }
 }

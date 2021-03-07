@@ -6,6 +6,10 @@ sealed class DataAction(
     override val value: String? = null,
     override val extras: Map<String, Any>? = null
 ): TelemetryAction {
+
+    class GetSemester(val department: String
+    ): DataAction(TelemetryEventMethod.semester, TelemetryEventObject.semester_screen)
+
     class GetMseData(val department: String, val sem: Int, val courseCode: String
     ): DataAction(TelemetryEventMethod.fetch_paper, TelemetryEventObject.paper_and_resources_screen)
 
@@ -13,7 +17,7 @@ sealed class DataAction(
     ): DataAction(TelemetryEventMethod.fetch_paper,
         TelemetryEventObject.paper_and_resources_screen)
 
-    class GetSubjects(val department: String, val sem: Int, val courseCode: String
+    class GetSubjects(val department: String
     ): DataAction(TelemetryEventMethod.fetch_subject,
         TelemetryEventObject.paper_and_resources_screen)
 

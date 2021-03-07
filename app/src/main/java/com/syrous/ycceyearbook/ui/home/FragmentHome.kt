@@ -27,6 +27,8 @@ import com.xwray.groupie.Section
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import timber.log.Timber
 
 
@@ -46,6 +48,9 @@ class FragmentHome : BaseFragment(), HomeView {
     override var presenter: Presenter = HomePresenter(this)
     override val coroutineScope: CoroutineScope
         get() = viewLifecycleOwner.lifecycle.coroutineScope
+    private val _departmentClicks = MutableSharedFlow<Department>()
+    override val departmentClicks: SharedFlow<Department>
+        get() = _departmentClicks
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,7 +124,8 @@ class FragmentHome : BaseFragment(), HomeView {
     private fun makeDepartmentColumnGroup(departmentList: List<Department>): ColumnGroup{
         val columnItems = ArrayList<DepartmentItem>()
         for(dep in departmentList) {
-            columnItems += DepartmentItem(dep, requireContext())
+            columnItems += DepartmentItem(dep, requireContext(),
+                _departmentClicks, viewLifecycleOwner.lifecycle.coroutineScope)
         }
         return ColumnGroup(columnItems)
     }

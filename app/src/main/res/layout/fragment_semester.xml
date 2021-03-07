@@ -1,72 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_width="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:theme="@style/transparent_app_bar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:theme="@style/transparent_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/sem_toolbar"
                 android:theme="@style/transparent_app_bar"
                 android:elevation="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize" />
-        <androidx.cardview.widget.CardView
-            android:id="@+id/department_card"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:transitionName="shared_element">
-            <TextView
-                android:id="@+id/department_name_text"
-                android:layout_width="match_parent"
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/department_card"
                 android:layout_height="match_parent"
-                android:transitionName="shared_textview"
-                android:drawablePadding="16dp"
-                android:textSize="20sp"
-                android:fontFamily="@font/montserrat"
-                tools:text="@string/department_title"
-                tools:textColor="@color/ct_border"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                app:drawableTopCompat="@drawable/ct_art_large" />
-        </androidx.cardview.widget.CardView>
-    </com.google.android.material.appbar.AppBarLayout>
+                android:layout_width="match_parent"
+                android:transitionName="shared_element">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/sem_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:layout_gravity="center_horizontal"
-        android:layoutAnimation="@anim/recycler_layout_anim"
-        tools:listitem="@layout/department_card_layout"
-        tools:itemCount="2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar"/>
+                <TextView
+                    android:id="@+id/department_name_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:transitionName="shared_textview"
+                    android:drawablePadding="16dp"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserrat"
+                    tools:text="@string/department_title"
+                    tools:textColor="@color/ct_border"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    app:drawableTopCompat="@drawable/ct_art_large" />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/semester_loading_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:layout_constraintTop_toBottomOf="@id/app_bar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.cardview.widget.CardView>
 
+        </com.google.android.material.appbar.AppBarLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sem_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layout_gravity="center_horizontal"
+            android:layoutAnimation="@anim/recycler_layout_anim"
+            tools:listitem="@layout/department_card_layout"
+            tools:itemCount="2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/semester_loading_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:layout_constraintTop_toBottomOf="@id/app_bar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

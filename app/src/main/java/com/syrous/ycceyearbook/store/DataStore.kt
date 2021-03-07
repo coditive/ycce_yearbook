@@ -7,11 +7,13 @@ import com.syrous.ycceyearbook.data.remote.RemoteApi
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.model.Resource
+import com.syrous.ycceyearbook.model.Semester
 import com.syrous.ycceyearbook.model.Subject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 
@@ -31,8 +33,8 @@ class DataStore constructor(
     private val _resourceData = MutableStateFlow(emptyList<Resource>())
     val resourceData: StateFlow<List<Resource>> = _resourceData
 
-    private val _subjectData = MutableStateFlow(emptyList<Subject>())
-    val subjectData: StateFlow<List<Subject>> = _subjectData
+    private val _semesterData = MutableStateFlow(emptyList<Semester>())
+    val semesterData: StateFlow<List<Semester>> = _semesterData
 
     private val _errorData = MutableStateFlow("")
     val errorData: StateFlow<String> = _errorData
@@ -54,9 +56,30 @@ class DataStore constructor(
                         is DataAction.GetResource -> fetchResourceDataAndStore(isConnected,
                             dataAction.department, dataAction.sem, dataAction.courseCode)
                         is DataAction.GetSubjects -> fetchSubjectDataAndStore(isConnected,
-                            dataAction.department, dataAction.sem)
+                            dataAction.department)
+                        is DataAction.GetSemester -> fetchSemesterForDepartment(dataAction.department)
                     }
-                }.collect {  }
+                }.collect {
+                }
+        }
+    }
+
+    private suspend fun fetchSemesterForDepartment(
+        department: String) {
+        _loading.emit(true)
+        try {
+            val semesterData = mutableListOf<Semester>()
+            val semesterList = dataDao.getSemesterList(department)
+            for (sem in semesterList) {
+                val subjectList = dataDao.getSubjects(department, sem)
+                semesterData.add(Semester(department, sem, subjectList))
+            }
+            _semesterData.emit(semesterData)
+        }catch (e : Exception) {
+            Timber.e(e)
+            dispatcher.dispatch(SentryAction(e))
+        } finally {
+            _loading.emit(false)
         }
     }
 
@@ -131,29 +154,39 @@ class DataStore constructor(
         }
 
 
-    private fun fetchSubjectDataAndStore(
+    private suspend fun fetchSubjectDataAndStore(
         isConnected: Boolean,
-        department: String,
-        sem: Int) =
-        coroutineScope.launch {
-            if(isConnected) {
-                try {
-                    val subjectList = remoteApi.getSubjects(department, sem)
-                    for(subject in subjectList) {
-                        dataDao.insertSubject(subject)
+        department: String) {
+        Timber.d("Inside Fetch subject Data Store and value of isConnected: $isConnected")
+            _loading.emit(true)
+            try {
+                val subjectList = mutableListOf<Subject>()
+                if (department == "fy") {
+                    for (sem in 1..2) {
+                        val list = remoteApi.getSubjects(department, sem)
+                        for (subject in list) {
+                            subjectList.add(subject)
+                        }
                     }
-                    _subjectData.emit(subjectList)
-                } catch (e: Exception) {
-                    dispatcher.dispatch(SentryAction(e))
+                } else {
+                    for (sem in 3..8) {
+                        val list = remoteApi.getSubjects(department, sem)
+                        for (subject in list) {
+                            subjectList.add(subject)
+                        }
+                    }
                 }
-
-            } else {
-                dataDao.observeSubjects(department, sem).collect {
-                        subjects ->
-                    _subjectData.emit(subjects)
+                for(subject in subjectList) {
+                    dataDao.insertSubject(subject)
                 }
+            } catch (e: Exception) {
+                Timber.e(e)
+                dispatcher.dispatch(SentryAction(e))
+            } finally {
+                _loading.emit(false)
+                dispatcher.dispatch(DataAction.GetSemester(department))
             }
-        }
 
+    }
 
 }

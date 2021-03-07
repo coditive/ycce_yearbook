@@ -1,6 +1,6 @@
 package com.syrous.ycceyearbook.di
 
-import android.content.Context
+import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.syrous.ycceyearbook.data.local.DataDao
@@ -42,7 +42,7 @@ class SingletonModule {
     @RequiresApi(Build.VERSION_CODES.M)
     @Singleton
     @Provides
-    fun provideNetworkStore(context: Context, dispatcher: Dispatcher,
+    fun provideNetworkStore(context: Application, dispatcher: Dispatcher,
                             coroutineContext: CoroutineContext): NetworkStore {
         return NetworkStore(context, dispatcher, coroutineContext)
     }

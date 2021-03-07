@@ -7,7 +7,6 @@ import com.syrous.ycceyearbook.ui.home.OtherFeature
 const val BASE_URL = "https://us-central1-ycce-yearbook.cloudfunctions.net/app/api/"
 const val YEARBOOK_DB_NAME = "yearbook_database.db"
 
-const val DEPARTMENT_OBJECT = "department_object"
 const val SUBJECT_OBJECT = "subject_object"
 const val PAPER_OBJECT = "paper_object"
 const val PAPER_DOWNLOADER = "paper_downloader"
@@ -31,6 +30,10 @@ object Constant {
 
     object RequestCode {
         const val noResult = 0
+    }
+
+    object Department {
+        const val DEPARTMENT_NAME = "department_name"
     }
 
     object Indicator {

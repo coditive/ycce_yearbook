@@ -31,6 +31,7 @@ enum class TelemetryEventMethod {
     fetch_subject,
     fetch_resource,
     notification,
+    semester,
     update_credentials,
     delete,
     edit,

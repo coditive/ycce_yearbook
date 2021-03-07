@@ -6,7 +6,7 @@ import com.syrous.ycceyearbook.R
 import com.syrous.ycceyearbook.databinding.HeaderItemLayoutBinding
 import com.xwray.groupie.viewbinding.BindableItem
 
-class HeaderItem(@StringRes private val titleResId: Int
+open class HeaderItem(@StringRes private val titleResId: Int
 ): BindableItem<HeaderItemLayoutBinding>() {
     override fun bind(viewBinding: HeaderItemLayoutBinding, position: Int) {
         viewBinding.apply {

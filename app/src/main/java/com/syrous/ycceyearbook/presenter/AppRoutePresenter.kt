@@ -16,7 +16,6 @@ import com.syrous.ycceyearbook.ui.ActivityMain
 import com.syrous.ycceyearbook.ui.home.bottom_nav.BottomNavView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import timber.log.Timber
 
 
 interface AppRoutePresenterCallback {
@@ -35,7 +34,6 @@ class AppRoutePresenter constructor(
     override fun onViewReady() {
         super.onViewReady()
         navController = Navigation.findNavController(activity, R.id.nav_host_fragment)
-        Timber.d("Navigation Controller Found and Navigating")
         navController.addOnDestinationChangedListener {
                 _, destination, _ ->
             toggleBottomNavVisibility(destination.id)
@@ -60,7 +58,6 @@ class AppRoutePresenter constructor(
         accountStore.accountState.asLiveData().observe(activity) {
           accountState ->
             if(accountState is AccountStore.State.GoogleLogin) {
-                Timber.d("AccountStore State GoogleLogin Got and Login initiated on in Activity")
                     (activity as ActivityMain).initiateLogin()
             }
         }
@@ -69,7 +66,6 @@ class AppRoutePresenter constructor(
     override fun route(action: RouteAction) {
         when(action) {
             is RouteAction.StartUp -> {
-                Timber.d("App in startup Process and navigating to splash")
                 navigateToFragment(R.id.fragment_splash)
                 dispatcher.dispatch(AccountAction.AutomaticLogin)
             }
@@ -78,6 +74,7 @@ class AppRoutePresenter constructor(
             is RouteAction.Home -> navigateToFragment(R.id.fragment_home)
             is DialogAction -> showDialog(action)
             is ToastNotificationAction -> showToastNotification(action)
+            is RouteAction.Semester -> navigateToFragment(R.id.fragment_sem, action.args)
         }
     }
 

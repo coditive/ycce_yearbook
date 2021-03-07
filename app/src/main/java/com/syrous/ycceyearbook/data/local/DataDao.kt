@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.Flow
 interface DataDao {
 
     @Query("SELECT * FROM subjects WHERE department = :department AND sem = :sem")
-    fun observeSubjects(department: String, sem: Int): Flow<List<Subject>>
+    suspend fun getSubjects(department: String, sem: Int): List<Subject>
 
     @Query("SELECT distinct sem FROM subjects WHERE department = :department ORDER BY sem ASC")
-    fun observeSemester(department: String): Flow<List<Int>>
+    suspend fun getSemesterList(department: String): List<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSubject(subject: Subject)
