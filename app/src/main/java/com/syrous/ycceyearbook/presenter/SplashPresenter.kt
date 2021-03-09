@@ -2,13 +2,14 @@ package com.syrous.ycceyearbook.presenter
 
 import android.content.Context
 import com.syrous.ycceyearbook.YearBookApplication
-import com.syrous.ycceyearbook.action.NetworkAction
 import com.syrous.ycceyearbook.action.RouteAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.flux.Presenter
 import com.syrous.ycceyearbook.store.AccountStore
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,8 +17,6 @@ interface SplashView {
     val coroutineScope: CoroutineScope
 }
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class SplashPresenter(
     private val view: SplashView,
 ): Presenter() {

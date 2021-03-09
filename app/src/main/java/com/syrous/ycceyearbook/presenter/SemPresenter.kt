@@ -13,8 +13,6 @@ import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.store.DataStore
 import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -31,8 +29,6 @@ interface SemView {
     fun hideAllViews()
 }
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class SemPresenter(
     private val view: SemView,
 ): Presenter() {

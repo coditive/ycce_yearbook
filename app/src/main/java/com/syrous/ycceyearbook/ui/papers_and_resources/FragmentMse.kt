@@ -25,8 +25,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class FragmentMse : BaseFragment(), MseView {
     private lateinit var subject: Subject
     private lateinit var binding: FragmentPaperAndResourceDetailBinding

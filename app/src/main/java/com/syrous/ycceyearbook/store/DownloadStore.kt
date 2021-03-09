@@ -20,7 +20,6 @@ import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalCoroutinesApi
 class DownloadStore(
     private val dispatcher: Dispatcher,
     private val firebaseStorage: FirebaseStorage,

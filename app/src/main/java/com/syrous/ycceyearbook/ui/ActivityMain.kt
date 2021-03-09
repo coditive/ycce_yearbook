@@ -3,6 +3,7 @@ package com.syrous.ycceyearbook.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -20,8 +21,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class ActivityMain : AppCompatActivity(), AppRoutePresenterCallback {
 
     @Inject
@@ -60,7 +59,7 @@ class ActivityMain : AppCompatActivity(), AppRoutePresenterCallback {
         val binding = ActivityMainBinding.inflate(layoutInflater)
 
         window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-//        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
 
         (application as YearBookApplication).appComponent.inject(this)

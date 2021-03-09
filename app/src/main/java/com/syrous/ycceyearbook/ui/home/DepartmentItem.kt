@@ -13,7 +13,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
-@ExperimentalCoroutinesApi
 class DepartmentItem(
     private val department: Department,
     private val context: Context,

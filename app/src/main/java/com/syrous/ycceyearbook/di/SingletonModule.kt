@@ -17,8 +17,6 @@ import kotlinx.coroutines.FlowPreview
 import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 @Module
 class SingletonModule {
 

@@ -26,9 +26,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-
-@FlowPreview
-@ExperimentalCoroutinesApi
 class FragmentEse : BaseFragment(), EseView {
     private lateinit var subject: Subject
     private lateinit var binding: FragmentPaperAndResourceDetailBinding

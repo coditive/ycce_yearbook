@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalCoroutinesApi
+
 class ApplicationPresenter(
     private val appDispatcher: ApplicationLifecycleDispatcher
     ): DefaultLifecycleObserver, CoroutineScope {

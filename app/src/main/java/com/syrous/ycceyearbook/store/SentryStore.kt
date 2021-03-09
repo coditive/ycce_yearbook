@@ -14,7 +14,6 @@ import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 
-@ExperimentalCoroutinesApi
 class SentryStore(
     dispatcher: Dispatcher,
     coroutineContext: CoroutineContext

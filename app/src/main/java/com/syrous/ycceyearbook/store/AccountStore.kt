@@ -22,7 +22,6 @@ import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalCoroutinesApi
 class AccountStore @Inject constructor(
     private val context: Application,
     private val dispatcher: Dispatcher,

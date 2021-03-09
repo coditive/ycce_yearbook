@@ -6,7 +6,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 
-@ExperimentalCoroutinesApi
 class RepositoryTest {
 
     private var remotePapers = listOf(paper1, paper2, paper6, paper7, paper8, paper4)

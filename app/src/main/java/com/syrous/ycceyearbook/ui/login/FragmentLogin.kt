@@ -19,8 +19,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class FragmentLogin: BaseFragment(), LoginView {
     private lateinit var binding: FragmentLoginBinding
     private val _loginButton = MutableSharedFlow<Unit>()

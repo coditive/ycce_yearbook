@@ -2,18 +2,13 @@ package com.syrous.ycceyearbook
 
 import android.app.Application
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.syrous.ycceyearbook.action.LifecycleAction
 import com.syrous.ycceyearbook.di.AppComponent
 import com.syrous.ycceyearbook.di.DaggerAppComponent
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.presenter.ApplicationPresenter
-import kotlinx.coroutines.*
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 interface ApplicationLifecycleDispatcher {
     fun dispatchOnCreate()
@@ -23,8 +18,6 @@ interface ApplicationLifecycleDispatcher {
     fun dispatchOnStop()
 }
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class YearBookApplication : Application(), ApplicationLifecycleDispatcher{
 
     // Instance of the AppComponent that will be used by all the Activities in the project

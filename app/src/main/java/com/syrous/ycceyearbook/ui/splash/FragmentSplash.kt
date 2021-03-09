@@ -14,8 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class FragmentSplash: BaseFragment(), SplashView {
     override var presenter: Presenter = SplashPresenter(this)
     override val coroutineScope: CoroutineScope

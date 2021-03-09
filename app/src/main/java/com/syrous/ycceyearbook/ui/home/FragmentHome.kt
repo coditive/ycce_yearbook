@@ -25,18 +25,13 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import timber.log.Timber
 
 
 const val INSET_TYPE_KEY = "inset_type"
 const val INSET = "inset"
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class FragmentHome : BaseFragment(), HomeView {
     private lateinit var _binding: FragmentHomeBinding
     private lateinit var departmentGroupAdapter: GroupAdapter<GroupieViewHolder>
@@ -63,7 +58,6 @@ class FragmentHome : BaseFragment(), HomeView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.d("Presenter Initialized : $presenter")
         departmentList = getDepartmentList().toMutableList()
         departmentGroupAdapter = GroupAdapter()
         otherFeaturesGroupAdapter = GroupAdapter()

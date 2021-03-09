@@ -11,8 +11,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import timber.log.Timber
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class ViewPagerAdapter(
     private val subject: Subject,
     fm: FragmentManager,

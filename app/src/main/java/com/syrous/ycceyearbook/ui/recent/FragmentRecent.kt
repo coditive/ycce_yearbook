@@ -15,8 +15,6 @@ import com.syrous.ycceyearbook.ui.home.bottom_nav.BottomNavView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class FragmentRecent : Fragment() {
 
     private lateinit var binding: FragmentRecentBinding

@@ -11,8 +11,6 @@ import com.syrous.ycceyearbook.databinding.FragmentNoticeBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class FragmentNotices : Fragment() {
     private lateinit var binding: FragmentNoticeBinding
     override fun onCreateView(

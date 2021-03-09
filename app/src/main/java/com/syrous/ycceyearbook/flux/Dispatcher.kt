@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalCoroutinesApi
+
 class Dispatcher (override val coroutineContext: CoroutineContext): CoroutineScope {
     private val actionChannel = MutableSharedFlow<Action>(1)
 

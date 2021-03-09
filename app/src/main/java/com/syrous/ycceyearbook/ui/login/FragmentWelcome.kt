@@ -16,8 +16,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class FragmentWelcome : BaseFragment(), WelcomeView {
     private lateinit var binding: FragmentWelcomeBinding
     private val _okButtonClicks = MutableSharedFlow<Unit>()

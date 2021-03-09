@@ -6,8 +6,6 @@ import com.syrous.ycceyearbook.action.RouteAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.flux.Presenter
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,8 +20,6 @@ interface WelcomeView {
     fun hideLoadingIndicator()
 }
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class WelcomePresenter(
     private val view: WelcomeView
 ): Presenter() {

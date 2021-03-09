@@ -15,8 +15,6 @@ import com.syrous.ycceyearbook.model.Result.Success
 import com.syrous.ycceyearbook.model.User
 import com.syrous.ycceyearbook.util.Constant
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -31,8 +29,6 @@ interface HomeView {
     fun displayProfilePic(user: User)
 }
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class HomePresenter(
     private val view: HomeView
     ): Presenter() {

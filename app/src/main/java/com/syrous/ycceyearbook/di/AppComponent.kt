@@ -9,14 +9,10 @@ import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentResource
 import com.syrous.ycceyearbook.ui.recent.FragmentRecent
 import dagger.BindsInstance
 import dagger.Component
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
 
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 @Singleton
 @Component(modules = [RoomModule::class, NetworkModule::class,
      FirebaseModule::class, SingletonModule::class])

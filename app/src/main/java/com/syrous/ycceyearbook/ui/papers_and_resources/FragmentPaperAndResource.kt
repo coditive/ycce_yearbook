@@ -13,8 +13,6 @@ import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class FragmentPaperAndResource : Fragment() {
     private lateinit var subject: Subject
     private lateinit var binding: FragmentPaperAndResourcesBinding

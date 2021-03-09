@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.stateIn
 
-@ExperimentalCoroutinesApi
 class LifecycleStore (
     private val dispatcher: Dispatcher
 ){

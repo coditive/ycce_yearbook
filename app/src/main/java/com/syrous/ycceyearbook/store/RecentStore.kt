@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalCoroutinesApi
 class RecentStore(
     private val dispatcher: Dispatcher,
     private val recentDao: RecentDao,

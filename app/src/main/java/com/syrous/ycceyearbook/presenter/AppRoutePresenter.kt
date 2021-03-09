@@ -14,16 +14,11 @@ import com.syrous.ycceyearbook.store.AccountStore
 import com.syrous.ycceyearbook.store.RouteStore
 import com.syrous.ycceyearbook.ui.ActivityMain
 import com.syrous.ycceyearbook.ui.home.bottom_nav.BottomNavView
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 
 
 interface AppRoutePresenterCallback {
     fun initiateLogin()
 }
-
-@FlowPreview
-@ExperimentalCoroutinesApi
 class AppRoutePresenter constructor(
     private val activity: AppCompatActivity,
     private val dispatcher: Dispatcher,

@@ -17,7 +17,6 @@ import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 
-@ExperimentalCoroutinesApi
 class DataStore constructor(
     private val dispatcher: Dispatcher,
     private val networkStore: NetworkStore,

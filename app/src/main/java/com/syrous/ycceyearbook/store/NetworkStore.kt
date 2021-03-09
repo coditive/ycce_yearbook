@@ -10,7 +10,6 @@ import com.syrous.ycceyearbook.action.NetworkAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.util.isOnline
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -20,7 +19,6 @@ import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 @RequiresApi(Build.VERSION_CODES.M)
-@ExperimentalCoroutinesApi
 class NetworkStore(
     context: Application,
     dispatcher: Dispatcher,

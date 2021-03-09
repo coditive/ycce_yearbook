@@ -12,8 +12,6 @@ import kotlinx.coroutines.flow.filterIsInstance
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class RouteStore constructor(
     private val dispatcher: Dispatcher,
     private val accountStore: AccountStore,

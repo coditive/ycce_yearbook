@@ -9,8 +9,6 @@ import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.store.DataStore
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -28,9 +26,6 @@ interface MseView {
     fun addPaperToRecycler(paperList: List<Paper>)
 }
 
-
-@ExperimentalCoroutinesApi
-@FlowPreview
 class MsePresenter(
     private val view: MseView
 ): Presenter() {

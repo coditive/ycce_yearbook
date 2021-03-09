@@ -1,15 +1,9 @@
 package com.syrous.ycceyearbook.flux
 
 import androidx.annotation.NonNull
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
 
 /**
  * A StackRelayFlow that emits the top most item on flow.
@@ -17,8 +11,6 @@ import java.util.concurrent.atomic.AtomicReference
  * It also contains methods that manipulate the stack, but these do not affect any flow.
  *
  */
-@ExperimentalCoroutinesApi
-@FlowPreview
 class StackRelayFlow<T>
 internal constructor(default: T){
 

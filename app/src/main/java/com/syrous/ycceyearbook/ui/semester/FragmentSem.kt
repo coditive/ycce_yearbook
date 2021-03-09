@@ -29,8 +29,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class FragmentSem : BaseFragment(), SemView {
 
     private lateinit var _binding: FragmentSemesterBinding
