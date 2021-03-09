@@ -3,13 +3,11 @@ package com.syrous.ycceyearbook.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
-import com.google.firebase.auth.FirebaseAuth
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.action.AccountAction
 import com.syrous.ycceyearbook.action.SentryAction
@@ -17,8 +15,7 @@ import com.syrous.ycceyearbook.databinding.ActivityMainBinding
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.presenter.AppRoutePresenter
 import com.syrous.ycceyearbook.presenter.AppRoutePresenterCallback
-import com.syrous.ycceyearbook.store.AccountStore
-import com.syrous.ycceyearbook.store.RouteStore
+import com.syrous.ycceyearbook.store.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
@@ -37,6 +34,21 @@ class ActivityMain : AppCompatActivity(), AppRoutePresenterCallback {
     lateinit var accountStore: AccountStore
 
     @Inject
+    lateinit var downloadStore: DownloadStore
+
+    @Inject
+    lateinit var networkStore: NetworkStore
+
+    @Inject
+    lateinit var notificationStore: NotificationStore
+
+    @Inject
+    lateinit var recentStore: RecentStore
+
+    @Inject
+    lateinit var sentryStore: SentryStore
+
+    @Inject
     lateinit var googleSignInClient: GoogleSignInClient
     
     private val RC_SIGN_IN = 1001
@@ -48,7 +60,7 @@ class ActivityMain : AppCompatActivity(), AppRoutePresenterCallback {
         val binding = ActivityMainBinding.inflate(layoutInflater)
 
         window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+//        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
 
         (application as YearBookApplication).appComponent.inject(this)

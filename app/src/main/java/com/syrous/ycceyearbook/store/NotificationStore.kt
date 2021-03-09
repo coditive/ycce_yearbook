@@ -6,8 +6,13 @@ import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.model.Notification
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
@@ -23,8 +28,8 @@ class NotificationStore(
 
     init {
         coroutineScope.launch {
+            Timber.d("NotificationStore Coroutine Context State : ${this.isActive}")
             dispatcher.getDispatcherChannelSubscription()
-                .receiveAsFlow()
                 .filterIsInstance<NotificationAction>()
                 .collect {
                     notificationAction ->

@@ -3,12 +3,8 @@ package com.syrous.ycceyearbook.presenter
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.syrous.ycceyearbook.ApplicationLifecycleDispatcher
-import com.syrous.ycceyearbook.action.LifecycleAction
-import com.syrous.ycceyearbook.flux.Dispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
@@ -18,12 +14,17 @@ class ApplicationPresenter(
 
     private lateinit var job: Job
 
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Default + job
+    private val coroutineExceptionHandler = CoroutineExceptionHandler {
+            _, throwable ->
+        Timber.e(throwable)
+    }
+
+    override lateinit var coroutineContext: CoroutineContext
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
-        job = Job()
+        job = SupervisorJob()
+        coroutineContext = Dispatchers.Unconfined + job + coroutineExceptionHandler
         appDispatcher.dispatchOnCreate()
     }
 

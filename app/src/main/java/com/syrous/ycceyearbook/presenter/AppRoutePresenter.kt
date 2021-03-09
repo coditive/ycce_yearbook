@@ -75,6 +75,10 @@ class AppRoutePresenter constructor(
             is DialogAction -> showDialog(action)
             is ToastNotificationAction -> showToastNotification(action)
             is RouteAction.Semester -> navigateToFragment(R.id.fragment_sem, action.args)
+            is RouteAction.PaperAndResource -> navigateToFragment(R.id.fragment_paper_and_resource,
+                action.args)
+            is RouteAction.PdfRenderer -> navigateToFragment(R.id.fragment_pdf_renderer,
+                action.args)
         }
     }
 

@@ -54,9 +54,9 @@ class AccountStore @Inject constructor(
     val syncState: StateFlow<SyncState> = _syncState
 
     init {
+        Timber.d("CoroutineContext: $coroutineContext")
         coroutineScope.launch {
             dispatcher.getDispatcherChannelSubscription()
-                .receiveAsFlow()
                 .filterIsInstance<AccountAction>()
                 .collect { action ->
                     when(action){

@@ -9,8 +9,13 @@ import com.syrous.ycceyearbook.model.Recent
 import com.syrous.ycceyearbook.util.toRecent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
@@ -26,8 +31,8 @@ class RecentStore(
 
     init {
         coroutineScope.launch {
+            Timber.d("recentStore Coroutine Context State : ${this.isActive}")
             dispatcher.getDispatcherChannelSubscription()
-                .receiveAsFlow()
                 .filterIsInstance<RecentAction>()
                 .collect {
                     recentAction ->

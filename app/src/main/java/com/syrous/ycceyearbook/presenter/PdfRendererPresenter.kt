@@ -1,29 +1,35 @@
-package com.syrous.ycceyearbook.ui.pdf_screen
+package com.syrous.ycceyearbook.presenter
 
-import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
-import android.os.Build
 import android.os.ParcelFileDescriptor
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.syrous.ycceyearbook.flux.Presenter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
-import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class PdfRendererViewModel @Inject constructor(
-        application: Application,
-       private val file: File?
-) : AndroidViewModel(application) {
+interface PdfRendererView {
+    val coroutineScope: CoroutineScope
+    val pdfFile: SharedFlow<File>
+    val showPrevious: SharedFlow<Boolean>
+    val showNext: SharedFlow<Boolean>
+    fun showPdfBitmap(pdfBitmap: SharedFlow<Bitmap>)
+    fun showPageInfo(pageInfo: SharedFlow<Pair<Int, Int>>)
+    fun enableNext(next: SharedFlow<Boolean>)
+    fun enablePrevious(previous: SharedFlow<Boolean>)
+}
+
+class PdfRendererPresenter(
+    private val view: PdfRendererView
+): Presenter(){
 
     private var useInstantExecutor: Boolean = false
 
@@ -34,29 +40,47 @@ class PdfRendererViewModel @Inject constructor(
         Executors.newSingleThreadExecutor()
     }
     private val scope = CoroutineScope(executor.asCoroutineDispatcher() + job)
-
+    private lateinit var pdfFile: File
     private var fileDescriptor: ParcelFileDescriptor? = null
     private var pdfRenderer: PdfRenderer? = null
     private var currentPage: PdfRenderer.Page? = null
     private var cleared = false
+    private val pdfBitmap = MutableSharedFlow<Bitmap>()
+    private val pageInfo = MutableSharedFlow<Pair<Int, Int>>()
+    private val previousEnabled = MutableSharedFlow<Boolean>()
+    private val nextEnabled = MutableSharedFlow<Boolean>()
 
-    private val _pageBitmap = MutableLiveData<Bitmap>()
-    val pageBitmap: LiveData<Bitmap>
-        get() = _pageBitmap
+    override fun onViewReady() {
+        super.onViewReady()
 
-    private val _previousEnabled = MutableLiveData<Boolean>()
-    val previousEnabled: LiveData<Boolean>
-        get() = _previousEnabled
+        view.coroutineScope.launch {
+            launch {
+                view.pdfFile.collect {
+                    pdfFile = it
+                    launchPdfRendererThread()
+                }
+            }
 
-    private val _nextEnabled = MutableLiveData<Boolean>()
-    val nextEnabled: LiveData<Boolean>
-        get() = _nextEnabled
+            launch {
+                view.showNext.collect {
+                    showNext()
+                }
+            }
 
-    private val _pageInfo = MutableLiveData<Pair<Int, Int>>()
-    val pageInfo: LiveData<Pair<Int, Int>>
-        get() = _pageInfo
+            launch {
+                view.showPrevious.collect {
+                    showPrevious()
+                }
+            }
+        }
 
-    init {
+        view.showPdfBitmap(pdfBitmap)
+        view.enableNext(nextEnabled)
+        view.enablePrevious(previousEnabled)
+        view.showPageInfo(pageInfo)
+    }
+
+    private fun launchPdfRendererThread() {
         scope.launch {
             openPdfRenderer()
             showPage(0)
@@ -66,8 +90,8 @@ class PdfRendererViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    override fun onDestroy() {
+        super.onDestroy()
         scope.launch {
             closePdfRenderer()
             cleared = true
@@ -75,7 +99,21 @@ class PdfRendererViewModel @Inject constructor(
         }
     }
 
-    fun showPrevious() {
+    private fun openPdfRenderer() {
+            Timber.d("File status : ${pdfFile.name}")
+
+            if (!pdfFile.exists()) {
+                Timber.d("File Not Found !!!")
+            } else {
+                fileDescriptor = ParcelFileDescriptor.open(pdfFile,
+                    ParcelFileDescriptor.MODE_READ_ONLY).also {
+                    pdfRenderer = PdfRenderer(it)
+                }
+            }
+    }
+
+
+    private fun showPrevious() {
         scope.launch {
             currentPage?.let { page ->
                 if (page.index > 0) {
@@ -86,7 +124,7 @@ class PdfRendererViewModel @Inject constructor(
     }
 
 
-    fun showNext() {
+    private fun showNext() {
         scope.launch {
             pdfRenderer?.let { renderer ->
                 currentPage?.let { page ->
@@ -98,19 +136,8 @@ class PdfRendererViewModel @Inject constructor(
         }
     }
 
-    private fun openPdfRenderer() {
-        Timber.d("File status : ${file?.name}")
 
-        if (!file?.exists()!!) {
-             Timber.d("File Not Found !!!")
-        } else {
-            fileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).also {
-                pdfRenderer = PdfRenderer(it)
-            }
-        }
-    }
-
-    private fun showPage(index: Int) {
+    private suspend fun showPage(index: Int) {
         // Make sure to close the current page before opening another one.
         currentPage?.let { page ->
             currentPage = null
@@ -128,11 +155,12 @@ class PdfRendererViewModel @Inject constructor(
             // the default result.
             // Pass either RENDER_MODE_FOR_DISPLAY or RENDER_MODE_FOR_PRINT for the last parameter.
             page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-            _pageBitmap.postValue(bitmap)
+            Timber.d("Bitmap size : ${bitmap.byteCount}")
+            pdfBitmap.emit(bitmap)
             val count = renderer.pageCount
-            _pageInfo.postValue(index to count)
-            _previousEnabled.postValue(index > 0)
-            _nextEnabled.postValue(index + 1 < count)
+            pageInfo.emit(index to count)
+            previousEnabled.emit(index > 0)
+            nextEnabled.emit(index + 1 < count)
         }
     }
 

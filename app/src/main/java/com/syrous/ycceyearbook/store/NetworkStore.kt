@@ -11,7 +11,10 @@ import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.util.isOnline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
@@ -44,10 +47,10 @@ class NetworkStore(
     }
 
     init {
+        Timber.d("CoroutineContext: $coroutineContext")
         coroutineScope.launch{
             launch {
                 dispatcher.getDispatcherChannelSubscription()
-                    .receiveAsFlow()
                     .filterIsInstance<NetworkAction>()
                     .collect {
                         when(it) {
@@ -60,7 +63,6 @@ class NetworkStore(
 
                 launch {
                     dispatcher.getDispatcherChannelSubscription()
-                        .receiveAsFlow()
                         .filterIsInstance<LifecycleAction>()
                         .collect {
                             Timber.d("LifeCycleAction emitted $it")

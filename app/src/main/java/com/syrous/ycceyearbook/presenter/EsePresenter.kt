@@ -1,17 +1,15 @@
 package com.syrous.ycceyearbook.presenter
 
 import android.content.Context
-import android.os.Bundle
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.action.DataAction
-import com.syrous.ycceyearbook.action.RouteAction
+import com.syrous.ycceyearbook.action.DownloadAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.flux.Presenter
-import com.syrous.ycceyearbook.model.Department
-import com.syrous.ycceyearbook.model.Semester
+import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.store.DataStore
-import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
+import com.syrous.ycceyearbook.store.DownloadStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -20,21 +18,22 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-interface SemView {
+
+interface EseView {
+    val selectedSubject: SharedFlow<Subject>
     val coroutineScope: CoroutineScope
-    val departmentName: SharedFlow<Department>
-    val subjectClicks: SharedFlow<Subject>
+    val esePaperClicks: SharedFlow<Paper>
+    fun hideAllViews()
+    fun showAllViews()
     fun showLoadingIndicator()
     fun hideLoadingIndicator()
-    fun addSemesterListToRecycler(semesterList: List<Semester>)
-    fun showAllViews()
-    fun hideAllViews()
+    fun addPaperToRecycler(paperList: List<Paper>)
 }
 
-@ExperimentalCoroutinesApi
 @FlowPreview
-class SemPresenter(
-    private val view: SemView,
+@ExperimentalCoroutinesApi
+class EsePresenter(
+    private val view: EseView
 ): Presenter() {
 
     @Inject
@@ -43,22 +42,34 @@ class SemPresenter(
     @Inject
     lateinit var dataStore: DataStore
 
+    @Inject
+    lateinit var downloadStore: DownloadStore
+
     override fun onViewReady() {
         super.onViewReady()
         view.coroutineScope.launch {
             launch {
-                view.departmentName.collect {
-                    dispatcher.dispatch(DataAction.GetSubjects(it.name))
+                view.esePaperClicks.collect {
+                        paper ->
+                    dispatcher.dispatch(DownloadAction.DownloadPaper(paper))
+                }
+            }
+
+            launch {
+                view.selectedSubject.collect {
+                    subject ->
+                    dispatcher.dispatch(DataAction.GetEseData(subject.department, subject.sem,
+                        subject.course_code))
                 }
             }
 
             launch {
                 dataStore.loading.collect {
-                   isLoading ->
+                        isLoading ->
                     if(isLoading) {
                         view.hideAllViews()
                         view.showLoadingIndicator()
-                    }else {
+                    } else {
                         view.hideLoadingIndicator()
                         view.showAllViews()
                     }
@@ -66,18 +77,22 @@ class SemPresenter(
             }
 
             launch {
-                dataStore.semesterData.collect {
-                    semesterList ->
-                    view.addSemesterListToRecycler(semesterList)
+                downloadStore.loading.collect {
+                    isLoading ->
+                    if(isLoading) {
+                        view.hideAllViews()
+                        view.showLoadingIndicator()
+                    } else {
+                        view.hideLoadingIndicator()
+                        view.showAllViews()
+                    }
                 }
             }
 
             launch {
-                view.subjectClicks.collect {
-                        subject ->
-                        val args = Bundle()
-                        args.putSerializable(SUBJECT_OBJECT, subject)
-                    dispatcher.dispatch(RouteAction.PaperAndResource(args))
+                dataStore.esePaperData.collect {
+                    paperList ->
+                    view.addPaperToRecycler(paperList)
                 }
             }
         }

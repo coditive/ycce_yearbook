@@ -14,6 +14,6 @@
         android:layout_margin="20dp"
         android:drawablePadding="40dp"
         tools:text="Course Name"
-        app:drawableLeftCompat="@drawable/ic_chevron_right" />
+        app:drawableLeftCompat="@drawable/pdf_icon" />
 
 </com.google.android.material.card.MaterialCardView>

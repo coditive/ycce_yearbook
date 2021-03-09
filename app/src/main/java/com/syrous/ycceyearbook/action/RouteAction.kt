@@ -15,15 +15,17 @@ open class RouteAction (
     data class Semester(val args: Bundle
     ): RouteAction(TelemetryEventMethod.show, TelemetryEventObject.semester_screen)
 
-    object PaperAndResource: RouteAction(TelemetryEventMethod.show,
+    data class PaperAndResource(val args: Bundle): RouteAction(TelemetryEventMethod.show,
         TelemetryEventObject.paper_and_resources_screen)
+
+    data class PdfRenderer(val args: Bundle): RouteAction(TelemetryEventMethod.show,
+        TelemetryEventObject.pdf_renderer)
 
     object InternalBack: RouteAction(TelemetryEventMethod.tap, TelemetryEventObject.back)
     sealed class DialogFragment(
         @StringRes val dialogTitle: Int,
         @StringRes val dialogSubtitle: Int? = null
     ): RouteAction(TelemetryEventMethod.show, TelemetryEventObject.dialog) {
-        //Todo( Add Dialog Classes Here )
     }
 
     open class SystemIntent(

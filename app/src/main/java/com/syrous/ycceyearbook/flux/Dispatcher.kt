@@ -1,28 +1,21 @@
 package com.syrous.ycceyearbook.flux
 
-import com.syrous.ycceyearbook.action.RouteAction
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
 class Dispatcher (override val coroutineContext: CoroutineContext): CoroutineScope {
-    private val actionChannel = BroadcastChannel<Action>(1)
+    private val actionChannel = MutableSharedFlow<Action>(1)
 
     fun dispatch(action: Action) = launch {
-            actionChannel.send(action)
+        actionChannel.emit(action)
     }
 
-    fun getDispatcherChannelSubscription(): ReceiveChannel<Action> =
-        actionChannel.openSubscription()
+    fun getDispatcherChannelSubscription(): SharedFlow<Action> =
+        actionChannel
 
-    fun closeDispatcherChannel() {
-        actionChannel.close()
-    }
 }

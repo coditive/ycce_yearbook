@@ -5,14 +5,10 @@ import com.syrous.ycceyearbook.action.RouteAction
 import com.syrous.ycceyearbook.action.ToastNotificationAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.flux.StackRelayFlow
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -30,9 +26,9 @@ class RouteStore constructor(
 
     init {
         coroutineScope.launch {
+            Timber.d("RouteStore Coroutine Context State : ${this.isActive}")
             launch {
                 dispatcher.getDispatcherChannelSubscription()
-                    .receiveAsFlow()
                     .filterIsInstance<RouteAction>()
                     .collect {
                             routeAction ->

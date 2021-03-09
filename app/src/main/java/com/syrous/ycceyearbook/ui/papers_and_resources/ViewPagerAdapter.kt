@@ -8,12 +8,16 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.syrous.ycceyearbook.model.Subject
 import com.syrous.ycceyearbook.util.SUBJECT_OBJECT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import timber.log.Timber
 
+@FlowPreview
 @ExperimentalCoroutinesApi
-class ViewPagerAdapter(private val subject: Subject,
-                       fm: FragmentManager,
-                       lifecycle: Lifecycle) : FragmentStateAdapter(fm, lifecycle) {
+class ViewPagerAdapter(
+    private val subject: Subject,
+    fm: FragmentManager,
+    lifecycle: Lifecycle
+) : FragmentStateAdapter(fm, lifecycle) {
 
     override fun getItemCount(): Int = 3
 

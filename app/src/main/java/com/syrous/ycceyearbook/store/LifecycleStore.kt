@@ -4,8 +4,9 @@ import com.syrous.ycceyearbook.action.LifecycleAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.stateIn
 
 @ExperimentalCoroutinesApi
 class LifecycleStore (
@@ -13,6 +14,6 @@ class LifecycleStore (
 ){
     suspend fun getLifecycleEvents(coroutineScope: CoroutineScope) : StateFlow<LifecycleAction> =
         dispatcher.getDispatcherChannelSubscription()
-            .receiveAsFlow().filterIsInstance<LifecycleAction>().stateIn(coroutineScope)
+            .filterIsInstance<LifecycleAction>().stateIn(coroutineScope)
 
 }

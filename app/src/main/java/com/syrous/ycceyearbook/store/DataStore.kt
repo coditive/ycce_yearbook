@@ -27,8 +27,11 @@ class DataStore constructor(
 ) {
     private val coroutineScope = CoroutineScope(coroutineContext)
 
-    private val _paperData = MutableStateFlow(emptyList<Paper>())
-    val paperData: StateFlow<List<Paper>> = _paperData
+    private val _esePaperData = MutableStateFlow(emptyList<Paper>())
+    val esePaperData: StateFlow<List<Paper>> = _esePaperData
+
+    private val _msePaperData = MutableStateFlow(emptyList<Paper>())
+    val msePaperData: StateFlow<List<Paper>> = _msePaperData
 
     private val _resourceData = MutableStateFlow(emptyList<Resource>())
     val resourceData: StateFlow<List<Resource>> = _resourceData
@@ -36,18 +39,16 @@ class DataStore constructor(
     private val _semesterData = MutableStateFlow(emptyList<Semester>())
     val semesterData: StateFlow<List<Semester>> = _semesterData
 
-    private val _errorData = MutableStateFlow("")
-    val errorData: StateFlow<String> = _errorData
-
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
 
     init {
+        Timber.d("CoroutineContext: $coroutineContext")
         coroutineScope.launch {
             dispatcher.getDispatcherChannelSubscription()
-                .receiveAsFlow()
                 .filterIsInstance<DataAction>()
                 .combine(networkStore.isConnected) { dataAction, isConnected ->
+                    Timber.d("Network State: $isConnected")
                     when(dataAction){
                         is DataAction.GetEseData -> fetchEsePaperDataAndStore(isConnected,
                             dataAction.department, dataAction.sem, dataAction.courseCode)
@@ -75,7 +76,7 @@ class DataStore constructor(
                 semesterData.add(Semester(department, sem, subjectList))
             }
             _semesterData.emit(semesterData)
-        }catch (e : Exception) {
+        } catch (e: Exception) {
             Timber.e(e)
             dispatcher.dispatch(SentryAction(e))
         } finally {
@@ -87,24 +88,19 @@ class DataStore constructor(
         isConnected: Boolean,
         department: String,
         sem: Int,
-        courseCode: String) =
-        if(isConnected) {
-            try {
-                val paperList = remoteApi.getEsePapers(department, sem, courseCode)
-                for(paper in paperList) {
-                    dataDao.insertPaper(paper)
-                }
-                _paperData.emit(paperList)
-            } catch (e: Exception) {
-                dispatcher.dispatch(SentryAction(e))
+        courseCode: String) {
+       _loading.emit(true)
+        try {
+            val paperList = remoteApi.getEsePapers(department, sem, courseCode)
+            for (paper in paperList) {
+                dataDao.insertPaper(paper)
             }
-        } else {
-            dataDao.observePapers(department, sem, courseCode, "ese").collect {
-                    papers ->
-                _paperData.emit(papers)
-            }
+            _esePaperData.emit(paperList)
+        } catch (e: Exception) {
+            dispatcher.dispatch(SentryAction(e))
         }
-
+        _loading.emit(false)
+    }
 
     private suspend fun fetchMsePaperDataAndStore(
         isConnected: Boolean,
@@ -117,7 +113,7 @@ class DataStore constructor(
                 for(paper in paperList) {
                     dataDao.insertPaper(paper)
                 }
-                _paperData.emit(paperList)
+                _msePaperData.emit(paperList)
             } catch (e: Exception) {
                 dispatcher.dispatch(SentryAction(e))
             }
@@ -125,7 +121,7 @@ class DataStore constructor(
         } else {
             dataDao.observePapers(department, sem, courseCode, "mse").collect {
                     papers ->
-                _paperData.emit(papers)
+                _msePaperData.emit(papers)
             }
         }
 
@@ -157,7 +153,6 @@ class DataStore constructor(
     private suspend fun fetchSubjectDataAndStore(
         isConnected: Boolean,
         department: String) {
-        Timber.d("Inside Fetch subject Data Store and value of isConnected: $isConnected")
             _loading.emit(true)
             try {
                 val subjectList = mutableListOf<Subject>()

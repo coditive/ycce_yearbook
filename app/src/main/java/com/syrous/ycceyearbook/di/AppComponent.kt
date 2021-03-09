@@ -5,9 +5,6 @@ import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.presenter.*
 import com.syrous.ycceyearbook.ui.ActivityMain
 import com.syrous.ycceyearbook.ui.notices.FragmentNotices
-import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentEse
-import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentMse
-import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentPaperAndResource
 import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentResource
 import com.syrous.ycceyearbook.ui.recent.FragmentRecent
 import dagger.BindsInstance
@@ -22,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
 @ExperimentalCoroutinesApi
 @Singleton
 @Component(modules = [RoomModule::class, NetworkModule::class,
-    FirebaseModule::class, SingletonModule::class])
+     FirebaseModule::class, SingletonModule::class])
 interface AppComponent {
 
     // Factory to create instances of the AppComponent
@@ -43,11 +40,9 @@ interface AppComponent {
 
     fun inject(semPresenter: SemPresenter)
 
-    fun inject(fragmentPaperAndResource: FragmentPaperAndResource)
+    fun inject(esePresenter: EsePresenter)
 
-    fun inject(fragmentEse: FragmentEse)
-
-    fun inject(fragmentMse: FragmentMse)
+    fun inject(msePresenter: MsePresenter)
 
     fun inject(fragmentResource: FragmentResource)
 
