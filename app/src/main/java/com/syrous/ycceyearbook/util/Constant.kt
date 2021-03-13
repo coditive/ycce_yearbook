@@ -39,6 +39,8 @@ object Constant {
     object Indicator {
         const val loading = "loading_spiral.json"
     }
+
+   const val Resource = "resource_object"
 }
 
 

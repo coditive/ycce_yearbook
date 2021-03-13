@@ -21,6 +21,9 @@ open class RouteAction (
     data class PdfRenderer(val args: Bundle): RouteAction(TelemetryEventMethod.show,
         TelemetryEventObject.pdf_renderer)
 
+    data class VideoPlayer(val args: Bundle): RouteAction(TelemetryEventMethod.video_resource,
+        TelemetryEventObject.video_player)
+
     object InternalBack: RouteAction(TelemetryEventMethod.tap, TelemetryEventObject.back)
     sealed class DialogFragment(
         @StringRes val dialogTitle: Int,

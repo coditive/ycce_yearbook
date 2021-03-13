@@ -16,7 +16,7 @@ class PaperItem(
 ): BindableItem<PaperCardLayoutBinding>() {
 
     override fun bind(viewBinding: PaperCardLayoutBinding, position: Int) {
-        viewBinding.paperTitle.text = paper.exam +"-"+paper.courseCode
+        viewBinding.paperTitle.text = paper.exam +"-"+ paper.year
         viewBinding.root.setOnClickListener {
             coroutineScope.launch {
                 paperClicks.emit(paper)

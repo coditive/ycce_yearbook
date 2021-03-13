@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.coroutineScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
@@ -23,8 +24,6 @@ import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.Group
 import com.xwray.groupie.GroupieAdapter
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -37,6 +36,10 @@ class FragmentSem : BaseFragment(), SemView {
 
     override val coroutineScope: CoroutineScope
         get() = viewLifecycleOwner.lifecycle.coroutineScope
+
+    private val _backButtonClicks = MutableSharedFlow<Boolean>()
+    override val backButtonClicks: SharedFlow<Boolean>
+        get() = _backButtonClicks
 
     private val _departmentName = MutableSharedFlow<Department>()
     override val departmentName: SharedFlow<Department>
@@ -85,10 +88,6 @@ class FragmentSem : BaseFragment(), SemView {
         _binding = FragmentSemesterBinding.inflate(layoutInflater, container, false)
 
         val sharedView = _binding.departmentNameText
-        sharedView.viewTreeObserver.addOnPreDrawListener{
-            requireActivity().startPostponedEnterTransition()
-            return@addOnPreDrawListener true
-        }
         department = arguments?.getSerializable(Constant.Department.DEPARTMENT_NAME) as Department
         return _binding.root
     }
@@ -125,6 +124,13 @@ class FragmentSem : BaseFragment(), SemView {
         _binding.departmentNameText.setCompoundDrawablesWithIntrinsicBounds(null,
             ContextCompat.getDrawable(requireContext(),
                 department.largeDrawableId),null,null)
+
+        _binding.semToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+            coroutineScope.launch {
+                _backButtonClicks.emit(true)
+            }
+        }
     }
 
     override fun showAllViews() {

@@ -74,6 +74,8 @@ class AppRoutePresenter constructor(
                 action.args)
             is RouteAction.PdfRenderer -> navigateToFragment(R.id.fragment_pdf_renderer,
                 action.args)
+            is RouteAction.VideoPlayer -> navigateToFragment(R.id.fragmentVideoPlayer,
+                action.args)
         }
     }
 
@@ -81,6 +83,10 @@ class AppRoutePresenter constructor(
         return when(src to dest) {
             R.id.fragment_splash to R.id.fragment_login -> R.id.action_fragment_splash_to_fragment_login
             R.id.fragment_splash to R.id.fragment_welcome -> R.id.action_fragment_splash_to_fragment_welcome
+            R.id.fragment_splash to R.id.fragment_sem -> R.id.action_fragment_splash_to_fragment_sem
+            R.id.fragment_splash to R.id.fragment_notices -> R.id.action_fragment_splash_to_fragment_notices
+            R.id.fragment_splash to R.id.fragment_recent -> R.id.action_fragment_splash_to_fragment_recent
+            R.id.fragment_splash to R.id.fragment_more -> R.id.action_fragment_splash_to_fragment_more
             R.id.fragment_welcome to R.id.fragment_login -> R.id.action_fragment_welcome_to_fragment_login
             R.id.fragment_splash to R.id.fragment_home -> R.id.action_fragment_splash_to_fragment_home
             R.id.fragment_login to R.id.fragment_home -> R.id.action_fragment_login_to_fragmentHome

@@ -16,10 +16,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 interface SemView {
     val coroutineScope: CoroutineScope
+    val backButtonClicks: SharedFlow<Boolean>
     val departmentName: SharedFlow<Department>
     val subjectClicks: SharedFlow<Subject>
     fun showLoadingIndicator()
@@ -76,11 +78,23 @@ class SemPresenter(
                     dispatcher.dispatch(RouteAction.PaperAndResource(args))
                 }
             }
+
+            launch {
+                view.backButtonClicks.collect {
+                    dispatcher.dispatch(RouteAction.InternalBack)
+                }
+            }
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (context.applicationContext as YearBookApplication).appComponent.inject(this)
+    }
+
+    override fun onBackPressed(): Boolean {
+        Timber.d("System back captured !!!")
+        dispatcher.dispatch(RouteAction.InternalBack)
+        return true
     }
 }

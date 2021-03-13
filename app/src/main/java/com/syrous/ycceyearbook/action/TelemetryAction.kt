@@ -28,6 +28,7 @@ enum class TelemetryEventMethod {
     logged_in,
     touch,
     download_paper,
+    video_resource,
     fetch_paper,
     fetch_subject,
     fetch_resource,
@@ -54,6 +55,7 @@ enum class TelemetryEventObject {
     semester_screen,
     paper_and_resources_screen,
     open_in_browser,
+    video_player,
     back,
     dialog,
     toast

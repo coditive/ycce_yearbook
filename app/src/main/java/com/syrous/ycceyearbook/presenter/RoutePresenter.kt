@@ -1,35 +1,24 @@
 package com.syrous.ycceyearbook.presenter
 
-import android.app.KeyguardManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
-
 import androidx.fragment.app.Fragment
-import com.syrous.ycceyearbook.view.Fragment as CustomFragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
-import com.syrous.ycceyearbook.BuildConfig
+import androidx.viewbinding.BuildConfig
 import com.syrous.ycceyearbook.action.DialogAction
 import com.syrous.ycceyearbook.action.RouteAction
 import com.syrous.ycceyearbook.action.ToastNotificationAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.flux.Presenter
 import com.syrous.ycceyearbook.store.RouteStore
+import com.syrous.ycceyearbook.ui.BaseFragment
 import com.syrous.ycceyearbook.view.DialogFragment
-import kotlinx.coroutines.*
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
 
 abstract class RoutePresenter(
     private val activity: AppCompatActivity,
@@ -51,17 +40,19 @@ abstract class RoutePresenter(
     }
 
     class BackPressedCallback(
-        private val enabled: Boolean = false,
-        private val dispatcher: Dispatcher
+         enabled: Boolean = false,
+         val dispatcher: Dispatcher
     ): OnBackPressedCallback(enabled) {
         override fun handleOnBackPressed() {
+            Timber.d("BackPressCallback Called")
             dispatcher.dispatch(RouteAction.InternalBack)
         }
     }
 
     override fun onBackPressed(): Boolean {
         dispatcher.dispatch(RouteAction.InternalBack)
-        val fragment = currentFragment as? CustomFragment
+        Timber.d("BackPressed Called ")
+        val fragment = currentFragment as? BaseFragment
         return fragment?.onBackPressed() ?: false
     }
 

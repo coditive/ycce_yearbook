@@ -10,7 +10,6 @@ import com.syrous.ycceyearbook.model.Resource
 import com.syrous.ycceyearbook.model.Semester
 import com.syrous.ycceyearbook.model.Subject
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -42,21 +41,29 @@ class DataStore constructor(
     val loading: StateFlow<Boolean> = _loading
 
     init {
-        Timber.d("CoroutineContext: $coroutineContext")
         coroutineScope.launch {
             dispatcher.getDispatcherChannelSubscription()
                 .filterIsInstance<DataAction>()
                 .combine(networkStore.isConnected) { dataAction, isConnected ->
                     Timber.d("Network State: $isConnected")
-                    when(dataAction){
-                        is DataAction.GetEseData -> fetchEsePaperDataAndStore(isConnected,
-                            dataAction.department, dataAction.sem, dataAction.courseCode)
-                        is DataAction.GetMseData -> fetchMsePaperDataAndStore(isConnected,
-                            dataAction.department, dataAction.sem, dataAction.courseCode)
-                        is DataAction.GetResource -> fetchResourceDataAndStore(isConnected,
-                            dataAction.department, dataAction.sem, dataAction.courseCode)
-                        is DataAction.GetSubjects -> fetchSubjectDataAndStore(isConnected,
-                            dataAction.department)
+                    Timber.d("Data Action : $dataAction")
+                    when (dataAction) {
+                        is DataAction.GetEseData -> fetchEsePaperDataAndStore(
+                            isConnected,
+                            dataAction.department, dataAction.sem, dataAction.courseCode
+                        )
+                        is DataAction.GetMseData -> fetchMsePaperDataAndStore(
+                            isConnected,
+                            dataAction.department, dataAction.sem, dataAction.courseCode
+                        )
+                        is DataAction.GetResource -> fetchResourceDataAndStore(
+                            isConnected,
+                            dataAction.department, dataAction.sem, dataAction.courseCode
+                        )
+                        is DataAction.GetSubjects -> fetchSubjectDataAndStore(
+                            isConnected,
+                            dataAction.department
+                        )
                         is DataAction.GetSemester -> fetchSemesterForDepartment(dataAction.department)
                     }
                 }.collect {
@@ -65,7 +72,8 @@ class DataStore constructor(
     }
 
     private suspend fun fetchSemesterForDepartment(
-        department: String) {
+        department: String
+    ) {
         _loading.emit(true)
         try {
             val semesterData = mutableListOf<Semester>()
@@ -83,12 +91,13 @@ class DataStore constructor(
         }
     }
 
-    private suspend fun fetchEsePaperDataAndStore(
+    private fun fetchEsePaperDataAndStore(
         isConnected: Boolean,
         department: String,
         sem: Int,
-        courseCode: String) {
-       _loading.emit(true)
+        courseCode: String
+    ) = coroutineScope.launch{
+        _loading.emit(true)
         try {
             val paperList = remoteApi.getEsePapers(department, sem, courseCode)
             for (paper in paperList) {
@@ -101,15 +110,16 @@ class DataStore constructor(
         _loading.emit(false)
     }
 
-    private suspend fun fetchMsePaperDataAndStore(
+    private fun fetchMsePaperDataAndStore(
         isConnected: Boolean,
         department: String,
         sem: Int,
-        courseCode: String) =
-        if(isConnected) {
+        courseCode: String
+    ) = coroutineScope.launch {
+        if (isConnected) {
             try {
                 val paperList = remoteApi.getMsePapers(department, sem, courseCode)
-                for(paper in paperList) {
+                for (paper in paperList) {
                     dataDao.insertPaper(paper)
                 }
                 _msePaperData.emit(paperList)
@@ -118,35 +128,35 @@ class DataStore constructor(
             }
 
         } else {
-            dataDao.observePapers(department, sem, courseCode, "mse").collect {
-                    papers ->
+            dataDao.observePapers(department, sem, courseCode, "mse").collect { papers ->
                 _msePaperData.emit(papers)
             }
         }
+    }
 
 
-    private suspend fun fetchResourceDataAndStore(
+    private fun fetchResourceDataAndStore(
         isConnected: Boolean,
         department: String,
         sem: Int,
-        courseCode: String) =
-        if(isConnected) {
-            try {
-                val resourceList = remoteApi.getResource(department, sem, courseCode)
-                for(resource in resourceList) {
-                    dataDao.insertResource(resource)
-                }
-                _resourceData.emit(resourceList)
-            } catch (e: Exception) {
-                dispatcher.dispatch(SentryAction(e))
+        courseCode: String
+    ) = coroutineScope.launch {
+        _loading.emit(true)
+        try {
+            val resourceList = remoteApi.getResource(department, sem, courseCode)
+            for (resource in resourceList) {
+                dataDao.insertResource(resource)
             }
-
-        } else {
-            dataDao.observeResources(department, sem, courseCode).collect {
-                    resources ->
-                _resourceData.emit(resources)
-            }
+            Timber.d("Resource List : $resourceList")
+            _resourceData.emit(resourceList)
+        } catch (e: Exception) {
+            Timber.e(e)
+            dispatcher.dispatch(SentryAction(e))
+        } finally {
+            _loading.emit(false)
         }
+
+}
 
 
     private suspend fun fetchSubjectDataAndStore(

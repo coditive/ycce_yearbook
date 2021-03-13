@@ -5,7 +5,6 @@ import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.presenter.*
 import com.syrous.ycceyearbook.ui.ActivityMain
 import com.syrous.ycceyearbook.ui.notices.FragmentNotices
-import com.syrous.ycceyearbook.ui.papers_and_resources.FragmentResource
 import com.syrous.ycceyearbook.ui.recent.FragmentRecent
 import dagger.BindsInstance
 import dagger.Component
@@ -40,9 +39,11 @@ interface AppComponent {
 
     fun inject(msePresenter: MsePresenter)
 
-    fun inject(fragmentResource: FragmentResource)
+    fun inject(resourcePresenter: ResourcePresenter)
 
     fun inject(homePresenter: HomePresenter)
+
+    fun inject(videoPlayerPresenter: VideoPlayerPresenter)
 
     fun inject(fragmentNotices: FragmentNotices)
 

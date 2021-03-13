@@ -23,13 +23,51 @@
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_fragment_splash_to_fragment_login"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
             app:destination="@id/fragment_login" />
         <action
             android:id="@+id/action_fragment_splash_to_fragment_welcome"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
             app:destination="@id/fragment_welcome" />
         <action
             android:id="@+id/action_fragment_splash_to_fragment_home"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
             app:destination="@id/fragment_home" />
+        <action
+            android:id="@+id/action_fragment_splash_to_fragment_recent"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:destination="@id/fragment_recent" />
+        <action
+            android:id="@+id/action_fragment_splash_to_fragment_more"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:destination="@id/fragment_more" />
+        <action
+            android:id="@+id/action_fragment_splash_to_fragment_sem"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:destination="@id/fragment_sem" />
+        <action
+            android:id="@+id/action_fragment_splash_to_fragment_notices"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:destination="@id/fragment_notices" />
+
+        <action
+            android:id="@+id/action_fragment_splash_to_fragment_pdf_renderer"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:destination="@id/fragment_pdf_renderer"/>
+
+        <action
+            android:id="@+id/action_fragment_splash_to_fragmentVideoPlayer"
+            app:destination="@id/fragmentVideoPlayer"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"/>
 
     </fragment>
     <fragment
@@ -94,6 +132,9 @@
         <action
             android:id="@+id/action_fragmentPaperAndResource_to_fragmentPdfRenderer"
             app:destination="@id/fragment_pdf_renderer" />
+        <action
+            android:id="@+id/action_fragment_paper_and_resource_to_fragmentVideoPlayer"
+            app:destination="@id/fragmentVideoPlayer" />
     </fragment>
 
     <fragment
@@ -101,4 +142,10 @@
         android:name="com.syrous.ycceyearbook.ui.pdf_screen.FragmentPdfRenderer"
         android:label="FragmentPdfRenderer"
         tools:layout="@layout/fragment_pdf_renderer"/>
+
+    <fragment
+        android:id="@+id/fragmentVideoPlayer"
+        android:name="com.syrous.ycceyearbook.ui.video_player.FragmentVideoPlayer"
+        android:label="FragmentVideoPlayer"
+        tools:layout="@layout/fragment_video_player"/>
 </navigation>
