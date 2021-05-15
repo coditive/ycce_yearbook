@@ -8,9 +8,9 @@ import com.syrous.ycceyearbook.action.RouteAction
 import com.syrous.ycceyearbook.action.SentryAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.model.Paper
+import com.syrous.ycceyearbook.model.Resource
 import com.syrous.ycceyearbook.util.PDF_FILE_OBJECT
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -40,6 +40,8 @@ class DownloadStore(
                         is DownloadAction.DownloadPaper -> {
                             downloadPaperFromUrl(downloadAction.paper)
                         }
+                        is DownloadAction.DownloadResource -> downloadResourceFromUrl(
+                            downloadAction.resource)
                     }
                 }
         }
@@ -75,4 +77,34 @@ class DownloadStore(
             dispatcher.dispatch(SentryAction(e))
         }
     }
+
+    private fun downloadResourceFromUrl(resource: Resource) = coroutineScope.launch{
+        _loading.emit(true)
+        try {
+            val path = context.applicationContext.getExternalFilesDir("papers")
+            Timber.d("Path : $path")
+            val localFile = File(path, "paper${resource.id}.pdf")
+            val reference = firebaseStorage.getReferenceFromUrl(resource.url)
+            reference.getFile(localFile).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val args = Bundle()
+                    Timber.d("File Successfully stored at location $path")
+                    args.putSerializable(PDF_FILE_OBJECT, localFile)
+                    dispatcher.dispatch(RouteAction.PdfRenderer(args))
+
+                } else {
+                    Timber.d("Downloading Exception: ${task.exception}")
+                    task.exception?.let { SentryAction(it) }?.let { dispatcher.dispatch(it) }
+                }
+                coroutineScope.launch {
+                    _loading.emit(false)
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+            dispatcher.dispatch(SentryAction(e))
+        }
+    }
+
+
 }

@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RecentDao {
 
-    @Query("SELECT * FROM papers JOIN recents ON papers.id = recents.id WHERE type = 'paper' ORDER BY hits DESC")
+    @Query("SELECT * FROM papers JOIN recents ON papers.id = recents.id WHERE recentType = 'paper' ORDER BY hits DESC")
     fun observeRecentPapers(): Flow<List<Recent>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertRecentPaper(recent: Recent)
+    suspend fun insertRecent(recent: Recent)
 
     @Query("UPDATE recents SET hits = hits + 1 WHERE id =:paperId")
     suspend fun updateHits(paperId: String)

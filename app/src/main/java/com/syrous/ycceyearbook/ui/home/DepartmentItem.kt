@@ -9,7 +9,6 @@ import com.syrous.ycceyearbook.databinding.DepartmentCardLayoutBinding
 import com.syrous.ycceyearbook.model.Department
 import com.xwray.groupie.viewbinding.BindableItem
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
@@ -24,7 +23,7 @@ class DepartmentItem(
     }
 
     override fun bind(viewBinding: DepartmentCardLayoutBinding, position: Int) {
-        viewBinding.departmentName.text = department.name
+        viewBinding.departmentName.text = department.name.toUpperCase()
         viewBinding.departmentName.setCompoundDrawablesRelativeWithIntrinsicBounds(
             ContextCompat.getDrawable(context, department.smallDrawableId),
             null, null, null

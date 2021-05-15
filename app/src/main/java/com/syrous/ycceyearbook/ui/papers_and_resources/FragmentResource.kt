@@ -87,7 +87,11 @@ class FragmentResource : BaseFragment(), ResourceView {
         val resourceData = mutableListOf<Group>()
         val resourceSection = Section()
         for(resource in resourceList) {
-            resourceSection.add(ResourceItem(resource, _resourceClicks, coroutineScope))
+            if(resource.contentType == "video") {
+                resourceSection.add(ResourceItem(resource, _resourceClicks, coroutineScope))
+            } else if(resource.contentType == "pdf") {
+                resourceSection.add(ResourcePdfItem(resource, _resourceClicks, coroutineScope))
+            }
         }
         resourceData.add(resourceSection)
         resourceAdapter.update(resourceData)

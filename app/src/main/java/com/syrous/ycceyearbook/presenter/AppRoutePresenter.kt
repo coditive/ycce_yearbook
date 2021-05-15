@@ -1,5 +1,6 @@
 package com.syrous.ycceyearbook.presenter
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
@@ -26,20 +27,20 @@ class AppRoutePresenter constructor(
     private val accountStore: AccountStore
     ): RoutePresenter(activity, dispatcher, routeStore) {
 
+    @SuppressLint("RestrictedApi")
     override fun onViewReady() {
         super.onViewReady()
         navController = Navigation.findNavController(activity, R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener {
-                _, destination, _ ->
-            toggleBottomNavVisibility(destination.id)
+                navController, navDestination, bundle ->
+            toggleBottomNavVisibility(navDestination.id)
         }
     }
 
     private fun toggleBottomNavVisibility(destinationId: Int) {
         when(destinationId) {
-            R.id.action_fragment_splash_to_fragment_home ->
+            R.id.fragment_home ->
                 activity.findViewById<BottomNavView>(R.id.bottomBar).visibility = View.VISIBLE
-
             else -> activity.findViewById<BottomNavView>(R.id.bottomBar).visibility = View.GONE
         }
     }

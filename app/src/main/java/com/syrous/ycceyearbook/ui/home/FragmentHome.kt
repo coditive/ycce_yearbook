@@ -73,6 +73,7 @@ class FragmentHome : BaseFragment(), HomeView {
             adapter = departmentGroupAdapter
             ItemTouchHelper(touchCallback).attachToRecyclerView(this)
             layoutManager = departmentGroupLayoutManager
+            isNestedScrollingEnabled = false
         }
 
         otherFeaturesLayoutManager = LinearLayoutManager(requireContext(),

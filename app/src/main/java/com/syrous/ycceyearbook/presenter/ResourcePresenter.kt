@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import com.syrous.ycceyearbook.YearBookApplication
 import com.syrous.ycceyearbook.action.DataAction
+import com.syrous.ycceyearbook.action.DownloadAction
 import com.syrous.ycceyearbook.action.RouteAction
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.flux.Presenter
@@ -44,9 +45,13 @@ class ResourcePresenter(
         view.coroutineScope.launch {
             launch {
                 view.resourceClicks.collect { resource ->
-                    val args = Bundle()
-                    args.putSerializable(Constant.Resource, resource)
-                    dispatcher.dispatch(RouteAction.VideoPlayer(args))
+                   if(resource.contentType == "video") {
+                       val args = Bundle()
+                       args.putSerializable(Constant.Resource, resource)
+                       dispatcher.dispatch(RouteAction.VideoPlayer(args))
+                   } else if(resource.contentType == "pdf"){
+                       dispatcher.dispatch(DownloadAction.DownloadResource(resource))
+                   }
                 }
             }
 

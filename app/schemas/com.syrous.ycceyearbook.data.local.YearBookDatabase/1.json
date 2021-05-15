@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "48c37fe8857ad4deb6434769560a7edb",
+    "identityHash": "9e58d2d4286d5277f8e3643826226a8d",
     "entities": [
       {
         "tableName": "subjects",
@@ -192,7 +192,7 @@
       },
       {
         "tableName": "recents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `type` TEXT NOT NULL, `hits` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `papers`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `recentType` TEXT NOT NULL, `contentType` TEXT NOT NULL, `hits` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `papers`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -201,8 +201,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "type",
-            "columnName": "type",
+            "fieldPath": "recentType",
+            "columnName": "recentType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contentType",
+            "columnName": "contentType",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -338,7 +344,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '48c37fe8857ad4deb6434769560a7edb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9e58d2d4286d5277f8e3643826226a8d')"
     ]
   }
 }

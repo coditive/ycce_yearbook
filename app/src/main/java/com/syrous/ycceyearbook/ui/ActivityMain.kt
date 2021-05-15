@@ -52,9 +52,11 @@ class ActivityMain : AppCompatActivity(), AppRoutePresenterCallback {
 
     private lateinit var presenter: AppRoutePresenter
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)

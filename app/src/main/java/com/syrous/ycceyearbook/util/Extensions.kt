@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.model.Recent
+import com.syrous.ycceyearbook.model.Resource
 
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -17,4 +18,6 @@ fun ConnectivityManager.isOnline(network: Network): Boolean {
     }?: false
 }
 
-fun Paper.toRecent(): Recent = Recent(id, exam, 1)
+fun Paper.toRecent(): Recent = Recent(id, "paper", exam, 1)
+
+fun Resource.toRecent(): Recent = Recent(id, "resource", contentType, 1)

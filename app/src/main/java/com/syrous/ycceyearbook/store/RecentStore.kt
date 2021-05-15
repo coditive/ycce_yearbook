@@ -6,14 +6,13 @@ import com.syrous.ycceyearbook.data.local.RecentDao
 import com.syrous.ycceyearbook.flux.Dispatcher
 import com.syrous.ycceyearbook.model.Paper
 import com.syrous.ycceyearbook.model.Recent
+import com.syrous.ycceyearbook.model.Resource
 import com.syrous.ycceyearbook.util.toRecent
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
@@ -30,7 +29,6 @@ class RecentStore(
 
     init {
         coroutineScope.launch {
-            Timber.d("recentStore Coroutine Context State : ${this.isActive}")
             dispatcher.getDispatcherChannelSubscription()
                 .filterIsInstance<RecentAction>()
                 .collect {
@@ -38,21 +36,33 @@ class RecentStore(
                     when(recentAction) {
                         RecentAction.GetRecentPapers -> observeRecentPapers()
                         is RecentAction.StoreRecentPaper -> storeRecentPaper(recentAction.paper)
+                        is RecentAction.StoreRecentResource -> storeRecentResource(recentAction.resource)
                     }
                 }
         }
     }
 
-    private suspend fun observeRecentPapers() =
+    private fun observeRecentPapers() = coroutineScope.launch {
         recentDao.observeRecentPapers()
             .collect {
                 _recentData.emit(it)
             }
+    }
 
-    private suspend fun storeRecentPaper(paper: Paper) {
+    private fun storeRecentPaper(paper: Paper) = coroutineScope.launch {
         try {
-            recentDao.insertRecentPaper(paper.toRecent())
+            recentDao.insertRecent(paper.toRecent())
         } catch (e: Exception) {
+            Timber.e(e)
+            dispatcher.dispatch(SentryAction(e))
+        }
+    }
+
+    private fun storeRecentResource(resource: Resource) = coroutineScope.launch {
+        try {
+            recentDao.insertRecent(resource.toRecent())
+        } catch (e: Exception) {
+            Timber.e(e)
             dispatcher.dispatch(SentryAction(e))
         }
     }
